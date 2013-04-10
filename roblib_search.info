@@ -1,0 +1,7 @@
+name = Roblib Search
+configure = admin/roblib_search/configure
+description = Provides a search form and fires a hook when the search is submitted. Other modules should implement the search functionality by implementing the correct hooks.
+package = Roblib Search
+version = 7.x-dev
+core = 7.x
+stylesheets[all][] = css/roblib_search.base.css

@@ -1,0 +1,225 @@
+<?php
+
+/**
+ * @file
+ * Implementation of Roblib search for searching several targets.
+ */
+
+/**
+ * Implements hook_boot().
+ * @global type $conf
+ */
+function roblib_search_evergreen_boot() {
+  /* below is an example from islandora_solr module for internationalization
+   *  global $conf;
+
+    // Allow i18n, by using multilingual variables.
+    if (module_exists('i18n')) {
+    $vars = array(
+    'islandora_solr_facets',
+    'islandora_solr_result_fields',
+    'islandora_solr_searchterms'
+    );
+
+    if (isset($conf['i18n_variables']) && is_array($conf['i18n_variables'])) {
+    $conf['i18n_variables'] = array_merge($vars, $conf['i18n_variables']);
+    }
+    else {
+    $conf['i18n_variables'] = $vars;
+    }
+    } */
+}
+
+/**
+ * Implements hook_menu().
+ */
+function roblib_search_evergreen_menu() {
+  $items = array();
+
+  $items['admin/roblib_search/evergreen_search'] = array(
+    'title' => 'Evergreen Search Target configuration',
+    'description' => 'Configuration for the Roblib evergreen search target',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('roblib_search_evergreen_config_form'),
+    'access arguments' => array('access administration pages'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+
+function roblib_search_evergreen_config_form($form, &$form_state) {
+  /*
+   * $url = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52');
+  $url_suffix = variable_get('roblib_search_evergreen_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query=');
+  $number_of_records = variable_get('roblib_search_evergreen_num_results', '5');
+   */
+  $form['roblib_search_evergreen_url'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Evergreen url'),
+    '#default_value' => variable_get('roblib_search_evergreen_url', 'http://islandpines.roblib.upei.ca/'),
+    '#description' => t('The base Evergreen URL, for example http://islandpines.roblib.upei.ca/'),
+    '#required' => TRUE,
+  );
+  $form['roblib_search_evergreen_search_suffix'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Evergreen search suffix'),
+    '#default_value' => variable_get('roblib_search_evergreen_search_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query='),
+    '#description' => t('The suffix will be appended to the base url for searches, for example /opac/extras/sru?version=1.1&operation=searchRetrieve&query='),
+    '#required' => TRUE,
+  );
+  $form['roblib_search_evergreen_detail_suffix'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Evergreen detail suffix'),
+    '#default_value' => variable_get('roblib_search_evergreen_detail_suffix', '/opac/en-CA/skin/default/xml/rdetail.xml?r='),
+    '#description' => t('The suffix will be appended to the base url when creating links to the Evergreen detail page, for example /opac/en-CA/skin/default/xml/rdetail.xml?r='),
+    '#required' => TRUE,
+  );
+  $form['roblib_search_evergreen_num_results'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Number of results to return'),
+    '#default_value' => variable_get('roblib_search_evergreen_num_results', '5'),
+    '#description' => t('The number of results to display in the Bento box'),
+    '#required' => TRUE,
+  );
+  
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_permission().
+ */
+function roblib_search_evergreen_permission() {
+  return array(
+    'search roblib evergreen' => array(
+      'title' => t('Search the evergreen target'),
+      'description' => t('Search all Roblib evergreen target. This permission exposes the search blocks and allows you to see search results.'),
+    ),
+    'administer roblib search_evergreen' => array(
+      'title' => t('Administer Roblib Search Evergreen'),
+      'description' => t('Administer settings for the Roblib evergreen search client.'),
+    ),
+  );
+}
+
+/**
+ * Implements hook_theme().
+ */
+function roblib_search_evergreen_theme() {
+  // set path
+  $path = drupal_get_path('module', 'roblib_search_evergreen');
+  $file = 'theme.inc';
+
+  return array(
+    // results page
+    'roblib_search_evergreen' => array(
+      'path' => $path . '/theme',
+      'file' => $file,
+      'template' => 'roblib-search-evergreen',
+      'variables' => array('results' => NULL),
+    )
+  );
+}
+
+
+function roblib_search_evergreen_block_info() {
+
+  $blocks['roblib_search_evergreen_results'] = array(
+    // info: The name of the block.
+    'info' => t('Evergreen Search Results block'),
+    // Block caching options (per role, per user, etc.)
+    'cache' => DRUPAL_CACHE_PER_ROLE, // default
+  );
+
+  return $blocks;
+}
+
+function roblib_search_evergreen_block_view($delta = '') {
+  //The $delta parameter tells us which block is being requested.
+  switch ($delta) {
+    case 'roblib_search_evergreen_results':
+      // The subject is displayed at the top of the block. Note that it
+      // should be passed through t() for translation. The title configured
+      // for the block using Drupal UI supercedes this one.
+      $block['subject'] = t('Evergreen Results');
+      // The content of the block is typically generated by calling a custom
+      // function.
+      $block['content'] = roblib_search_evergreen_get_results();
+      break;
+  }
+  return $block;
+}
+
+function roblib_search_evergreen_get_results() {
+  drupal_add_css(drupal_get_path('module', 'roblib_search_evergreen') . '/css/roblib_search_evergreen.theme.css');
+
+  // Url parameters.
+  if (isset($_GET['roblib_query'])) {
+    $query = $_GET['roblib_query'];
+  }
+  else {
+    return '';
+  }
+
+  $url = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52');
+  $url_suffix = variable_get('roblib_search_evergreen_search_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query=');
+  $number_of_records = variable_get('roblib_search_evergreen_num_results', '5');
+  $search_url = $url . $url_suffix . '"' . urlencode($query) . '"' . '&maximumRecords=' . $number_of_records;
+  $results = drupal_http_request($search_url);
+  if ($results->code == '200') {
+    $output = roblib_search_evergreen_parse_results($results);
+  }
+  else {
+    $output = 'Error retrieving Evergreen results ' . $results->status_message;
+  }
+
+  return theme('roblib_search_evergreen', array('results' => $output));
+}
+
+function roblib_search_evergreen_parse_results($results) {
+  $xml = $results->data;
+  if (!isset($xml)) {
+    return 'no results found';
+  }
+  $sxml = simplexml_load_string(trim($results->data));
+  $output = array();
+  if ($sxml) {
+    $sxml->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
+    $records = $sxml->xpath('//marcxml:record');
+    //$records = $sxml->xpath('//marcxml:record/marcxml:recordData/marcxml:record/marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]');
+    $index = 0;
+    foreach ($records as $record) {
+      $record->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
+      $title = $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]');
+      $title = (string) $title[0];
+      $id = $record->xpath('marcxml:datafield[@tag="901"]/marcxml:subfield[@code="c"]');
+      $id = (string) $id[0];
+      $output[$index]['title'] = $title ;
+      $output[$index++]['url'] = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52') 
+          . variable_get('roblib_search_evergreen_detail_suffix','/opac/en-CA/skin/default/xml/rdetail.xml?r=') 
+          . (string) $id ;      
+    }
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_help().
+ *
+ * @param type $path
+ * @param type $arg
+ * @return type
+ */
+function roblib_search_evergreen_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#roblib_search_evergreen':
+      return t(
+              '<p>
+         provides a target for the Roblib search module
+         </p>'
+      );
+  }
+}
+

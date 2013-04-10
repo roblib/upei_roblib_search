@@ -1,0 +1,8 @@
+name = Roblib Search Cufts
+dependencies[] = roblib_search
+configure = admin/roblib_search/cufts_search
+description = implements the Roblib Search modules _roblib_search hook
+package = Roblib Search
+version = 7.x-dev
+core = 7.x
+stylesheets[all][] = css/roblib_search_cufts.base.css

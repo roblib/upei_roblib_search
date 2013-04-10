@@ -1,0 +1,18 @@
+/* 
+    Document   : roblib_search.base.css
+    Created on : Apr 9, 2013, 2:00:18 PM
+    Author     : ppound
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.panels-ipe-portlet-content{background:#f4f4f4 url(../img/bggradientresult.jpg) repeat-x top left;position:relative;overflow:hidden; padding: 5px;padding-left: 10px;}
+.roblib-search-row {
+    border-bottom:1px #cecfcc dotted; 
+}
+.panels-ipe-portlet-wrapper {
+    border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 2em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
+}
+.roblib-search-more{
+    text-align: right; font-size: smaller;
+}
