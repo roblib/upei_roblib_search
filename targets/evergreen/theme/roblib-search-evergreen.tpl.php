@@ -17,13 +17,8 @@
  */
 ?>
 
-<div class ="roblib-search-content-evergreen">  
-   <?php foreach($results as $result): ?>
-    <div class ="roblib-search-row">
-
-  <div class="rolib-title evergreen"><a href = "<?php print $result['url']; ?>"><?php print $result['title']; ?></a>
-  </div>
-    </div>
-  <?php endforeach; ?>
- <div class ="roblib-search-more">Search the Catalog</div>
+<div class ="roblib-search-content evergreen" id="roblib-search-content-evergreen"> 
+  <img src="<?php print $spinner_path; ?>"/> 
+  
 </div>
+<div class ="roblib-search-more">Search all Results</div>

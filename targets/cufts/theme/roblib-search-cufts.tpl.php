@@ -17,7 +17,7 @@
  */
 ?>
 
-<div class ="roblib-search-content-cufts" id="roblib-search-content-cufts"> 
+<div class ="roblib-search-content cufts" id="roblib-search-content-cufts"> 
   <img src="<?php print $spinner_path; ?>"/> 
   
 </div>

@@ -200,7 +200,8 @@ function roblib_search_cufts_help($path, $arg) {
     case 'admin/help#roblib_search_cufts':
       return t(
               '<p>
-         provides a target for the Roblib search module
+         provides a target for the Roblib search module.  This target uses javascript 
+         to render the results. 
          </p>'
       );
   }
