@@ -5,4 +5,4 @@ description = implements the Roblib Search modules _roblib_search hook
 package = Roblib Search
 version = 7.x-dev
 core = 7.x
-stylesheets[all][] = css/roblib_search_evergreen.base.css
+stylesheets[all][] = css/roblib_search_evergreen.css

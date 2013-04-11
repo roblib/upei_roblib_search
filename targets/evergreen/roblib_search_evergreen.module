@@ -80,7 +80,15 @@ function roblib_search_evergreen_config_form($form, &$form_state) {
     '#type' => 'textfield',
     '#title' => t('Evergreen detail suffix'),
     '#default_value' => variable_get('roblib_search_evergreen_detail_suffix', '/opac/en-CA/skin/default/xml/rdetail.xml?r='),
-    '#description' => t('The suffix will be appended to the base url when creating links to the Evergreen detail page, for example /opac/en-CA/skin/default/xml/rdetail.xml?r='),
+    '#description' => t('The suffix will be appended to the base url when creating links to the Evergreen detail page, for example, /opac/en-CA/skin/default/xml/rdetail.xml?r='),
+    '#required' => TRUE,
+  );
+  //http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t=
+  $form['roblib_search_evergreen_catalog_base_search_url'] = array(
+     '#type' => 'textfield',
+    '#title' => t('Evergreen catalog base search url'),
+    '#default_value' => variable_get('roblib_search_evergreen_catalog_base_search_url', 'http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t='),
+    '#description' => t('The Catalog base url so we can repeat the search in the catalog, for example, http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t='),
     '#required' => TRUE,
   );
   $form['roblib_search_evergreen_num_results'] = array(
@@ -176,10 +184,13 @@ function roblib_search_evergreen_get_results($query) {
   $url = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52');
   $url_suffix = variable_get('roblib_search_evergreen_search_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query=');
   $number_of_records = variable_get('roblib_search_evergreen_num_results', '5');
-  $search_url = $url . $url_suffix . '"' . urlencode($query) . '"' . '&maximumRecords=' . $number_of_records;
+  $query = str_replace(' ', '%20AND%20',$query);//hack until the library decides if we want phrase or individual words
+  $search_url = $url . $url_suffix . $query  . '&maximumRecords=' . $number_of_records;
+  
+  drupal_add_js(array('roblib_search_evergreen' => array('catalog_url' => $catalog_base_search_url)), array('type' => 'setting'));
   $results = drupal_http_request($search_url);
   if ($results->code == '200') {
-    $output = roblib_search_evergreen_parse_results($results);
+    $output = roblib_search_evergreen_parse_results($results, $query);
   }
   else {
     $output = 'Error retrieving Evergreen results ' . $results->status_message;
@@ -195,7 +206,7 @@ function roblib_search_evergreen_get_results($query) {
  * @return array $output
  *    information we want from the xml stored in an array
  */
-function roblib_search_evergreen_parse_results($results) {
+function roblib_search_evergreen_parse_results($results, $query) {
   $xml = $results->data;
   if (!isset($xml)) {
     return 'no results found';
@@ -204,22 +215,49 @@ function roblib_search_evergreen_parse_results($results) {
   $output = array();
   if ($sxml) {
     $sxml->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
+    $sxml->registerXPathNamespace('srw', 'http://www.loc.gov/zing/srw/');
+    $number_of_records = $sxml->xpath('//srw:numberOfRecords');
+    $output['numberOfRecords'] = (string)$number_of_records[0];
+    $catalog_base_search_url = variable_get('roblib_search_evergreen_catalog_base_search_url', 'http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t=');
+    $catalog_base_search_url .=   $query;
+    $output['catalogBaseSearchUrl'] = $catalog_base_search_url; 
+    
     $records = $sxml->xpath('//marcxml:record');
     //$records = $sxml->xpath('//marcxml:record/marcxml:recordData/marcxml:record/marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]');
     $index = 0;
     foreach ($records as $record) {
-      $record->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
-      $title = $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]');
-      $title = (string) $title[0];
-      $id = $record->xpath('marcxml:datafield[@tag="901"]/marcxml:subfield[@code="c"]');
-      $id = (string) $id[0];
-      $output[$index]['title'] = $title;
+      $record->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');      
+      roblib_search_evergreen_update_array($output, $index, 'title', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]'));
+      roblib_search_evergreen_update_array($output, $index, 'subtitle', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="b"]'));
+      roblib_search_evergreen_update_array($output, $index, 'sor', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="c"]'));
+      roblib_search_evergreen_update_array($output, $index, 'date', $record->xpath('marcxml:datafield[@tag="260"]/marcxml:subfield[@code="c"]'));
+      roblib_search_evergreen_update_array($output, $index, 'id', $record->xpath('marcxml:datafield[@tag="901"]/marcxml:subfield[@code="c"]'));
+      roblib_search_evergreen_holdings($output, $index, $record->xpath('marcxml:datafield[@tag="852"]'));
+      $id = $output[$index]['id'];
       $output[$index++]['url'] = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52')
           . variable_get('roblib_search_evergreen_detail_suffix', '/opac/en-CA/skin/default/xml/rdetail.xml?r=')
-          . (string) $id;
+          . (string)$id;
     }
   }
   return $output;
+}
+
+function roblib_search_evergreen_holdings(&$arr, $index, $xpath_result){
+  $holding_index = 0;
+  foreach($xpath_result as $xml){
+    $xml->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
+    $call_number = $xml->xpath('marcxml:subfield[@code="c"]');
+    $arr[$index]['holdings'][$holding_index]['call_number'] = (string)$call_number[0];
+    $availability = $xml->xpath('marcxml:subfield[@code="n"]');
+    $arr[$index]['holdings'][$holding_index++]['availability'] = (string)$availability[0];
+  }  
+}
+
+function roblib_search_evergreen_update_array(&$arr, $index, $key, $xpath_result){
+  if(!empty($xpath_result)){
+    $val = (string)$xpath_result[0];
+    $arr[$index][$key] = $val;
+  }
 }
 
 /**

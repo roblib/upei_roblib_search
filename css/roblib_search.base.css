@@ -11,7 +11,7 @@
     border-bottom:1px #cecfcc dotted; 
 }
 .panels-ipe-portlet-wrapper {
-    border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 2em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
+    border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
 }
 .roblib-search-more{
     text-align: right; font-size: smaller;

@@ -21,4 +21,4 @@
   <img src="<?php print $spinner_path; ?>"/> 
   
 </div>
-<div class ="roblib-search-more">Search all Results</div>
+<div class ="roblib-search-more" id="roblib-search-evergreen-more">Search all Results</div>
