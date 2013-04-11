@@ -5,6 +5,9 @@
  * Implementation of Roblib search for searching several targets.
  */
 
+require_once dirname(__FILE__) . '/includes/rest/EBSCOConnector.php';
+require_once dirname(__FILE__) . '/includes/rest/EBSCOResponse.php';
+require_once dirname(__FILE__) . '/includes/rest/EBSCOConnector.php';
 /**
  * Implements hook_boot().
  * @global type $conf
@@ -58,21 +61,45 @@ function roblib_search_eds_menu() {
 
 function roblib_search_eds_config_form($form, &$form_state) {
   
-  $form['roblib_search_eds_url'] = array(
+  $form['roblib_search_eds_rest_url'] = array(
     '#type' => 'textfield',
-    '#title' => t('EDS url'),
-    '#default_value' => variable_get('roblib_search_eds_url', 'http://eds2.lib.sfu.ca/CJDB/PCU/browse/show?'),
-    '#description' => t('The base EDS URL, for example http://eds2.lib.sfu.ca/CJDB/PCU/browse/show?'),
+    '#title' => t('EDS Rest endpoint'),
+    '#default_value' => variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest'),
+    '#description' => t('The base EDS URL, for example http://eds-api.ebscohost.com/edsapi/rest'),
     '#required' => TRUE,
   );
-  $form['roblib_search_eds_search_suffix'] = array(
+  $form['roblib_search_eds_auth_url'] = array(
     '#type' => 'textfield',
-    '#title' => t('EDS search suffix'),
-    '#default_value' => variable_get('roblib_search_eds_search_suffix', 'browse_field=title&search_type=startswith&format=json&search_terms='),
-    '#description' => t('The suffix will be appended to the base url for searches, for example browse_field=title&search_type=startswith&format=json&search_terms='),
+    '#title' => t('EDS Auth endpoint'),
+    '#default_value' => variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest'),
+    '#description' => t('The EDS Auth endpoint, for example https://eds-api.ebscohost.com/Authservice/rest'),
     '#required' => TRUE,
   );
-
+  
+  $form['roblib_search_eds_user'] = array(
+    '#type' => 'textfield',
+    '#title' => t('EDS user'),
+    '#default_value' => variable_get('roblib_search_eds_user', 'edsusername'),
+    '#description' => t('EDS user, for example username'),
+    '#required' => TRUE,
+  );
+  
+  $form['roblib_search_eds_pass'] = array(
+    '#type' => 'textfield',
+    '#title' => t('EDS password'),
+    '#default_value' => variable_get('roblib_search_eds_pass', 'edspassword'),
+    '#description' => t('EDS password, for example password'),
+    '#required' => TRUE,
+  );
+  
+   $form['roblib_search_eds_profile'] = array(
+    '#type' => 'textfield',
+    '#title' => t('EDS profile'),
+    '#default_value' => variable_get('roblib_search_eds_profile', 'edsapi'),
+    '#description' => t('EDS profile, for example edsapi'),
+    '#required' => TRUE,
+  );
+  
   $form['roblib_search_eds_num_results'] = array(
     '#type' => 'textfield',
     '#title' => t('Number of results to return'),
@@ -171,21 +198,19 @@ function roblib_search_eds_get_results($query = NULL) {
       return '';
     }
   }
-  //http://eds2.lib.sfu.ca/CJDB/PCU/browse/show?browse_field=title&search_type=startswith&format=json&search_terms=dog&submit=Search
-  $url = variable_get('roblib_search_eds_url', 'http://eds2.lib.sfu.ca/CJDB/PCU/browse/show?');
-  $url_suffix = variable_get('roblib_search_eds_search_suffix', 'browse_field=title&search_type=startswith&format=json&search_terms=');
-  $number_of_records = variable_get('roblib_search_eds_num_results', '5');
-  $search_url = $url . $url_suffix . '"' . $query . '"' . '&submit=Search';
-  
-  $results = drupal_http_request($search_url);
-
-  if ($results->code == '200') {
-    $output = $results->data;
-  }
-  else {
-    $output = $results->status_message;
-  }
- return $output;
+  //TODO move this to drupal variables
+  $config = array();
+  $config['user'] = variable_get('roblib_search_eds_user', 'edsusername');
+  $config['pass'] = variable_get('roblib_search_eds_pass', 'edspassword');
+  $config['profile'] = variable_get('roblib_search_eds_profile', 'edsapi');
+  $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
+  $config['rest_url'] = variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest');
+  $eds_api = new EBSCOAPI($config);
+  $number_per_page = variable_get('roblib_search_eds_num_results', '5');
+  $query = urlencode($query);
+  $params = "query=$query&includefacets=n&resultsperpage=$number_per_page";
+  $output = $eds_api->apiSearch($params);
+  return json_encode($output);
 }
 
 /**

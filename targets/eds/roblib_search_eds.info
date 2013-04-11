@@ -6,3 +6,6 @@ package = Roblib Search
 version = 7.x-dev
 core = 7.x
 stylesheets[all][] = css/roblib_search_eds.base.css
+files[] = includes/rest/EBSCOAPI.php
+files[] = includes/rest/EBSCOConnector.php
+files[] = includes/rest/EBSCOResponse.php

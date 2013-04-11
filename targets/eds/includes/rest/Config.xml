@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Config>
+    <Version>EDS API-PHP Demo 1.4</Version>
+    <EndPoints>
+        <EndPoint>http://eds-api.ebscohost.com/edsapi/rest</EndPoint>
+        <AuthenticationEndPoint>https://eds-api.ebscohost.com/Authservice/rest</AuthenticationEndPoint>                           
+    </EndPoints>
+    <AbstractLength>300</AbstractLength>
+    <ClientCredentials>
+        <User>
+            <UserId>insert client side profile</UserId>
+            <Password>insert client side profile</Password>        
+        </User>
+    </ClientCredentials>
+    
+    <EDSCredentials>     
+        <User>
+            <ClientUser>guest</ClientUser>
+            <EDSUserID>uprince</EDSUserID>
+            <EDSPassword>robertson1</EDSPassword>
+            <EDSProfile>edsapi</EDSProfile>           
+        </User>  
+    </EDSCredentials>
+</Config>
