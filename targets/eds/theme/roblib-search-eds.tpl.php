@@ -21,4 +21,4 @@
   <img src="<?php print $spinner_path; ?>"/> 
   
 </div>
-<div class ="roblib-search-more">Search all EDS</div>
+<div class ="roblib-search-more" id="roblib-search-eds-more"></div>

@@ -1,0 +1,13 @@
+/* 
+    Document   : roblib_search_evergreen
+    Created on : Apr 11, 2013, 2:27:50 PM
+    Author     : ppound
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+
+.highlight {font-weight: bolder; }
+.eds-sor, .eds-date, .eds-holdings-item, .eds-db, .eds-src, .eds-pubinfo, .eds-type{
+   padding-left: 10px; font-size: smaller;
+}

@@ -4,10 +4,10 @@
  * @file
  * Implementation of Roblib search for searching several targets.
  */
-
 require_once dirname(__FILE__) . '/includes/rest/EBSCOConnector.php';
 require_once dirname(__FILE__) . '/includes/rest/EBSCOResponse.php';
 require_once dirname(__FILE__) . '/includes/rest/EBSCOConnector.php';
+
 /**
  * Implements hook_boot().
  * @global type $conf
@@ -56,11 +56,26 @@ function roblib_search_eds_menu() {
     'access arguments' => array('search roblib eds'),
   );
 
+  $items['roblib_search/eds/info'] = array(
+    'title' => 'eds info',
+    'page callback' => 'roblib_search_eds_info',
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search roblib eds'),
+  );
+
   return $items;
 }
 
+function roblib_search_eds_info() {
+  $config = roblib_search_eds_build_config_arr();
+  $eds_api = new EBSCOAPI($config);  
+  $output = $eds_api->getInfo();
+  print json_encode($output);
+  exit();
+}
+
 function roblib_search_eds_config_form($form, &$form_state) {
-  
+
   $form['roblib_search_eds_rest_url'] = array(
     '#type' => 'textfield',
     '#title' => t('EDS Rest endpoint'),
@@ -75,7 +90,7 @@ function roblib_search_eds_config_form($form, &$form_state) {
     '#description' => t('The EDS Auth endpoint, for example https://eds-api.ebscohost.com/Authservice/rest'),
     '#required' => TRUE,
   );
-  
+
   $form['roblib_search_eds_user'] = array(
     '#type' => 'textfield',
     '#title' => t('EDS user'),
@@ -83,7 +98,7 @@ function roblib_search_eds_config_form($form, &$form_state) {
     '#description' => t('EDS user, for example username'),
     '#required' => TRUE,
   );
-  
+
   $form['roblib_search_eds_pass'] = array(
     '#type' => 'textfield',
     '#title' => t('EDS password'),
@@ -91,15 +106,15 @@ function roblib_search_eds_config_form($form, &$form_state) {
     '#description' => t('EDS password, for example password'),
     '#required' => TRUE,
   );
-  
-   $form['roblib_search_eds_profile'] = array(
+
+  $form['roblib_search_eds_profile'] = array(
     '#type' => 'textfield',
     '#title' => t('EDS profile'),
     '#default_value' => variable_get('roblib_search_eds_profile', 'edsapi'),
     '#description' => t('EDS profile, for example edsapi'),
     '#required' => TRUE,
   );
-  
+
   $form['roblib_search_eds_num_results'] = array(
     '#type' => 'textfield',
     '#title' => t('Number of results to return'),
@@ -180,6 +195,7 @@ function roblib_search_eds_ajax($query) {
   print roblib_search_eds_get_results($query);
   exit();
 }
+
 /**
  * 
  * @param string $query
@@ -198,19 +214,29 @@ function roblib_search_eds_get_results($query = NULL) {
       return '';
     }
   }
-  //TODO move this to drupal variables
+
+  $config = roblib_search_eds_build_config_arr();
+  /*$config['user'] = variable_get('roblib_search_eds_user', 'edsusername');
+  $config['pass'] = variable_get('roblib_search_eds_pass', 'edspassword');
+  $config['profile'] = variable_get('roblib_search_eds_profile', 'edsapi');
+  $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
+  $config['rest_url'] = variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest');*/
+  $eds_api = new EBSCOAPI($config);
+  $number_per_page = variable_get('roblib_search_eds_num_results', '5');
+  $query = urlencode($query);
+  $params = "query=AND,$query&includefacets=n&resultsperpage=$number_per_page";
+  $output = $eds_api->apiSearch($params);
+  return json_encode($output);
+}
+
+function roblib_search_eds_build_config_arr() {
   $config = array();
   $config['user'] = variable_get('roblib_search_eds_user', 'edsusername');
   $config['pass'] = variable_get('roblib_search_eds_pass', 'edspassword');
   $config['profile'] = variable_get('roblib_search_eds_profile', 'edsapi');
   $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
   $config['rest_url'] = variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest');
-  $eds_api = new EBSCOAPI($config);
-  $number_per_page = variable_get('roblib_search_eds_num_results', '5');
-  $query = urlencode($query);
-  $params = "query=$query&includefacets=n&resultsperpage=$number_per_page";
-  $output = $eds_api->apiSearch($params);
-  return json_encode($output);
+  return $config;
 }
 
 /**
