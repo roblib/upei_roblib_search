@@ -233,6 +233,7 @@ function roblib_search_evergreen_parse_results($results, $query) {
       roblib_search_evergreen_update_array($output, $index, 'date', $record->xpath('marcxml:datafield[@tag="260"]/marcxml:subfield[@code="c"]'));
       roblib_search_evergreen_update_array($output, $index, 'id', $record->xpath('marcxml:datafield[@tag="901"]/marcxml:subfield[@code="c"]'));
       roblib_search_evergreen_holdings($output, $index, $record->xpath('marcxml:datafield[@tag="852"]'));
+      roblib_search_evergreen_electronic_holdings($output, $index, $record->xpath('marcxml:datafield[@tag="856"]'));
       $id = $output[$index]['id'];
       $output[$index++]['url'] = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52')
           . variable_get('roblib_search_evergreen_detail_suffix', '/opac/en-CA/skin/default/xml/rdetail.xml?r=')
@@ -249,8 +250,24 @@ function roblib_search_evergreen_holdings(&$arr, $index, $xpath_result){
     $call_number = $xml->xpath('marcxml:subfield[@code="c"]');
     $arr[$index]['holdings'][$holding_index]['call_number'] = (string)$call_number[0];
     $availability = $xml->xpath('marcxml:subfield[@code="n"]');
-    $arr[$index]['holdings'][$holding_index++]['availability'] = (string)$availability[0];
+    $arr[$index]['holdings'][$holding_index]['availability'] = (string)$availability[0];
+    $location = $xml->xpath('marcxml:subfield[@code="a"]');
+    $arr[$index]['holdings'][$holding_index++]['location'] = (string)$location[0];
   }  
+}
+
+function roblib_search_evergreen_electronic_holdings(&$arr, $index, $xpath_result){
+  $holding_index = 0;
+  foreach($xpath_result as $xml){
+     $xml->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
+     $label = $xml->xpath('marcxml:subfield[@code="y"]');
+     $label = (string)$label[0];
+     $url = $xml->xpath('marcxml:subfield[@code="u"]');
+     $url = (string)$url[0];
+     $arr[$index]['electronic_holdings'][$holding_index]['url'] = $url;
+     $arr[$index]['electronic_holdings'][$holding_index++]['label'] = $label;
+     
+  }
 }
 
 function roblib_search_evergreen_update_array(&$arr, $index, $key, $xpath_result){

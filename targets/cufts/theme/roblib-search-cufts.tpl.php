@@ -18,7 +18,7 @@
 ?>
 
 <div class ="roblib-search-content cufts" id="roblib-search-content-cufts"> 
-  <img src="<?php print $spinner_path; ?>"/> 
+   <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/> 
   
 </div>
 <div class ="roblib-search-more">Search all Journals</div>

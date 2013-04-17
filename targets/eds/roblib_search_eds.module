@@ -41,7 +41,7 @@ function roblib_search_eds_menu() {
 
   $items['admin/roblib_search/eds_search'] = array(
     'title' => 'EDS search Target configuration',
-    'description' => 'Configuration for the Roblib evergreen search target',
+    'description' => 'Configuration for the Roblib eds search target',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('roblib_search_eds_config_form'),
     'access arguments' => array('access administration pages'),
@@ -216,11 +216,6 @@ function roblib_search_eds_get_results($query = NULL) {
   }
 
   $config = roblib_search_eds_build_config_arr();
-  /*$config['user'] = variable_get('roblib_search_eds_user', 'edsusername');
-  $config['pass'] = variable_get('roblib_search_eds_pass', 'edspassword');
-  $config['profile'] = variable_get('roblib_search_eds_profile', 'edsapi');
-  $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
-  $config['rest_url'] = variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest');*/
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
   $query = urlencode($query);

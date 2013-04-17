@@ -30,6 +30,13 @@ Drupal.behaviors.roblib_search_evergreen = {
                         })
                         items.push('</div>')
                     }
+                    if(typeof val.electronic_holdings !== 'undefined'){
+                        items.push('<div class="evergreen-holdings">');
+                        jQuery.each(val.electronic_holdings, function(key2, val2){
+                            roblibEvergreenAddElectronicHoldings(val2, items);
+                        })
+                        items.push('</div>')
+                    }
                     items.push('</div>');
                 });     
             }            
@@ -41,9 +48,10 @@ Drupal.behaviors.roblib_search_evergreen = {
 }
 
 function roblibEvergreenAddHoldings(holdings, items){
-    items.push('<div class="evergreen-holdings-item">' + holdings.call_number + ' ' + holdings.availability + '</div>');
-  
+    items.push('<div class="evergreen-holdings-item">' + holdings.call_number + ' - ' + holdings.location +' (' + holdings.availability + ')</div>');  
 }
-
+function roblibEvergreenAddElectronicHoldings(holdings, items){
+    items.push('<div class="evergreen-holdings-item"><a href="' + holdings.url + '">' + holdings.label + '</div>');  
+}
 
 
