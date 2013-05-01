@@ -1,8 +1,8 @@
 <?php
 
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * all we do her is pass a url to some javascript so the results can be 
+ * loaded async
  */
 
 function roblib_search_eds_preprocess_roblib_search_eds(&$variables) {

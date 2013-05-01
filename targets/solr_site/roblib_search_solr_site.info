@@ -1,0 +1,8 @@
+name = Roblib Search Solr site 
+dependencies[] = roblib_search
+configure = admin/roblib_search/solr_site_search
+description = implements the Roblib Search local Solr site bento results
+package = Roblib Search
+version = 7.x-dev
+core = 7.x
+stylesheets[all][] = css/roblib_search_solr_site.css
