@@ -115,7 +115,7 @@ function roblib_search_cufts_theme() {
       'path' => $path . '/theme',
       'file' => $file,
       'template' => 'roblib-search-cufts',
-      'variables' => array('result'=>NULL)
+      'variables' => array('results'=>NULL)
     )
   );
 }
