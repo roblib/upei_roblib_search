@@ -3,7 +3,7 @@ Drupal.behaviors.roblib_search_cufts = {
         url = settings.roblib_search_cufts.search_url;
         jQuery.getJSON(url, function(data) {
             var items = [];
-            if (data.length < 1 || data.total_count == 0) {
+            if (data.length < 1) {
                 jQuery('#' + 'roblib-search-content-cufts').empty().append('No Results');
             } else {
                 jQuery.each(data.journals, function(key, val) {
@@ -16,9 +16,17 @@ Drupal.behaviors.roblib_search_cufts = {
             var originURL = settings.roblib_search_cufts.url;
             var originSuffix = settings.roblib_search_cufts.suffix;
             var newSuffix = originSuffix.replace("&format=json", "");
-            jQuery('#' + 'roblib-search-content-cufts').empty().append(items.join(''));
-            jQuery('#' + 'roblib-search-cufts-more').empty().append('<a href="'+originURL+newSuffix+'">see all '+data.numOfResults+' results</a>');
-        });
+            if(parseInt(data.numOfResults)>0)
+            {
+                jQuery('#' + 'roblib-search-content-cufts').empty().append(items.join(''));
+                jQuery('#' + 'roblib-search-cufts-more').empty().append('<a href="'+originURL+newSuffix+'">see all '+data.numOfResults+' results</a>');
+            }
+            else
+                {
+                jQuery('#' + 'roblib-search-content-cufts').empty().append('<p>No result</p>');
+                jQuery('#' + 'roblib-search-cufts-more').empty();
+                }
+            });
     }
 }
 
