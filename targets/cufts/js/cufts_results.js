@@ -23,7 +23,7 @@ Drupal.behaviors.roblib_search_cufts = {
             }
             else
                 {
-                jQuery('#' + 'roblib-search-content-cufts').empty().append('<p>No result</p>');
+                jQuery('#' + 'roblib-search-content-cufts').empty().append('<p>no result</p>');
                 jQuery('#' + 'roblib-search-cufts-more').empty();
                 }
             });
