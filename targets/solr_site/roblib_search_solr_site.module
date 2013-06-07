@@ -162,12 +162,12 @@ function roblib_search_solr_site_get_results($query) {
   $data = array(
     'wt' => 'json',
     'q' => $query,
-    'rows' => $num_results,
   );
   $url = url($solr_url.'/select', array('query' => $data));
   $results = drupal_http_request($url);
-  
-  return $results->data;
+  $temp =  substr($results->data, 1);
+  $out = '{"rows":"'.$num_results.'",'.$temp;
+  return $out;
 }
 
 /**
