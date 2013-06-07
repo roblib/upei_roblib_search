@@ -21,4 +21,4 @@
    <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/> 
   
 </div>
-<div class ="roblib-search-more">Search all Journals</div>
+<div class ="roblib-search-more" id="roblib-search-cufts-more">Search all Journals</div>
