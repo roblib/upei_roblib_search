@@ -7,10 +7,33 @@ Drupal.behaviors.roblib_search_cufts = {
                 jQuery('#' + 'roblib-search-content-cufts').empty().append('No Results');
             } else {
                 jQuery.each(data.journals, function(key, val) {
-                    items.push('<div class ="roblib-search-row">');
-                    items.push('<div class="roblib-title cufts">');
-                    items.push('<a href = "' + val.url + '">' + val.title + '</a></div>');
-                    items.push('</div>');
+                    var item_str = '<div class ="roblib-search-row">';
+                    item_str += '<div class="roblib-title cufts">';
+                    item_str += '<a href = "' + val.url + '">' + val.title + '</a>';
+                    item_str += '</div>';
+                    
+                    item_str += '<div class="cufts-issns">';
+                    var issns=val.issns.toString();
+                    if(issns.length==8)
+                    {
+                        newIssns = issns.substr(0,4)+'-'+issns.substr(4,4);
+                    }
+                    else
+                    {
+                        newIssns = issns;
+                    }
+                    
+                    item_str += newIssns;
+                    item_str += '</div>';
+                    
+                    item_str += '<div class="cufts-fulltext-coverages">';
+                    item_str += val.fulltext_coverages;
+                    item_str += '</div>';
+                    
+                    item_str += '</div>';
+                    items.push(item_str);
+          
+                     
                 });
             }
             var originURL = settings.roblib_search_cufts.url;

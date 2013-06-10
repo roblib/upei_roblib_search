@@ -1,0 +1,12 @@
+/* 
+    Document   : roblib_search_cufts
+    Created on : Jun 10, 2013, 3:07:56 PM
+    Author     : yqjiang
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+.cufts-issns , .cufts-fulltext-coverages{
+   padding-left: 10px; font-size: smaller;
+}
+
