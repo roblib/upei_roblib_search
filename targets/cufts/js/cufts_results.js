@@ -11,45 +11,51 @@ Drupal.behaviors.roblib_search_cufts = {
                     item_str += '<div class="roblib-title cufts">';
                     item_str += '<a href = "' + val.url + '">' + val.title + '</a>';
                     item_str += '</div>';
-                    
-                    item_str += '<div class="cufts-issns">';
-                    var issns=val.issns.toString();
-                    if(issns.length==8)
-                    {
-                        newIssns = issns.substr(0,4)+'-'+issns.substr(4,4);
-                    }
-                    else
-                    {
-                        newIssns = issns;
-                    }
-                    
-                    item_str += newIssns;
+
+                    item_str += '<div class="cufts-issns">ISSN: ';
+                    jQuery.each(val.issns, function(key2, val2) {
+                        var newIssn = "";
+                        var issn = val2.toString();
+                        if (issn.length == 8)
+                        {
+                            newIssn = issn.substr(0, 4) + '-' + issn.substr(4, 4);
+                        }
+                        else
+                        {
+                            newIssn = issn;
+                        }
+                        item_str += newIssn + ',';
+                    });
                     item_str += '</div>';
-                    
+
                     item_str += '<div class="cufts-fulltext-coverages">';
-                    item_str += val.fulltext_coverages;
+
+                    jQuery.each(val.fulltext_coverages, function(key3, val3) {
+                        item_str += val3;
+                    });
+
                     item_str += '</div>';
-                    
+
                     item_str += '</div>';
                     items.push(item_str);
-          
-                     
+
+
                 });
             }
             var originURL = settings.roblib_search_cufts.url;
             var originSuffix = settings.roblib_search_cufts.suffix;
             var newSuffix = originSuffix.replace("&format=json", "");
-            if(parseInt(data.numOfResults)>0)
+            if (parseInt(data.numOfResults) > 0)
             {
                 jQuery('#' + 'roblib-search-content-cufts').empty().append(items.join(''));
-                jQuery('#' + 'roblib-search-cufts-more').empty().append('<a href="'+originURL+newSuffix+'">see all '+data.numOfResults+' results</a>');
+                jQuery('#' + 'roblib-search-cufts-more').empty().append('<a href="' + originURL + newSuffix + '">see all ' + data.numOfResults + ' results</a>');
             }
             else
-                {
+            {
                 jQuery('#' + 'roblib-search-content-cufts').empty().append('<p>no result</p>');
                 jQuery('#' + 'roblib-search-cufts-more').empty();
-                }
-            });
+            }
+        });
     }
 }
 
