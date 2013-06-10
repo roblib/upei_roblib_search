@@ -48,7 +48,10 @@ Drupal.behaviors.roblib_search_eds = {
             jQuery.each(data.queries, function(key7, query){
                 queries.push(query.query);
             }) 
-            jQuery('#roblib-search-eds-more').empty().append('See all ' + data.recordCount + ' results');
+            var query_str = data.queries[0].query;
+            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
+            jQuery('#roblib-search-eds-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all ' + data.recordCount + ' results</a>');
+
         });
     }  
 }

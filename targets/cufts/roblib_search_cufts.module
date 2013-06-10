@@ -115,7 +115,7 @@ function roblib_search_cufts_theme() {
       'path' => $path . '/theme',
       'file' => $file,
       'template' => 'roblib-search-cufts',
-      'variables' => array('results' => NULL),
+      'variables' => array('results'=>NULL)
     )
   );
 }
@@ -171,21 +171,39 @@ function roblib_search_cufts_get_results($query = NULL) {
       return '';
     }
   }
+  
+  $query = str_replace(' ', '%20', $query);
   //http://cufts2.lib.sfu.ca/CJDB/PCU/browse/show?browse_field=title&search_type=startswith&format=json&search_terms=dog&submit=Search
   $url = variable_get('roblib_search_cufts_url', 'http://cufts2.lib.sfu.ca/CJDB/PCU/browse/show?');
   $url_suffix = variable_get('roblib_search_cufts_search_suffix', 'browse_field=title&search_type=startswith&format=json&search_terms=');
   $number_of_records = variable_get('roblib_search_cufts_num_results', '5');
-  $search_url = $url . $url_suffix . '"' . $query . '"' . '&submit=Search&per_page='.$number_of_records;
+  $search_url = $url . $url_suffix . $query . '&submit=Search';
   
+  //get the total number of result
   $results = drupal_http_request($search_url);
-
   if ($results->code == '200') {
     $output = $results->data;
   }
   else {
     $output = $results->status_message;
   }
- return $output;
+  $start_index = strpos($output,'"total_count":')+  strlen('"total_count":');
+  $end_index = strlen($output)-1;
+  $length=$end_index-$start_index;
+  $num_of_result = substr($output,$start_index,$length);
+  
+  $search_url = $search_url . '&per_page='.$number_of_records;
+  $results = drupal_http_request($search_url);
+  
+  if ($results->code == '200') {
+    $output = $results->data;
+  }
+  else {
+    $output = $results->status_message;
+  }
+  
+  $output = str_replace('"total_count":', '"numOfResults":'.$num_of_result.',"total_count":',$output);
+  return $output;
 }
 
 /**
