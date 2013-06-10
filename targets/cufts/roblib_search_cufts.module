@@ -171,6 +171,8 @@ function roblib_search_cufts_get_results($query = NULL) {
       return '';
     }
   }
+  
+  $query = str_replace(' ', '%20', $query);
   //http://cufts2.lib.sfu.ca/CJDB/PCU/browse/show?browse_field=title&search_type=startswith&format=json&search_terms=dog&submit=Search
   $url = variable_get('roblib_search_cufts_url', 'http://cufts2.lib.sfu.ca/CJDB/PCU/browse/show?');
   $url_suffix = variable_get('roblib_search_cufts_search_suffix', 'browse_field=title&search_type=startswith&format=json&search_terms=');
