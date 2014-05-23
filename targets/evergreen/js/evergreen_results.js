@@ -2,9 +2,10 @@ Drupal.behaviors.roblib_search_evergreen = {
     attach: function(context, settings) { 
         url = settings.roblib_search_evergreen.search_url;
         jQuery.getJSON(url, function(data) {
-            var items = [];     
-            if(data.length < 1){
-                jQuery('#' + 'roblib-search-content-evergreen').empty().append('No Results');     
+            var items = [];
+            if(data.numberOfRecords < 1){
+                jQuery('#' + 'roblib-search-content-evergreen').empty().append('No Results');
+                jQuery('.pane-roblib-search-evergreen-roblib-search-evergreen-results').hide();
             } else {
                 jQuery.each(data, function(key, val) {
                     

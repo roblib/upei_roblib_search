@@ -5,30 +5,6 @@
  * Implementation of Roblib search for searching several targets.
  */
 
-/**
- * Implements hook_boot().
- * @global type $conf
- */
-function roblib_search_solr_site_boot() {
-  /* below is an example from islandora_solr module for internationalization
-   *  global $conf;
-
-    // Allow i18n, by using multilingual variables.
-    if (module_exists('i18n')) {
-    $vars = array(
-    'islandora_solr_facets',
-    'islandora_solr_result_fields',
-    'islandora_solr_searchterms'
-    );
-
-    if (isset($conf['i18n_variables']) && is_array($conf['i18n_variables'])) {
-    $conf['i18n_variables'] = array_merge($vars, $conf['i18n_variables']);
-    }
-    else {
-    $conf['i18n_variables'] = $vars;
-    }
-    } */
-}
 
 /**
  * Implements hook_menu().
@@ -69,7 +45,7 @@ function roblib_search_solr_site_config_form($form, &$form_state) {
     '#description' => t('The base Solr URL, for example http://localhost:8983/solr'),
     '#required' => TRUE,
   );
-   $form['roblib_search_solr_site_num_results'] = array(
+  $form['roblib_search_solr_site_num_results'] = array(
     '#type' => 'textfield',
     '#title' => t('Number of results to return'),
     '#default_value' => variable_get('roblib_search_solr_site_num_results', '5'),
@@ -150,10 +126,10 @@ function roblib_search_solr_site_ajax($query) {
 }
 
 /**
- * 
+ *
  * @param string $query
  * @return string
- *   json 
+ *   json
  */
 function roblib_search_solr_site_get_results($query) {
   $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
@@ -163,26 +139,25 @@ function roblib_search_solr_site_get_results($query) {
     'wt' => 'json',
     'q' => $query,
   );
-  $url = url($solr_url.'/select', array('query' => $data));
+  $url = url($solr_url . '/select', array('query' => $data));
   $results = drupal_http_request($url);
-  $temp =  substr($results->data, 1);
-  $out = '{"rows":"'.$num_results.'",'.$temp;
-  return $out;
+  if($results->code != '200'){
+    return "";
+  }
+  $temp = substr($results->data, 1);
+  //$out = '{"rows":"' . $num_results . '",' . $results->data;
+  return $results->data;
 }
 
 /**
  * Implements hook_help().
- *
- * @param type $path
- * @param type $arg
- * @return type
  */
 function roblib_search_solr_site_help($path, $arg) {
   switch ($path) {
     case 'admin/help#roblib_search_solr_site':
       return t(
-              '<p>
-  provides a target for the Roblib search module
+        '<p>
+provides a target for the Roblib search module
 </p>'
       );
   }

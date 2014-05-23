@@ -3,8 +3,9 @@ Drupal.behaviors.roblib_search_eds = {
         $url = settings.roblib_search_eds.search_url;
         jQuery.getJSON($url, function(data) {
             var items = [];     
-            if(data.length < 1){
-                jQuery('#' + 'roblib-search-content-eds').empty().append('No Results');     
+            if(data.records.length < 1){
+                jQuery('#' + 'roblib-search-content-eds').empty().append('No Results');
+                jQuery('.' + 'pane-roblib-search-eds-roblib-search-eds-results').hide();
             } else {
                 jQuery.each(data.records, function(key, val) {
                     

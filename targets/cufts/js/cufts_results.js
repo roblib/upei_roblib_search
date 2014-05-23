@@ -3,8 +3,9 @@ Drupal.behaviors.roblib_search_cufts = {
         url = settings.roblib_search_cufts.search_url;
         jQuery.getJSON(url, function(data) {
             var items = [];
-            if (data.length < 1) {
+            if (data.journals.length < 1) {
                 jQuery('#' + 'roblib-search-content-cufts').empty().append('No Results');
+                jQuery('.' + 'pane-roblib-search-cufts-roblib-search-cufts-results').hide();
             } else {
                 jQuery.each(data.journals, function(key, val) {
                     var item_str = '<div class ="roblib-search-row">';

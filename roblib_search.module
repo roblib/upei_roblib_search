@@ -7,31 +7,6 @@
 
 
 /**
- * Implements hook_boot().
- * @global type $conf
- */
-function roblib_search_boot() {
-/* below is an example from islandora_solr module for internationalization
- *  global $conf;
-
-  // Allow i18n, by using multilingual variables.
-  if (module_exists('i18n')) {
-    $vars = array(
-      'islandora_solr_facets',
-      'islandora_solr_result_fields',
-      'islandora_solr_searchterms'
-    );
-
-    if (isset($conf['i18n_variables']) && is_array($conf['i18n_variables'])) {
-      $conf['i18n_variables'] = array_merge($vars, $conf['i18n_variables']);
-    }
-    else {
-      $conf['i18n_variables'] = $vars;
-    }
-  }*/
-}
-
-/**
  * Implements hook_menu().
  */
 function roblib_search_menu() {
@@ -42,7 +17,6 @@ function roblib_search_menu() {
     'access arguments' => array('administer site configuration'),
     'type' => MENU_NORMAL_ITEM,
   );
-  
   $items['admin/roblib_search/configure'] = array(
     'title' => 'Global Configuration',
     'description' => 'Configure global Roblib search settings.',
@@ -51,15 +25,12 @@ function roblib_search_menu() {
     'page arguments' => array('roblib_search_config_form'),
     'type' => MENU_NORMAL_ITEM,
   );
-  
-  
   return $items;
 }
 
 
 function roblib_search_config_form($form, &$form_state) {
- 
-  //variable_get('roblib_search_panel_page','/roblib/panel');
+
   $form['roblib_search_panel_page'] = array(
     '#type' => 'textfield',
     '#title' => t('Path to the roblib search panel page'),
@@ -67,7 +38,6 @@ function roblib_search_config_form($form, &$form_state) {
     '#description' => t('The Path to the Roblib Search Panel, for example /roblib/panel'),
     '#required' => TRUE,
   );
- 
 
   return system_settings_form($form);
 }
@@ -105,14 +75,14 @@ function roblib_search_block_info() {
     // info: The name of the block.
     'info' => t('Roblib Global Search Form'),
     // Block caching options (per role, per user, etc.)
-    'cache' => DRUPAL_CACHE_PER_ROLE, // default
+    // Default.
+    'cache' => DRUPAL_CACHE_PER_ROLE,
   );
 
   return $blocks;
 }
 
 function roblib_search_block_view($delta = '') {
-  //The $delta parameter tells us which block is being requested.
   switch ($delta) {
     case 'roblib_search_form':
       // The subject is displayed at the top of the block. Note that it
@@ -128,25 +98,26 @@ function roblib_search_block_view($delta = '') {
 }
 
 /**
- * Roblib search simple search form submit
+ * Roblib search simple search form submit.
  *
- * @param type $form
+ * @param array $form
  * @param array $form_state
+ *
  */
 function roblib_search_simple_form_submit($form, &$form_state) {
   global $base_url;
   $form_state['rebuild'] = TRUE;
   $search_string = $form_state['values']['roblib_search_simple_search_query'];
-  $redirect_url = variable_get('roblib_search_panel_page','roblib/panel');
-  $redirect_url = $base_url. '/' . $redirect_url;
+  $redirect_url = variable_get('roblib_search_panel_page', 'roblib/panel');
+  $redirect_url = $base_url . '/' . $redirect_url;
   drupal_goto($redirect_url, array('query' => array('roblib_query' => $search_string)));
 }
 
 /**
  * Roblib search simple search form
  *
- * @param type $form
- * @param type $form_state
+ * @param array $form
+ * @param array $form_state
  * @return array
  */
 function roblib_search_simple_form($form, &$form_state) {
@@ -154,21 +125,22 @@ function roblib_search_simple_form($form, &$form_state) {
     $query = $_GET['roblib_query'];
   }
   else {
-    $query =  '';
+    $query = '';
   }
 
   $form['simple'] = array(
     '#type' => 'container',
     '#attributes' => array(
       'class' => array(
-        'container-inline')
+        'container-inline'
       )
-    );
+    )
+  );
   $form['simple']["roblib_search_simple_search_query"] = array(
     '#size' => '15',
     '#type' => 'textfield',
     '#title' => '',
-    '#default_value' => $query, 
+    '#default_value' => $query,
   );
   $form['simple']['submit'] = array(
     '#type' => 'submit',
@@ -188,11 +160,11 @@ function roblib_search_help($path, $arg) {
   switch ($path) {
     case 'admin/help#roblib_search':
       return t(
-          '<p>
-         The Roblib Search is a module to allow searching across multiple targets.
-         This module does not know how to retrieve results but fires hooks that other
-         modules can implement to gather and display results.
-         </p>'         
+        '<p>
+       The Roblib Search is a module to allow searching across multiple targets.
+       This module does not know how to retrieve results but fires hooks that other
+       modules can implement to gather and display results.
+       </p>'
       );
   }
 }
