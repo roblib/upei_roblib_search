@@ -108,9 +108,21 @@ function roblib_search_simple_form_submit($form, &$form_state) {
   global $base_url;
   $form_state['rebuild'] = TRUE;
   $search_string = $form_state['values']['roblib_search_simple_search_query'];
+  $search_string = filter_xss($search_string);
+  roblib_search_log_query($search_string);
   $redirect_url = variable_get('roblib_search_panel_page', 'roblib/panel');
   $redirect_url = $base_url . '/' . $redirect_url;
   drupal_goto($redirect_url, array('query' => array('roblib_query' => $search_string)));
+}
+
+function roblib_search_log_query($search_string) {
+  $eid = db_insert('roblib_search_log')
+    ->fields(array(
+      'query' => $search_string,
+      'searched_date' => format_date(time(), 'custom', 'Y-m-d H:i:s'),
+      'ipaddress' => ip_address(),
+    ))
+    ->execute();
 }
 
 /**

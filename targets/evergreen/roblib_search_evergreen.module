@@ -85,7 +85,7 @@ function roblib_search_evergreen_config_form($form, &$form_state) {
   );
   //http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t=
   $form['roblib_search_evergreen_catalog_base_search_url'] = array(
-     '#type' => 'textfield',
+    '#type' => 'textfield',
     '#title' => t('Evergreen catalog base search url'),
     '#default_value' => variable_get('roblib_search_evergreen_catalog_base_search_url', 'http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t='),
     '#description' => t('The Catalog base url so we can repeat the search in the catalog, for example, http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t='),
@@ -186,7 +186,7 @@ function roblib_search_evergreen_get_results($query) {
   $number_of_records = variable_get('roblib_search_evergreen_num_results', '5');
   $query = str_replace(' ', '%20AND%20',$query);//hack until the library decides if we want phrase or individual words
   $search_url = $url . $url_suffix . $query  . '&maximumRecords=' . $number_of_records;
-  
+  $catalog_base_search_url = variable_get('roblib_search_evergreen_catalog_base_search_url', 'http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t=');
   drupal_add_js(array('roblib_search_evergreen' => array('catalog_url' => $catalog_base_search_url)), array('type' => 'setting'));
   $results = drupal_http_request($search_url);
   if ($results->code == '200') {

@@ -1,2 +1,44 @@
 <?php
 
+/**
+ * @file
+ * Installation hooks.
+ */
+
+/**
+ * Implements hook_schema().
+ */
+function roblib_search_schema() {
+  $schema = array();
+  $schema['roblib_search_log'] = array(
+    'description' => 'stores search data such as date/time ip etc.',
+    'fields' => array(
+      'sid' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'unique id for each row',
+      ),
+      'query' => array(
+        'description' => 'the search string',
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 1024,
+      ),
+      'searched_date' => array(
+        'description' => 'the date the search request occured',
+        'type' => 'varchar',
+        'mysql_type' => 'DATETIME',
+        'not null' => TRUE,
+      ),
+      'ipaddress' => array(
+        'description' => 'the ip or domain of the users computer ',
+        'type' => 'varchar',
+        'not null' => TRUE,
+        'length' => 255,
+      ),
+    ),
+    'primary key' => array('sid'),
+  );
+  return $schema;
+}
+
