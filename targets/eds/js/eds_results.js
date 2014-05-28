@@ -2,8 +2,14 @@ Drupal.behaviors.roblib_search_eds = {
     attach: function(context, settings) { 
         $url = settings.roblib_search_eds.search_url;
         jQuery.getJSON($url, function(data) {
-            var items = [];     
-            if(data.records.length < 1){
+            var items = [];
+            var numberOfDocs = 0;
+            try {
+                numberOfDocs = data.records.length;
+            } catch (err) {
+                // do nothing leave docLength at 0
+            }
+            if(numberOfDocs < 1){
                 jQuery('#' + 'roblib-search-content-eds').empty().append('No Results');
                 jQuery('.' + 'pane-roblib-search-eds-roblib-search-eds-results').hide();
             } else {

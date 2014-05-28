@@ -3,8 +3,16 @@ Drupal.behaviors.roblib_search_solr_site = {
         url = settings.roblib_search_solr_site.search_url;
         jQuery.getJSON(url, function(data) {
             var items = [];
-            if (data.response.docs.length < 1) {
+            var numberOfDocs = 0;
+            try {
+                numberOfDocs = data.response.docs.length;
+            } catch (err) {
+                // do nothing leave docLength at 0
+            }
+            if (numberOfDocs < 1) {
                 jQuery('#' + 'roblib-search-content-solr-site').empty().append('No Results');
+                //<section class="panel-pane pane-block pane-roblib-search-solr-site-roblib-search-solr-site-results block">
+
                 jQuery('.' + 'pane-roblib-search-solr-site-roblib-search-solr-site-results').hide();
             } else {
                 jQuery.each(data.response.docs, function(key, val) {
