@@ -224,8 +224,8 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
   $query = urlencode($query);
-  $query = trim($query . $limiters);
-  $params = "query=AND,$query&includefacets=n&resultsperpage=$number_per_page";
+  $query = $query;
+  $params = "query=AND,$query&includefacets=y&$limiters&resultsperpage=$number_per_page";
   $output = $eds_api->apiSearch($params);
   return json_encode($output);
 }
@@ -234,11 +234,12 @@ function roblib_search_eds_get_query_limiters($type){
   $limiters = 'n';
   switch ($type) {
     case 'Articles':
-      $limiters = '+AND+(ZT+article)';
+      $limiters = 'facetfilter=1,SourceType:Magazines,SourceType:News,SourceType:Academic+Journals,SourceType:Conference+Materials';
       break;
     case 'Books':
-      $limiters = '+AND+(PT+book)';
-      break;
+     // $limiters = '+AND+(PT+book)';
+     $limiters = 'facetfilter=1,SourceType:Books,SourceType:Audio,SourceType:Videos';
+    break;
 
 
   }
