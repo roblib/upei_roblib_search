@@ -25,26 +25,30 @@ Drupal.behaviors.roblib_search_eds_articles = {
                                 items.push('<a href="'+val.PLink+'">'+val2.Data+'</a></div>');
                             }) 
                         }
+                        items.push('<div class="eds-sor">');
                         jQuery.each(val.RecordInfo.BibRelationships.HasContributorRelationships, function(key3, authors){
-                            items.push('<div class="eds-sor">'+authors.NameFull+'</div>');
-                        }) 
+                            items.push(authors.NameFull+';'+' ');
+                        })
+                        items.push('</div>');
                         if (typeof val.Items.Src !== 'undefined') {
-                            jQuery.each(val.Items.Src, function(key4, source){                        
-                                items.push('<div class="eds-src">'+source.Data+'</div>');                        
+                            jQuery.each(val.Items.Src, function(key4, source){
+                                items.push('<div class="eds-src"><span class="eds-label">'+source.Label+':</span> '+source.Data+'</div>');
                             })   
                         }
-                        if (typeof val.Items.PubIrInfo !== 'undefined') {
-                            jQuery.each(val.Items.PubIrInfo, function(key5, pubinfo){                        
-                                items.push('<div class="eds-pubinfo">'+pubinfo.Data+'</div>');                        
-                            })   
+                        //if (typeof val.Items.PubIrInfo !== 'undefined') {
+                        //    jQuery.each(val.Items.PubIrInfo, function(key5, pubinfo){
+                        //        items.push('<div class="eds-pubinfo">'+pubinfo.Data+'</div>');
+                        //    })
+                        //}
+                        //if (typeof val.Items.TypPub !== 'undefined') {
+                        //    jQuery.each(val.Items.TypPub, function(key6, typpub){
+                        //        items.push('<div class="eds-type">'+typpub.Data+'</div>');
+                        //    })
+                        //}
+                        if (typeof val.PLink !== 'undefined'){
+                            items.push('<div class="eds-db eds-pdf-link"><a href="'+val.PLink+'">Full Text</a></div>');
                         }
-                        if (typeof val.Items.TypPub !== 'undefined') {
-                            jQuery.each(val.Items.TypPub, function(key6, typpub){                        
-                                items.push('<div class="eds-type">'+typpub.Data+'</div>');                        
-                            })   
-                        }              
-                    
-                        items.push('<div class="eds-db">'+val.DbLabel+'</div>');
+                        //items.push('<div class="eds-db">'+val.DbLabel+'</div>');
                    
                         items.push('</div>');
                     }
@@ -57,7 +61,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
             }) 
             var query_str = data.queries[0].query;
             var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
-            jQuery('#roblib-search-eds-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all ' + data.recordCount + ' results</a>');
+            jQuery('#roblib-search-eds-article-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all ' + data.recordCount + ' results</a>');
 
         });
     }  

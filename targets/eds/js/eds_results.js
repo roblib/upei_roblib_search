@@ -25,9 +25,11 @@ Drupal.behaviors.roblib_search_eds = {
                                 items.push('<a href="'+val.PLink+'">'+val2.Data+'</a></div>');
                             }) 
                         }
+                        items.push('<div class="eds-sor">');
                         jQuery.each(val.RecordInfo.BibRelationships.HasContributorRelationships, function(key3, authors){
-                            items.push('<div class="eds-sor">'+authors.NameFull+'</div>');
-                        }) 
+                            items.push(authors.NameFull+';'+' ');
+                        })
+                        items.push('</div>');
                         if (typeof val.Items.Src !== 'undefined') {
                             jQuery.each(val.Items.Src, function(key4, source){                        
                                 items.push('<div class="eds-src">'+source.Data+'</div>');                        
@@ -40,7 +42,7 @@ Drupal.behaviors.roblib_search_eds = {
                         }
                         if (typeof val.Items.TypPub !== 'undefined') {
                             jQuery.each(val.Items.TypPub, function(key6, typpub){                        
-                                items.push('<div class="eds-type">'+typpub.Data+'</div>');                        
+                                items.push('<div class="eds-type"><span class="eds-label">'+typpub.Label+'</span>: '+typpub.Data+'</div>');
                             })   
                         }              
                     

@@ -11,3 +11,7 @@
 .eds-sor, .eds-date, .eds-holdings-item, .eds-db, .eds-src, .eds-pubinfo, .eds-type{
    padding-left: 10px; font-size: smaller;
 }
+
+.eds-label {
+    font-weight: bolder;
+}
