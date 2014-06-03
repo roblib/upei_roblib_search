@@ -16,9 +16,7 @@
  * @see template_preprocess_roblib_search_wrapper()
  */
 ?>
-
+<div class ="roblib-search-more" id="roblib-search-evergreen-more"></div>
 <div class ="roblib-search-content evergreen" id="roblib-search-content-evergreen"> 
-  <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/> 
-  
+  <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/>
 </div>
-<div class ="roblib-search-more" id="roblib-search-evergreen-more">Search all Results</div>

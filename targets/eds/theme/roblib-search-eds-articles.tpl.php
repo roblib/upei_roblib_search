@@ -11,9 +11,8 @@
  * @see template_preprocess_roblib_search_wrapper()
  */
 ?>
-
+<div class ="roblib-search-more" id="roblib-search-eds-article-more"></div>
 <div class ="roblib-search-content eds-article" id="roblib-search-content-eds-articles">
   <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/> 
   
 </div>
-<div class ="roblib-search-more" id="roblib-search-eds-article-more"></div>
