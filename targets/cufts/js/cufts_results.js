@@ -19,29 +19,29 @@ Drupal.behaviors.roblib_search_cufts = {
                     item_str += '<a href = "' + val.url + '">' + val.title + '</a>';
                     item_str += '</div>';
 
-                    item_str += '<div class="cufts-issns">ISSN: ';
-                    jQuery.each(val.issns, function(key2, val2) {
-                        var newIssn = "";
-                        var issn = val2.toString();
-                        if (issn.length == 8)
-                        {
-                            newIssn = issn.substr(0, 4) + '-' + issn.substr(4, 4);
-                        }
-                        else
-                        {
-                            newIssn = issn;
-                        }
-                        item_str += newIssn + ',';
-                    });
-                    item_str += '</div>';
+                    //item_str += '<div class="cufts-issns">ISSN: ';
+                    //jQuery.each(val.issns, function(key2, val2) {
+                    //    var newIssn = "";
+                    //    var issn = val2.toString();
+                    //   if (issn.length == 8)
+                     //   {
+                     //       newIssn = issn.substr(0, 4) + '-' + issn.substr(4, 4);
+                      //  }
+                     //   else
+                      //  {
+                       //     newIssn = issn;
+                       // }
+                       // item_str += newIssn + ',';
+                    //});
+                    //item_str += '</div>';
 
-                    item_str += '<div class="cufts-fulltext-coverages">';
+                    //item_str += '<div class="cufts-fulltext-coverages">';
 
-                    jQuery.each(val.fulltext_coverages, function(key3, val3) {
-                        item_str += val3;
-                    });
+                    //jQuery.each(val.fulltext_coverages, function(key3, val3) {
+                    //    item_str += val3 + " ";
+                    //});
 
-                    item_str += '</div>';
+                    //item_str += '</div>';
 
                     item_str += '</div>';
                     items.push(item_str);
