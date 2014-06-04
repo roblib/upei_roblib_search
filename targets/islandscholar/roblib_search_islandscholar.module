@@ -129,6 +129,7 @@ function roblib_search_islandscholar_get_results($query) {
     'wt' => 'json',
     'q' => $query,
     'fq' => 'PID:ir*',
+    'rows' => $num_results,
   );
   $url = url($solr_url . '/select', array('query' => $data));
   $results = drupal_http_request($url);
