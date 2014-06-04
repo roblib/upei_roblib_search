@@ -6,14 +6,18 @@
         Purpose of the stylesheet follows.
 */
 
- .islandscholar-citation{
+ .islandscholar-citation, .islandscholar-author{
     font-size: smaller;
  }
 .islandscholar-hostTitle{
     font-size: smaller;
 }
-.islandscholar-author, .islandscholar-genre, .islandscholar-volume{
+.islandscholar-genre, .islandscholar-volume{
     padding-left: 10px; font-size: smaller;
+}
+
+.islandscholar-authors {
+    padding-left: 10px;
 }
 
 .islandscholar-label {

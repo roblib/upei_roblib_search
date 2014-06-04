@@ -31,11 +31,19 @@ Drupal.behaviors.roblib_search_islandscholar = {
                         jQuery.each(val.genre, function(key2, val2){
                             items.push('<span class="islandscholar-label">' + val2 + '</span> ')
                         })
+
                         try{
                             jQuery.each(val["mods.hostTitle"], function(key2, val2){
                                 items.push('<span class="islandscholar-hostTitle">' + val2 + '</span> ')
                             })
                         } catch (err){
+
+                        }
+                        try{
+                            jQuery.each(val.dateIssued, function(key2, val2){
+                                items.push('<span class="islandscholar-citation">' + val2 + '</span> ')
+                            })
+                        }  catch(err){
 
                         }
                         try{
