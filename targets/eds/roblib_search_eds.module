@@ -224,8 +224,7 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
   $query = urlencode($query);
-  $query = $query;
-  $params = "query=OR,$query&includefacets=y&$limiters&resultsperpage=$number_per_page";
+  $params = "query=AND,$query&includefacets=n&$limiters&resultsperpage=$number_per_page";
   $output = $eds_api->apiSearch($params);
   return json_encode($output);
 }

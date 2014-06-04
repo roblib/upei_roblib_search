@@ -61,7 +61,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
             }) 
             var query_str = data.queries[0].query;
             var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
-            jQuery('#roblib-search-eds-article-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all ' + data.recordCount + ' results</a>');
+            jQuery('#roblib-search-eds-article-more').empty().append('<a href="'+href_str+query_str+'" id="eds-article-see-all-results">See all ' + data.recordCount + ' results</a>');
 
         });
     }  
