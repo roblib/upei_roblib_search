@@ -1,6 +1,7 @@
 Drupal.behaviors.roblib_search_solr_site = {
     attach: function(context, settings) {
         url = settings.roblib_search_solr_site.search_url;
+        query = settings.roblib_search_solr_site.search_query;
         jQuery.getJSON(url, function(data) {
             var items = [];
             var numberOfDocs = 0;
@@ -19,36 +20,19 @@ Drupal.behaviors.roblib_search_solr_site = {
                     items.push('<div class ="roblib-search-row">\n\
                                 <div class="roblib-title solr-site">\n\
                                 <a href="' + val.url + '">' + val.label + '</a></div></div>');
+                    //items.push('<div class ="roblib-solr-site-teaser">' + val.teaser + '</div>')
                 });
-                var number = parseInt(data.rows);
-                jQuery('#' + 'roblib-search-content-solr-site').empty();
-                items = showMoreItems(items, number);
+                jQuery('#roblib-search-content-solr-site').empty().append(items.join(''));
+                var number = data.response.numFound;
+                //var query = encodeURIComponent(data.responseHeader.params.q);//.'milk';
+                var scholarUrl = "http://www.islandscholar.ca/islandora/solr/search/"
+                jQuery('#' + 'roblib-search-solr-site-more').empty().append('<a id="solr-site-see-more-result"' +
+                    'href="search/site/' + query + '">see all ' + number + ' results</a>');
+
+
             }
         });
     }
 
 }
 
-function showMoreItems(items, number) {
-
-    for (var i = 0; i < number; i++) {
-        jQuery('#' + 'roblib-search-content-solr-site').append(items.pop());
-    }
-    
-    if (items.length > 0)
-    {
-
-        jQuery('#roblib-search-solr-site-more').empty().append('<a id="see_more_result">see ' + items.length + ' more results</a>');
-        jQuery('#see_more_result').click(function() {
-            items = showMoreItems(items, number);
-        });
-    }
-    else
-    {
-        jQuery('#roblib-search-solr-site-more').empty().append('no more results');
-    }
-  
-
-
-    return items;
-}

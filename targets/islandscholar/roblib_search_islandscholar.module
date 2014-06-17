@@ -88,9 +88,9 @@ function roblib_search_islandscholar_theme() {
 
 function roblib_search_islandscholar_block_info() {
 
-  $blocks['roblib_search_islandscholar_results'] = array(
+  $blocks['roblib_islandscholar_results'] = array(
     // info: The name of the block.
-    'info' => t('Roblib Islandscholar Solr Search Results block'),
+    'info' => t('Islandscholar Solr Search Results block'),
     // Block caching options (per role, per user, etc.)
     'cache' => DRUPAL_CACHE_PER_ROLE, // default
   );
@@ -104,7 +104,7 @@ function roblib_search_islandscholar_block_info() {
 function roblib_search_islandscholar_block_view($delta = '') {
   //The $delta parameter tells us which block is being requested.
   switch ($delta) {
-    case 'roblib_search_islandscholar_results':
+    case 'roblib_islandscholar_results':
       $block['subject'] = t('IslandScholar');
       $block['content'] = theme('roblib_search_islandscholar', array('results' => NULL));
       break;
