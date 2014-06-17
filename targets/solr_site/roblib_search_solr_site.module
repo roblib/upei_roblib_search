@@ -150,6 +150,7 @@ function roblib_search_solr_site_get_search_url($query){
   $data = array(
     'wt' => 'json',
     'q' => $query ,
+    'fq' => '-bundle:guide OR -bundle:bestbet OR -bundle:database',
     'rows' => $num_results,
   );
   $url = url($solr_url . '/select', array('query' => $data));

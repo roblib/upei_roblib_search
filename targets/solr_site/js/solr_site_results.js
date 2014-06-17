@@ -24,10 +24,9 @@ Drupal.behaviors.roblib_search_solr_site = {
                 });
                 jQuery('#roblib-search-content-solr-site').empty().append(items.join(''));
                 var number = data.response.numFound;
-                //var query = encodeURIComponent(data.responseHeader.params.q);//.'milk';
                 var scholarUrl = "http://www.islandscholar.ca/islandora/solr/search/"
                 jQuery('#' + 'roblib-search-solr-site-more').empty().append('<a id="solr-site-see-more-result"' +
-                    'href="search/site/' + query + '">see all ' + number + ' results</a>');
+                    'href="/search/site/' + query + '">see all ' + number + ' results</a>');
 
 
             }
