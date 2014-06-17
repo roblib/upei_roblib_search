@@ -98,6 +98,9 @@ function roblib_search_islandscholar_block_info() {
   return $blocks;
 }
 
+/**
+ * Implements hook_block_view().
+ */
 function roblib_search_islandscholar_block_view($delta = '') {
   //The $delta parameter tells us which block is being requested.
   switch ($delta) {
@@ -109,6 +112,12 @@ function roblib_search_islandscholar_block_view($delta = '') {
   return $block;
 }
 
+/**
+ * An endpoint for the islandscholar ajax call
+ *
+ * @param string $query
+ *
+ */
 function roblib_search_islandscholar_ajax($query) {
   $output = roblib_search_islandscholar_get_results($query);
   print $output;
@@ -116,28 +125,36 @@ function roblib_search_islandscholar_ajax($query) {
 }
 
 /**
+ * @param $query
+ * @return string
+ */
+function roblib_search_islandscholar_get_search_url($query){
+  $solr_url = variable_get('roblib_search_islandscholar_url', 'http://localhost:8983/solr');
+  $num_results = variable_get('roblib_search_islandscholar_num_results', '5');
+  $data = array(
+    'wt' => 'json',
+    'q' => $query ,
+    'fq' => 'PID:ir* AND (rels.hasModel:info\:fedora/islandora\:thesisCModel OR rels.hasModel:info\:fedora/islandora\:citationCModel)',
+    'qf' => 'mods.title^3.0 mods.subTitle^2.5 mods.author^5.0 mods.department^2.0 mods.abstract^1.5 dc.title^2.5 mods.subject^1.5 dc.creator^5.0 dc.contributor^2.0 dc.description^2.0 mods.genre^1.0 mods.hostTitle^2.0 mods.issn^1.0 mods.date^2.0 pdf.text^2.0 dsm.PDF^2.0 collection_title^1.0',
+    'rows' => $num_results,
+  );
+  $url = url($solr_url . '/select', array('query' => $data));
+  return $url;
+}
+
+/**
  *
  * @param string $query
+ *
  * @return string
  *   json
  */
 function roblib_search_islandscholar_get_results($query) {
-  $solr_url = variable_get('roblib_search_islandscholar_url', 'http://localhost:8983/solr');
-  //$query = $solr_url . '/select?wt=json&q=test page';
-  $num_results = variable_get('roblib_search_islandscholar_num_results', '5');
-  $data = array(
-    'wt' => 'json',
-    'q' => $query,
-    'fq' => 'PID:ir*',
-    'rows' => $num_results,
-  );
-  $url = url($solr_url . '/select', array('query' => $data));
+  $url = roblib_search_islandscholar_get_search_url($query);
   $results = drupal_http_request($url);
   if($results->code != '200'){
     return "";
   }
-  $temp = substr($results->data, 1);
-  //$out = '{"rows":"' . $num_results . '",' . $results->data;
   return $results->data;
 }
 

@@ -88,36 +88,18 @@ Drupal.behaviors.roblib_search_islandscholar = {
                     items.push('</div>');
                 });
 
-                var number = parseInt(data.rows);
-                jQuery('#roblib-search-content-islandscholar').empty().append(items.join(''));
 
-                items = showMoreItems(items, number);
+                jQuery('#roblib-search-content-islandscholar').empty().append(items.join(''));
+                var number = data.response.numFound;
+                var query = encodeURIComponent(data.responseHeader.params.q);//.'milk';
+                var scholarUrl = "http://www.islandscholar.ca/islandora/solr/search/"
+                jQuery('#roblib-search-islandscholar-more').empty().append('<a id="islandscholar-see-more-result"' +
+                    ' href="http://www.islandscholar.ca/islandora/solr/search/' + query + '">see all ' + number + ' results</a>');
+
+                //items = showMoreItems(items, number);
             }
         });
     }
 
 }
 
-function showMoreItems(items, number) {
-
-    for (var i = 0; i < number; i++) {
-        jQuery('#' + 'roblib-search-content-solr-site').append(items.pop());
-    }
-    
-    if (items.length > 0)
-    {
-
-        jQuery('#roblib-search-solr-site-more').empty().append('<a id="islandscholar_see_more_result">see ' + items.length + ' more results</a>');
-        jQuery('#see_more_result').click(function() {
-            items = showMoreItems(items, number);
-        });
-    }
-    else
-    {
-        jQuery('#roblib-search-solr-site-more').empty().append('no more results');
-    }
-  
-
-
-    return items;
-}
