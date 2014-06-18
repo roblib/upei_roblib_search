@@ -11,7 +11,7 @@ Drupal.behaviors.roblib_search_solr_site_guides = {
       }
       if (numberOfDocs < 1) {
         jQuery('#' + 'roblib-search-content-solr-site-guides').empty().append('No Results');
-
+          jQuery('.' + 'pane-roblib-search-solr-site-roblib-search-solr-site-guides').hide();
       } else {
 
         jQuery('#' + 'roblib-search-content-solr-site-guides').empty();

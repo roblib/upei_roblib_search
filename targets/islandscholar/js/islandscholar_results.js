@@ -11,7 +11,7 @@ Drupal.behaviors.roblib_search_islandscholar = {
             }
             if (numberOfDocs < 1) {
                 jQuery('#' + 'roblib-search-content-islandscholar').empty().append('No Results');
-                jQuery('.' + 'pane-roblib-search-islandscholar-site-roblib-search-islandscholar-results').hide();
+                jQuery('.' + 'pane-roblib-search-islandscholar-roblib-islandscholar-results').hide();
             } else {
                 jQuery.each(data.response.docs, function(key, val) {
                     items.push('<div class ="roblib-search-row">\n\

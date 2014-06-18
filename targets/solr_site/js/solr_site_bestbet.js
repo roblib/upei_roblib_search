@@ -11,6 +11,7 @@ Drupal.behaviors.roblib_search_solr_site_bestbet = {
             }
             if (numberOfDocs < 1) {
                 jQuery('#' + 'roblib-search-content-solr-site-bestbet').empty().append('No Results');
+                jQuery('.' + 'pane-roblib-search-solr-site-roblib-search-solr-site-bestbet').hide();
             } else {
 
               jQuery('#' + 'roblib-search-content-solr-site-bestbet').empty();
