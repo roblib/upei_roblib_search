@@ -21,23 +21,43 @@ function roblib_search_solr_site_menu() {
     'type' => MENU_NORMAL_ITEM,
   );
 
-  $items['roblib_search/solr_site/ajax/%'] = array(
-    'title' => 'solr_site ajax',
-    'page callback' => 'roblib_search_solr_site_ajax',
+  $items['roblib_search/solr_site/bestbet/%'] = array(
+    'title' => 'BestBet',
+    'page callback' => 'roblib_search_solr_site_bestbet',
     'page arguments' => array(3),
     'type' => MENU_CALLBACK,
     'access arguments' => array('search roblib solr_site'),
   );
 
+  $items['roblib_search/solr_site/databases/%'] = array(
+    'title' => 'solr_site databases',
+    'page callback' => 'roblib_search_solr_site_databases',
+    'page arguments' => array(3),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search roblib solr_site'),
+  );
+
+  $items['roblib_search/solr_site/guides/%'] = array(
+    'title' => 'solr_site guides',
+    'page callback' => 'roblib_search_solr_site_guides',
+    'page arguments' => array(3),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search roblib solr_site'),
+  );
+
+  $items['roblib_search/solr_site/results/%'] = array(
+    'title' => 'solr_site guides',
+    'page callback' => 'roblib_search_solr_site_results',
+    'page arguments' => array(3),
+    'type' => MENU_CALLBACK,
+    'access arguments' => array('search roblib solr_site'),
+  );
+
+
   return $items;
 }
 
 function roblib_search_solr_site_config_form($form, &$form_state) {
-  /*
-   * $url = variable_get('roblib_search_solr_site_url', 'http://137.149.200.52');
-    $url_suffix = variable_get('roblib_search_solr_site_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query=');
-    $number_of_records = variable_get('roblib_search_solr_site_num_results', '5');
-   */
   $form['roblib_search_solr_site_url'] = array(
     '#type' => 'textfield',
     '#title' => t('Solr url'),
@@ -82,20 +102,59 @@ function roblib_search_solr_site_theme() {
 
   return array(
     // results page
-    'roblib_search_solr_site' => array(
+    'roblib_search_solr_site_bestbet' => array(
       'path' => $path . '/theme',
       'file' => $file,
-      'template' => 'roblib-search-solr-site',
+      'template' => 'roblib-search-solr-site-results',
       'variables' => array('results' => NULL),
-    )
+    ),
+    'roblib_search_solr_site_databases' => array(
+      'path' => $path . '/theme',
+      'file' => $file,
+      'template' => 'roblib-search-solr-site-results',
+      'variables' => array('results' => NULL),
+    ),
+    'roblib_search_solr_site_guides' => array(
+      'path' => $path . '/theme',
+      'file' => $file,
+      'template' => 'roblib-search-solr-site-results',
+      'variables' => array('results' => NULL),
+    ),
+    'roblib_search_solr_site_results' => array(
+      'path' => $path . '/theme',
+      'file' => $file,
+      'template' => 'roblib-search-solr-site-results',
+      'variables' => array('results' => NULL),
+    ),
   );
 }
 
 function roblib_search_solr_site_block_info() {
 
+  $blocks['roblib_search_solr_site_bestbet'] = array(
+    // info: The name of the block.
+    'info' => t('Roblib Solr Search Best bets'),
+    // Block caching options (per role, per user, etc.)
+    'cache' => DRUPAL_CACHE_PER_ROLE, // default
+  );
+
+  $blocks['roblib_search_solr_site_db'] = array(
+    // info: The name of the block.
+    'info' => t('Roblib Solr Search Databases Block'),
+    // Block caching options (per role, per user, etc.)
+    'cache' => DRUPAL_CACHE_PER_ROLE, // default
+  );
+
+  $blocks['roblib_search_solr_site_guides'] = array(
+    // info: The name of the block.
+    'info' => t('Roblib Solr Search Guides Block'),
+    // Block caching options (per role, per user, etc.)
+    'cache' => DRUPAL_CACHE_PER_ROLE, // default
+  );
+
   $blocks['roblib_search_solr_site_results'] = array(
     // info: The name of the block.
-    'info' => t('Roblib Solr Search Results block'),
+    'info' => t('Roblib Solr Search Results Block'),
     // Block caching options (per role, per user, etc.)
     'cache' => DRUPAL_CACHE_PER_ROLE, // default
   );
@@ -104,24 +163,47 @@ function roblib_search_solr_site_block_info() {
 }
 
 function roblib_search_solr_site_block_view($delta = '') {
-  //The $delta parameter tells us which block is being requested.
   switch ($delta) {
+    case 'roblib_search_solr_site_bestbet':
+      $block['subject'] = t('Best Bets');
+      $block['content'] = theme('roblib_search_solr_site_bestbet', array('results' => NULL));
+      break;
+
+    case 'roblib_search_solr_site_db':
+      $block['subject'] = t('Databases');
+      $block['content'] = theme('roblib_search_solr_site_databases', array('results' => NULL));
+      break;
+
+    case 'roblib_search_solr_site_guides':
+      $block['subject'] = t('Guides');
+      $block['content'] = theme('roblib_search_solr_site_guides', array('results' => NULL));
+      break;
+
     case 'roblib_search_solr_site_results':
-      // The subject is displayed at the top of the block. Note that it
-      // should be passed through t() for translation. The title configured
-      // for the block using Drupal UI supercedes this one.
-      $block['subject'] = t('Library Website');
-      // The content of the block is typically generated by calling a custom
-      // function.
-      $block['content'] = theme('roblib_search_solr_site', array('results' => NULL));
+      $block['subject'] = t('Library Site');
+      $block['content'] = theme('roblib_search_solr_site_results', array('results' => NULL));
       break;
   }
   return $block;
 }
 
-function roblib_search_solr_site_ajax($query) {
-  $output = roblib_search_solr_site_get_results($query);
-  print $output;
+function roblib_search_solr_site_results($query) {
+  print roblib_search_solr_site_get_results($query, '-bundle:bestbet OR -budle:guide OR -bundle:database');
+  exit();
+}
+
+function roblib_search_solr_site_bestbet($query) {
+  print roblib_search_solr_site_get_results($query, 'bundle:bestbet');
+  exit();
+}
+
+function roblib_search_solr_site_databases($query) {
+  print roblib_search_solr_site_get_results($query, 'bundle:database');
+  exit();
+}
+
+function roblib_search_solr_site_guides($query) {
+  print roblib_search_solr_site_get_results($query, 'bundle:guide');
   exit();
 }
 
@@ -131,31 +213,24 @@ function roblib_search_solr_site_ajax($query) {
  * @return string
  *   json
  */
-function roblib_search_solr_site_get_results($query) {
-  $url = roblib_search_solr_site_get_search_url($query);
+function roblib_search_solr_site_get_results($query = NULL, $type ) {
+  $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
+  $num_results = variable_get('roblib_search_solr_site_num_results', '5');
+  $data = array(
+    'q' => $query,
+    'fq' => $type,
+    'wt' => 'json',
+    'rows' => $num_results,
+  );
+  $url = url($solr_url . '/select', array('query' => $data));
+
   $results = drupal_http_request($url);
-  if($results->code != '200'){
+  if ($results->code != '200') {
     return "";
   }
   return $results->data;
 }
 
-/**
- * @param $query
- * @return string
- */
-function roblib_search_solr_site_get_search_url($query){
-  $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
-  $num_results = variable_get('roblib_search_solr_site_num_results', '5');
-  $data = array(
-    'wt' => 'json',
-    'q' => $query ,
-    'fq' => '-bundle:guide OR -bundle:bestbet OR -bundle:database',
-    'rows' => $num_results,
-  );
-  $url = url($solr_url . '/select', array('query' => $data));
-  return $url;
-}
 
 /**
  * Implements hook_help().
@@ -170,4 +245,3 @@ provides a target for the Roblib search module
       );
   }
 }
-

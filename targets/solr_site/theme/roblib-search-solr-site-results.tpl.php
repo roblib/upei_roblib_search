@@ -9,14 +9,14 @@
  * - $base_url: The base url of the current website. eg: http://example.com .
  * - $user: The user object.
  *
- * 
+ *
  * - $results: Rendered search results (primary profile)
- * 
+ *
  *
  * @see template_preprocess_roblib_search_wrapper()
  */
 ?>
-<div class ="roblib-search-more" id="roblib-search-solr-site-more">Search all Results</div>
-<div class ="roblib-search-content solr-site" id="roblib-search-content-solr-site"> 
+<div class ="roblib-search-more" id="roblib-search-solr-site-<?php echo $type;?>-more"></div>
+<div class ="roblib-search-content solr-site-<?php echo $type;?>" id="roblib-search-content-solr-site-<?php echo $type;?>">
   <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/>
 </div>
