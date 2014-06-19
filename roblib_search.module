@@ -82,6 +82,14 @@ function roblib_search_block_info() {
   return $blocks;
 }
 
+function roblib_search_init(){
+  // Make qtip available for all targets js.
+  drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/jquery.qtip.min.js');
+  drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/imagesloaded.pkg.min.js');
+  drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/roblib_search.js');
+  drupal_add_css(drupal_get_path('module', 'roblib_search') . '/css/jquery.qtip.min.css');
+}
+
 function roblib_search_block_view($delta = '') {
   switch ($delta) {
     case 'roblib_search_form':

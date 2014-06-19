@@ -15,14 +15,21 @@ Drupal.behaviors.roblib_search_solr_site_results = {
       } else {
 
         jQuery('#' + 'roblib-search-content-solr-site-results').empty();
-
+        var counter = 0;
+        var divs = new Array();
+        var content = new Array();
         jQuery.each(data.response.docs, function(key, val) {
-          items.push('<div class ="roblib-search-row">\n\
+          id = 'roblib_search_solr_results_' + counter;
+          content[counter] = val.teaser;
+          divs[counter++] = id;
+          items.push('<div class ="roblib-search-row" id="'+ id +'">\n\
                         <div class="roblib-title results">\n\
                           <a href="' + val.url + '">' + val.label + '</a></div></div>');
-
         });
+
         jQuery('#' + 'roblib-search-content-solr-site-results').empty().append(items.join(''));
+        qtipify(divs, content, 'Teaser');
+
       }
     });
   }
