@@ -12,10 +12,8 @@ function qtipify(divs, content, title){
             style: "qtip-light",
             position: {
                 my: 'left center',
-                at: 'right center',
+                at: 'center',
             },
-            show: 'mouseover',
-            hide: 'mouseout'
         });
     }
 }
