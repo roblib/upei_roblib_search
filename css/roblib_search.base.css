@@ -10,7 +10,7 @@
             border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
 }   */
 .panel-pane {padding: 5px;padding-left: 10px; border-top:1px solid #cecfcc;
-            border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
+            border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin:10px; border-bottom:1px solid #cecfcc;
 }
 
 .roblib-search-row {
