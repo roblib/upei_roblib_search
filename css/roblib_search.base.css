@@ -6,9 +6,13 @@
         Purpose of the stylesheet follows.
 */
 
-/*.panel-pane {background:#f4f4f4 url(../img/bggradientresult.jpg) repeat-x top left;position:relative;overflow:hidden; padding: 5px;padding-left: 10px;
+/*.pane-roblib-search-cufts-roblib-search-cufts-results {background:#f4f4f4 url(../img/bggradientresult.jpg) repeat-x top left;position:relative;padding: 5px;padding-left: 10px;
             border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
-}*/
+}   */
+.panel-pane {padding: 5px;padding-left: 10px; border-top:1px solid #cecfcc;
+            border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin-bottom:10px; border-bottom:1px solid #cecfcc;
+}
+
 .roblib-search-row {
     border-bottom:1px #cecfcc dotted; 
 }

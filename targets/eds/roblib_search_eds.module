@@ -151,6 +151,17 @@ function roblib_search_eds_theme() {
   );
 }
 
+function roblib_search_eds_preprocess_panels_pane(&$variables, $hook){
+  if($variables['pane']->subtype == 'roblib_search_eds-roblib_search_eds_articles'){
+    $variables['title_prefix'] = '<div class="roblib-search-eds-articles-header">';
+    $variables['title_suffix'] ='</div>';
+  }
+  if($variables['pane']->subtype == 'roblib_search_eds-roblib_search_eds_results'){
+    $variables['title_prefix'] = '<div class="roblib-search-eds-media-header">';
+    $variables['title_suffix'] ='</div>';
+  }
+}
+
 function roblib_search_eds_block_info() {
 
   $blocks['roblib_search_eds_results'] = array(
@@ -193,7 +204,7 @@ function roblib_search_eds_ajax($query) {
   exit();
 }
 
-function roblib_search_eds_articles($query){
+function roblib_search_eds_articles($query) {
   print roblib_search_eds_get_results($query, 'Articles');
   exit();
 }
@@ -217,28 +228,28 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
     }
   }
   $limiters = '';
-  if($type != NULL){
+  if ($type != NULL) {
     $limiters = roblib_search_eds_get_query_limiters($type);
   }
   $config = roblib_search_eds_build_config_arr();
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
   $query = urlencode($query);
-  $params = "query=AND,$query&includefacets=n&$limiters&resultsperpage=$number_per_page";
+  $params = "query=AND,$query&view=detailed&includefacets=n&$limiters&resultsperpage=$number_per_page";
   $output = $eds_api->apiSearch($params);
   return json_encode($output);
 }
 
-function roblib_search_eds_get_query_limiters($type){
+function roblib_search_eds_get_query_limiters($type) {
   $limiters = 'n';
   switch ($type) {
     case 'Articles':
       $limiters = 'facetfilter=1,SourceType:Magazines,SourceType:News,SourceType:Academic+Journals,SourceType:Conference+Materials';
       break;
     case 'Books':
-     // $limiters = '+AND+(PT+book)';
-     $limiters = 'facetfilter=1,SourceType:Books,SourceType:Audio,SourceType:Videos';
-    break;
+      // $limiters = '+AND+(PT+book)';
+      $limiters = 'facetfilter=1,SourceType:Books,SourceType:Audio,SourceType:Videos';
+      break;
 
 
   }

@@ -162,6 +162,30 @@ function roblib_search_solr_site_block_info() {
   return $blocks;
 }
 
+function roblib_search_solr_site_preprocess_panels_pane(&$variables, $hook){
+  switch ($variables['pane']->subtype) {
+    case 'roblib_search_solr_site-roblib_search_solr_site_bestbet':
+      $variables['title_prefix'] = '<div class="roblib-search-solr-bestbet-header">';
+      $variables['title_suffix'] = '</div>';
+      break;
+
+    case 'roblib_search_solr_site-roblib_search_solr_site_db':
+      $variables['title_prefix'] = '<div class="roblib-search-solr-db-header">';
+      $variables['title_suffix'] = '</div>';
+      break;
+
+    case 'roblib_search_solr_site-roblib_search_solr_site_guides':
+      $variables['title_prefix'] = '<div class="roblib-search-solr-guides-header">';
+      $variables['title_suffix'] = '</div>';
+      break;
+
+    case 'roblib_search_solr_site-roblib_search_solr_site_results':
+      $variables['title_prefix'] = '<div class="roblib-search-solr-results-header">';
+      $variables['title_suffix'] = '</div>';
+      break;
+  }
+}
+
 function roblib_search_solr_site_block_view($delta = '') {
   switch ($delta) {
     case 'roblib_search_solr_site_bestbet':

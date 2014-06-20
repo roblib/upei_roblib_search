@@ -98,6 +98,13 @@ function roblib_search_islandscholar_block_info() {
   return $blocks;
 }
 
+function roblib_search_islandscholar_preprocess_panels_pane(&$variables, $hook){
+  if($variables['pane']->subtype == 'roblib_search_islandscholar-roblib_islandscholar_results'){
+    $variables['title_prefix'] = '<div class="roblib-search-islandscholar-header">';
+    $variables['title_suffix'] ='</div>';
+  }
+}
+
 /**
  * Implements hook_block_view().
  */
