@@ -13,9 +13,14 @@ Drupal.behaviors.roblib_search_evergreen = {
                 jQuery('#' + 'roblib-search-content-evergreen').empty().append('No Results');
                 jQuery('.pane-roblib-search-evergreen-roblib-search-evergreen-results').hide();
             } else {
+                var counter = 0;
+                var divs = new Array();
+                var content = new Array();
                 jQuery.each(data, function(key, val) {
-                    
-                    items.push('<div class ="roblib-search-row">');
+                    id = 'roblib_search_evergreen_' + counter;
+                    populatePopupDivs(content, val, counter);
+                    divs[counter++] = id;
+                    items.push('<div class ="roblib-search-row" id="' + id + '">');
                     items.push('<div class="roblib-title evergreen">');
                     if (typeof val.title !== 'undefined') {                    
                         items.push('<a href = "'+val.url+'">'+val.title);
@@ -45,13 +50,46 @@ Drupal.behaviors.roblib_search_evergreen = {
                         items.push('</div>')
                     }
                     items.push('</div>');
-                });     
+                });
+                jQuery('#roblib-search-content-evergreen').empty().append(items.join(''));
+                qtipify(divs, content, 'More Info');
             }            
-            jQuery('#roblib-search-content-evergreen').empty().append(items.join(''));
+
             jQuery('#roblib-search-evergreen-more').empty().append('<a href = "' + data.catalogBaseSearchUrl + '">See all ' + data.numberOfRecords + ' results</a>');
         });
     }
   
+}
+
+function populatePopupDivs(content, val, counter){
+    content[counter] = '';
+    if(typeof val.publisher !== 'undefined'){
+        content[counter] += '<div class="evergreen-publisher">Publisher: ' + val.publisher +'</div>';
+    }
+    if(typeof val.pop !== 'undefined'){
+        content[counter] += '<div class="evergreen-pop">Place of Publication: ' + val.pop +'</div>';
+    }
+    if(typeof val.numofpages !== 'undefined'){
+        content[counter] += '<div class="evergreen-nop">Number of Pages: ' + val.numofpages +'</div>';
+    }
+    if(typeof val.date !== 'undefined'){
+        content[counter] += '<div class="evergreen-popup-date">Publication Year: ' + val.date +'</div>';
+    }
+    var subjects = '';
+    if(typeof val.subjectsa !== 'undefined'){
+        subjects += val.subjectsa;
+    }
+    if(typeof val.subjectsb !== 'undefined'){
+        subjects += ' ' + val.subjectsb;
+    }
+    if(typeof val.subjectsc !== 'undefined'){
+        subjects += ' ' + val.subjectsc;
+    }
+    if(subjects){
+        content[counter] += '<div class="evergreen-subjects">Subjects: ' + subjects + '</div>';
+    }
+
+
 }
 
 function roblibEvergreenAddHoldings(holdings, items){

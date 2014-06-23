@@ -217,6 +217,12 @@ function roblib_search_evergreen_parse_results($results, $query) {
       roblib_search_evergreen_update_array($output, $index, 'sor', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="c"]'));
       roblib_search_evergreen_update_array($output, $index, 'date', $record->xpath('marcxml:datafield[@tag="260"]/marcxml:subfield[@code="c"]'));
       roblib_search_evergreen_update_array($output, $index, 'id', $record->xpath('marcxml:datafield[@tag="901"]/marcxml:subfield[@code="c"]'));
+      roblib_search_evergreen_update_array($output, $index, 'publisher', $record->xpath('marcxml:datafield[@tag="260"]/marcxml:subfield[@code="a"]'));
+      roblib_search_evergreen_update_array($output, $index, 'pop', $record->xpath('marcxml:datafield[@tag="260"]/marcxml:subfield[@code="b"]'));
+      roblib_search_evergreen_update_array($output, $index, 'numofpages', $record->xpath('marcxml:datafield[@tag="300"]/marcxml:subfield[@code="a"]'));
+      roblib_search_evergreen_update_array($output, $index, 'subjectsa', $record->xpath('marcxml:datafield[@tag="650"]/marcxml:subfield[@code="a"]'));
+      roblib_search_evergreen_update_array($output, $index, 'subjectsb', $record->xpath('marcxml:datafield[@tag="650"]/marcxml:subfield[@code="b"]'));
+      roblib_search_evergreen_update_array($output, $index, 'subjectsc', $record->xpath('marcxml:datafield[@tag="650"]/marcxml:subfield[@code="c"]'));
       roblib_search_evergreen_holdings($output, $index, $record->xpath('marcxml:datafield[@tag="852"]'));
       roblib_search_evergreen_electronic_holdings($output, $index, $record->xpath('marcxml:datafield[@tag="856"]'));
       $id = $output[$index]['id'];
