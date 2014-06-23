@@ -13,8 +13,17 @@ Drupal.behaviors.roblib_search_islandscholar = {
                 jQuery('#' + 'roblib-search-content-islandscholar').empty().append('No Results');
                 jQuery('.' + 'pane-roblib-search-islandscholar-roblib-islandscholar-results').hide();
             } else {
+                var counter = 0;
+                var divs = new Array();
+                var content = new Array();
                 jQuery.each(data.response.docs, function(key, val) {
-                    items.push('<div class ="roblib-search-row">\n\
+                    id = 'roblib_search_islandscholar_' + counter;
+                    content[counter] = '';
+                    if(typeof val['mods.abstract'] !== 'undefined' ){
+                        content[counter] = val['mods.abstract'];
+                    }
+                    divs[counter++] = id;
+                    items.push('<div class ="roblib-search-row" id="' + id + '">\n\
                                 <div class="roblib-title islandscholar">\n\
                                 <a href="http://www.islandscholar.ca/fedora/repository/' + val.PID +'">' + val.Title_sorted + '</a></div>');
                     try {
@@ -95,7 +104,7 @@ Drupal.behaviors.roblib_search_islandscholar = {
                 var scholarUrl = "http://www.islandscholar.ca/islandora/solr/search/"
                 jQuery('#roblib-search-islandscholar-more').empty().append('<a id="islandscholar-see-more-result"' +
                     ' href="http://www.islandscholar.ca/islandora/solr/search/' + query + '">see all ' + number + ' results</a>');
-
+                qtipify(divs, content, 'Abstract');
                 //items = showMoreItems(items, number);
             }
         });
