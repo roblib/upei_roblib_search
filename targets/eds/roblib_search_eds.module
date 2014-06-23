@@ -237,7 +237,19 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
   $query = urlencode($query);
   $params = "query=AND,$query&view=detailed&includefacets=n&$limiters&resultsperpage=$number_per_page";
   $output = $eds_api->apiSearch($params);
+  $output = roblib_search_eds_get_detailed_result($output, $query, $eds_api);
   return json_encode($output);
+}
+
+function roblib_search_eds_get_detailed_result(&$output, $query, &$eds_api) {
+  $detailed_record = array();
+  foreach ($output['records'] as &$record) {
+    $db = $record['DbId'];
+    $an = $record['An'];
+    $arr = $eds_api->apiRetrieve($an, $db, $query);
+    $record['DetailedRecord'] = $arr['Items'];
+  }
+  return $output;
 }
 
 function roblib_search_eds_get_query_limiters($type) {

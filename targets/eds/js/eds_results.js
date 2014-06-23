@@ -13,12 +13,15 @@ Drupal.behaviors.roblib_search_eds = {
                 jQuery('#' + 'roblib-search-content-eds').empty().append('No Results');
                 jQuery('.' + 'pane-roblib-search-eds-roblib-search-eds-results').hide();
             } else {
+                var counter = 0;
+                var divs = new Array();
+                var content = new Array();
                 jQuery.each(data.records, function(key, val) {
-                    
-                    //items.push('<a class="roblib-search-eds-tn" href="'+val.ImageInfo.thumb+'"/>');
-                    //jQuery.each(val.RecordInfo.BibEntity.Titles, function(key2, val2){
+                    id = 'roblib-search-eds-' + counter;
+                    edsPopulatePopupDivs(content, val, counter);
+                    divs[counter++] = id;
                     if (typeof val.Items !== 'undefined') {
-                         items.push('<div class ="roblib-search-row">');   
+                         items.push('<div class ="roblib-search-row" id="' + id + '">');
                         if (typeof val.Items.Ti !== 'undefined') {
                             jQuery.each(val.Items.Ti, function(key2, val2){
                                 items.push('<div class="roblib-title eds">');
@@ -50,9 +53,11 @@ Drupal.behaviors.roblib_search_eds = {
                    
                         items.push('</div>');
                     }
-                });     
+                });
+                jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
+                qtipify(divs, content, 'Notes');
             }            
-            jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
+
             var queries = [];
             jQuery.each(data.queries, function(key7, query){
                 queries.push(query.query);
@@ -64,3 +69,14 @@ Drupal.behaviors.roblib_search_eds = {
         });
     }  
 }
+
+function edsPopulatePopupDivs(content, val, counter){
+    content[counter] = '';
+    jQuery.each(val.DetailedRecord, function(key, value){
+        if(value.Group == 'Note' || value.Group == 'TOC') {
+            content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + '</span>' ;
+            content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
+        }
+    })
+}
+
