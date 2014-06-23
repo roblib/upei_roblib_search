@@ -13,6 +13,33 @@
             border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin:10px; border-bottom:1px solid #cecfcc;
 }
 
+.roblib-search-eds-media-header {
+    background:indianred;
+}
+.roblib-search-eds-articles-header {
+    background:lightcoral;
+}
+.roblib-search-cufts-header {
+    background:lightblue;
+}
+.roblib-search-solr-results-header {
+    background:lightsalmon;
+}
+.roblib-search-solr-db-header {
+    background:darkorange;
+}
+.roblib-search-solr-bestbet-header {
+    background:orange;
+}
+
+
+.roblib-search-islandscholar-header {
+     background:darkolivegreen;
+ }
+.roblib-search-evergreen-header {
+    background:forestgreen;
+}
+
 .roblib-search-row {
     border-bottom:1px #cecfcc dotted; 
 }
