@@ -63,12 +63,16 @@ Drupal.behaviors.roblib_search_evergreen = {
 
 function populatePopupDivs(content, val, counter){
     content[counter] = '';
+    var placeOfPublication = '';
     if(typeof val.publisher !== 'undefined'){
-        content[counter] += '<div class="evergreen-publisher">Publisher: ' + val.publisher +'</div>';
+        content[counter] += '<div class="evergreen-publisher">Publisher: ' + val.publisher ;
+        placeOfPublication = '</div>';
     }
-    if(typeof val.pop !== 'undefined'){
-        content[counter] += '<div class="evergreen-pop">Place of Publication: ' + val.pop +'</div>';
+    if(typeof val.pop !== 'undefined' ){
+        placeOfPublication = val.pop + ' ' +placeOfPublication;
     }
+    content[counter] += placeOfPublication;
+
     if(typeof val.numofpages !== 'undefined'){
         content[counter] += '<div class="evergreen-nop">Number of Pages: ' + val.numofpages +'</div>';
     }
