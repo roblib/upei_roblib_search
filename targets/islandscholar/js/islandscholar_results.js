@@ -17,10 +17,10 @@ Drupal.behaviors.roblib_search_islandscholar = {
                 var divs = new Array();
                 var content = new Array();
                 jQuery.each(data.response.docs, function(key, val) {
-                    id = 'roblib_search_islandscholar_' + counter;
+                    id = 'roblib-search-islandscholar-' + counter;
                     content[counter] = '';
                     if(typeof val['mods.abstract'] !== 'undefined' ){
-                        content[counter] = val['mods.abstract'];
+                        content[counter] = val['mods.abstract'][0];
                     }
                     divs[counter++] = id;
                     items.push('<div class ="roblib-search-row" id="' + id + '">\n\
@@ -99,13 +99,13 @@ Drupal.behaviors.roblib_search_islandscholar = {
 
 
                 jQuery('#roblib-search-content-islandscholar').empty().append(items.join(''));
+                qtipify(divs, content, 'Abstract');
                 var number = data.response.numFound;
                 var query = encodeURIComponent(data.responseHeader.params.q);//.'milk';
                 var scholarUrl = "http://www.islandscholar.ca/islandora/solr/search/"
                 jQuery('#roblib-search-islandscholar-more').empty().append('<a id="islandscholar-see-more-result"' +
                     ' href="http://www.islandscholar.ca/islandora/solr/search/' + query + '">see all ' + number + ' results</a>');
-                qtipify(divs, content, 'Abstract');
-                //items = showMoreItems(items, number);
+
             }
         });
     }
