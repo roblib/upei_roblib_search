@@ -27,6 +27,7 @@
 
 .pane-title.block-title{
     color:inherit;
+    font-weight:inherit;
 }
 .roblib-search-eds-articles-header {
     border-color:indianred;
