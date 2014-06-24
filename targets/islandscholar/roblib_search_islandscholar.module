@@ -100,7 +100,7 @@ function roblib_search_islandscholar_block_info() {
 
 function roblib_search_islandscholar_preprocess_panels_pane(&$variables, $hook){
   if($variables['pane']->subtype == 'roblib_search_islandscholar-roblib_islandscholar_results'){
-    $variables['title_prefix'] = '<div class="roblib-search-islandscholar-header">';
+    $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-islandscholar-header">';
     $variables['title_suffix'] ='</div>';
   }
 }

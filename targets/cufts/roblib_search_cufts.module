@@ -122,7 +122,7 @@ function roblib_search_cufts_theme() {
 
 function roblib_search_cufts_preprocess_panels_pane(&$variables, $hook){
   if($variables['pane']->subtype == 'roblib_search_cufts-roblib_search_cufts_results'){
-    $variables['title_prefix'] = '<div class="roblib-search-cufts-header">';
+    $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-cufts-header">';
     $variables['title_suffix'] ='</div>';
   }
 }

@@ -71,4 +71,4 @@ Drupal.behaviors.roblib_search_eds_articles = {
          content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
         }
     })
-}      */
+}     */

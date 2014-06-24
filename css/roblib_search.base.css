@@ -12,32 +12,47 @@
 .panel-pane {border-top:1px solid #cecfcc;
             border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin:10px; border-bottom:1px solid #cecfcc;
 }
-
+.roblib-search-header {
+    background:#333;
+    padding-left: 5px;
+    border-left:dotted;
+    color:white;
+    font-weight:lighter;
+    font-family:Verdana,Arial, helvetica, sans-serif;
+}
 .roblib-search-eds-media-header {
-    background:indianred;
+    border-color:indianred;
+    border-left-width: 10px;
 }
 .roblib-search-eds-articles-header {
-    background:lightcoral;
+    border-color:indianred;
+    border-left-width: 10px;
 }
 .roblib-search-cufts-header {
-    background:lightblue;
+    border-color:lightblue;
+    border-left-width: 10px;
 }
 .roblib-search-solr-results-header {
-    background:lightsalmon;
+    border-color:lightsalmon;
+    border-left-width: 10px;
 }
 .roblib-search-solr-db-header {
-    background:darkorange;
+    border-left-color:darkorange;
+    border-left-width: 10px;
 }
 .roblib-search-solr-bestbet-header {
-    background:orange;
+    border-left-color:orange;
+    border-left-width: 10px;
 }
 
 
 .roblib-search-islandscholar-header {
-     background:darkolivegreen;
+    border-left-color:darkolivegreen;
+    border-left-width: 10px;
  }
 .roblib-search-evergreen-header {
-    background:forestgreen;
+    border-left-color:forestgreen;
+    border-left-width: 10px;
 }
 
 .roblib-search-row {

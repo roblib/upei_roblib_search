@@ -153,11 +153,11 @@ function roblib_search_eds_theme() {
 
 function roblib_search_eds_preprocess_panels_pane(&$variables, $hook){
   if($variables['pane']->subtype == 'roblib_search_eds-roblib_search_eds_articles'){
-    $variables['title_prefix'] = '<div class="roblib-search-eds-articles-header">';
+    $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-eds-articles-header">';
     $variables['title_suffix'] ='</div>';
   }
   if($variables['pane']->subtype == 'roblib_search_eds-roblib_search_eds_results'){
-    $variables['title_prefix'] = '<div class="roblib-search-eds-media-header">';
+    $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-eds-media-header">';
     $variables['title_suffix'] ='</div>';
   }
 }

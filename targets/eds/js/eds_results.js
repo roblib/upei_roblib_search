@@ -72,11 +72,15 @@ Drupal.behaviors.roblib_search_eds = {
 
 function edsPopulatePopupDivs(content, val, counter){
     content[counter] = '';
-    jQuery.each(val.DetailedRecord, function(key, value){
-        if(value.Group == 'Note' || value.Group == 'TOC') {
-            content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + '</span>' ;
-            content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
-        }
-    })
+    try{
+        jQuery.each(val.DetailedRecord, function(key, value){
+            if(value.Group == 'Note' || value.Group == 'TOC') {
+                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + '</span>' ;
+                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
+            }
+        })
+    } catch (err) {
+        // do nothing as there is no data to work with
+    }
 }
 

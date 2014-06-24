@@ -97,7 +97,7 @@ function roblib_search_evergreen_permission() {
 
 function roblib_search_evergreen_preprocess_panels_pane(&$variables, $hook){
   if($variables['pane']->subtype == 'roblib_search_evergreen-roblib_search_evergreen_results'){
-    $variables['title_prefix'] = '<div class="roblib-search-evergreen-header">';
+    $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-evergreen-header">';
     $variables['title_suffix'] ='</div>';
   }
 }
