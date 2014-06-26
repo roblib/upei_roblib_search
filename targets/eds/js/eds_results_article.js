@@ -56,7 +56,8 @@ Drupal.behaviors.roblib_search_eds_articles = {
                 queries.push(query.query);
             }) 
             var query_str = data.queries[0].query;
-            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
+            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&amp;site=ehost-live&amp;scope=site&amp;type=0&amp;custid=uprince&amp;profid=eds&amp;groupid=main&amp;mode=and&amp;cli0=RV&amp;clv0=N&amp;lang=en' +
+                '&amp;authtype=ip,guest&amp;cli2=FT&clv2=N&amp;cli3=&amp;clv3=(ST+Academic+Journal+or+ST+Conference+Materials+or+ST+News+or+ST+Magazines)&amp;bquery=';
             jQuery('#roblib-search-eds-article-more').empty().append('<a href="'+href_str+query_str+'" id="eds-article-see-all-results">See all ' + data.recordCount + ' results</a>');
 
         });

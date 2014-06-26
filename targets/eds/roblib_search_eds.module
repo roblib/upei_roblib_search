@@ -242,7 +242,6 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
 }
 
 function roblib_search_eds_get_detailed_result(&$output, $query, &$eds_api) {
-  $detailed_record = array();
   foreach ($output['records'] as &$record) {
     $db = $record['DbId'];
     $an = $record['An'];
@@ -258,6 +257,7 @@ function roblib_search_eds_get_query_limiters($type) {
     case 'Articles':
       $limiters = 'facetfilter=1,SourceType:Magazines,SourceType:News,SourceType:Academic+Journals,SourceType:Conference+Materials';
       break;
+
     case 'Books':
       // $limiters = '+AND+(PT+book)';
       $limiters = 'facetfilter=1,SourceType:Books,SourceType:Audio,SourceType:Videos';
