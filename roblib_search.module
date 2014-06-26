@@ -101,6 +101,16 @@ function roblib_search_theme() {
   );
 }
 
+function roblib_search_preprocess_panels_pane(&$variables, $hook){
+  switch ($variables['pane']->subtype) {
+    case 'roblib_search-roblib_search_other':
+      $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-other-sources-header">';
+      $variables['title_suffix'] = '</div>';
+      break;
+
+  }
+}
+
 function roblib_search_init() {
   // Make qtip available for all targets js.
   drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/jquery.qtip.min.js');
