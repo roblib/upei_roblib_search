@@ -11,15 +11,17 @@
  }
 .islandscholar-hostTitle{
     font-size: smaller;
+    font-style: italic;
 }
 .islandscholar-genre, .islandscholar-volume{
     padding-left: 10px; font-size: smaller;
 }
 
-.islandscholar-authors {
+.islandscholar-authors, .islandscholar-source {
     padding-left: 10px;
 }
 
 .islandscholar-label {
-    padding-left: 10px; font-size: smaller; font-weight: bolder;
+    font-size: smaller; font-weight: bolder;
 }
+

@@ -28,7 +28,7 @@ Drupal.behaviors.roblib_search_islandscholar = {
                                 <a href="http://www.islandscholar.ca/fedora/repository/' + val.PID +'">' + val.Title_sorted + '</a></div>');
                     try {
                      items.push('<div class="islandscholar-authors">');
-                    jQuery.each(val.author, function(key2, val2){
+                    jQuery.each(val["mods.author"], function(key2, val2){
                         items.push('<span class="islandscholar-author">' + val2 + ';</span> ')
                     })
                     items.push('</div>')
@@ -42,9 +42,10 @@ Drupal.behaviors.roblib_search_islandscholar = {
                         })
 
                         try{
-                            jQuery.each(val["mods.hostTitle"], function(key2, val2){
-                                items.push('<span class="islandscholar-hostTitle">' + val2 + '</span> ')
-                            })
+                            if (typeof val["mods.hostTitle"][0] !== 'undefined') {
+                                items.push('<span class="islandscholar-hostTitle">' + val["mods.hostTitle"][0] + '</span> ')
+                            }
+
                         } catch (err){
 
                         }

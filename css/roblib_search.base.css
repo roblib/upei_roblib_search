@@ -12,6 +12,10 @@
 .panel-pane {border-top:1px solid #cecfcc;
             border-left:1px solid #cecfcc; border-right:1px solid #cecfcc; line-height: 1.5em; margin:10px; border-bottom:1px solid #cecfcc;
 }
+
+.roblib-search-more {
+    padding-right:5px;
+}
 .roblib-search-header {
     background:#333;
     padding-left: 5px;
@@ -51,7 +55,7 @@
 }
 
 .roblib-search-other-sources-header {
-    border-left-color:#800000;
+    border-color:#800000;
     border-left-width: 10px;
 }
 
