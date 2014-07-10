@@ -11,8 +11,12 @@ function qtipify(divs, content, title){
             },
             style: "qtip-light",
             position: {
+                viewport: jQuery(window),
+                adjust: {
+                    method: 'flip',
+                },
                 my: 'left center',
-                at: 'center',
+                at: 'right center',
             },
         });
     }
