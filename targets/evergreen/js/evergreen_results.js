@@ -55,7 +55,7 @@ Drupal.behaviors.roblib_search_evergreen = {
                 qtipify(divs, content, 'More Info');
             }            
 
-            jQuery('#roblib-search-evergreen-more').empty().append('<a href = "' + data.catalogBaseSearchUrl + '">See all ' + data.numberOfRecords + ' results</a>');
+            jQuery('#roblib-search-evergreen-more').empty().append('<a href = "' + data.catalogBaseSearchUrl + '">See all results</a>');
         });
     }
   

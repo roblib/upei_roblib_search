@@ -37,9 +37,6 @@ Drupal.behaviors.roblib_search_islandscholar = {
                     }
                     try {
                         items.push('<div class="islandscholar-source">');
-                        jQuery.each(val.genre, function(key2, val2){
-                            items.push('<span class="islandscholar-label">' + val2 + '</span> ')
-                        })
 
                         try{
                             if (typeof val["mods.hostTitle"][0] !== 'undefined') {
@@ -84,6 +81,9 @@ Drupal.behaviors.roblib_search_islandscholar = {
                         } catch (err){
 
                         }
+                        jQuery.each(val.genre, function(key2, val2){
+                            items.push('<div class="islandscholar-label">' + val2 + '</div> ')
+                        })
                         try{
                             if(jQuery.inArray('OBJ',val.hasDatastreams) > 0){
                                 items.push('<div>full text</div>') ;

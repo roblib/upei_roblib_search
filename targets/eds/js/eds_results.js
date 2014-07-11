@@ -86,6 +86,9 @@ function edsPopulatePopupDivs(content, val, counter){
             } else if (content[counter].length < 3 && (value.Group == 'TOC' || value.Group == 'Src')) {
                 content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
                 content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
+            } else if (content[counter].length < 1 && value.Group == 'Ti') {
+                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
+                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
             }
         })
     } catch (err) {
