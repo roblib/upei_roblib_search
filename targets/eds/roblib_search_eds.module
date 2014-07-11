@@ -105,6 +105,24 @@ function roblib_search_eds_config_form($form, &$form_state) {
     '#description' => t('The number of results to display in the Bento box'),
     '#required' => TRUE,
   );
+  $form['roblib_search_eds_article_limiters'] = array(
+    '#type' => 'textarea',
+    '#title' => t('The limiters for Article searches'),
+    '#default_value' => variable_get('roblib_search_eds_article_limiters',
+      'AND (PT Article OR PT Magazines OR PT News OR PT Academic Journals OR PT Conference Materials)'),
+    '#description' => t('Specify the Publication Types to use as limiters for Article searches.  Formatted similar to
+     AND (PT Article OR PT Magazines OR PT News OR PT Academic Journals OR PT Conference Materials)'),
+    '#required' => TRUE,
+  );
+  $form['roblib_search_eds_book_limiters'] = array(
+    '#type' => 'textarea',
+    '#title' => t('The limiters for Books and Media searches'),
+    '#default_value' => variable_get('roblib_search_eds_book_limiters',
+      'AND (PT Book OR PT Video OR PT Audio)'),
+    '#description' => t('Specify the Publication Types to use as limiters for Article searches.  Formatted similar to
+     AND (PT Book OR PT Video OR PT Audio'),
+    '#required' => TRUE,
+  );
 
 
   return system_settings_form($form);
@@ -235,7 +253,9 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
   $query = urlencode($query);
-  $params = "query=AND,$query&view=detailed&includefacets=n&$limiters&resultsperpage=$number_per_page";
+  $query .= $limiters;
+  //$params = "query=AND,$query&view=detailed&includefacets=n&$limiters&resultsperpage=$number_per_page";
+  $params = "query=AND,$query&view=detailed&includefacets=n&resultsperpage=$number_per_page";
   $output = $eds_api->apiSearch($params);
   $output = roblib_search_eds_get_detailed_result($output, $query, $eds_api);
   return json_encode($output);
@@ -255,17 +275,21 @@ function roblib_search_eds_get_query_limiters($type) {
   $limiters = 'n';
   switch ($type) {
     case 'Articles':
-      $limiters = 'facetfilter=1,SourceType:Magazines,SourceType:News,SourceType:Academic+Journals,SourceType:Conference+Materials';
+      //$limiters = 'facetfilter=1,SourceType:Magazines,SourceType:News,SourceType:Academic+Journals,SourceType:Conference+Materials';
+      $limiters = ' ' . variable_get('roblib_search_eds_article_limiters',
+      'AND (PT Article OR PT Magazines OR PT News OR PT Academic Journals OR PT Conference Materials)');
       break;
 
     case 'Books':
       // $limiters = '+AND+(PT+book)';
-      $limiters = 'facetfilter=1,SourceType:Books,SourceType:Audio,SourceType:Videos';
+      //$limiters = 'facetfilter=1,PublicationType:Books,PublicationType:Audio,PublicationType:Videos';
+      $limiters = ' ' . variable_get('roblib_search_eds_book_limiters',
+      'AND (PT Book OR PT Video OR PT Audio)');
       break;
 
 
   }
-  return $limiters;
+  return urlencode($limiters);
 }
 
 function roblib_search_eds_build_config_arr() {

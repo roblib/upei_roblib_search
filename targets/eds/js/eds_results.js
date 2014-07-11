@@ -66,7 +66,7 @@ Drupal.behaviors.roblib_search_eds = {
             //var host = "http://eds-api.ebscohost.com";
             //var get = "/edsapi/rest/Search?query=history&searchmode=all&resultsperpage=20&pagenumber=1&sort=relevance&highlight=y&includefacets=y&facetfilter=1%2cSourceType%3aMagazines%2cSourceType%3aNews%2cSourceType%3aAcademic+Journals%2cSourceType%3aConference+Materials&view=detailed";
             var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
-            jQuery('#roblib-search-eds-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all ' + data.recordCount + ' results</a>');
+            jQuery('#roblib-search-eds-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all results</a>');
 
         });
     }  
@@ -76,7 +76,14 @@ function edsPopulatePopupDivs(content, val, counter){
     content[counter] = '';
     try{
         jQuery.each(val.DetailedRecord, function(key, value){
-            if(value.Group =='Ab' || value.Group == 'Note' || value.Group == 'TOC') {
+            if (content.length < 5 &&
+                (value.Group == 'PubInfo' || value.Group =="TypPub" || value.Group == "TypeDoc" || value.Group =="Su" || value.Group == "Au")) {
+                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
+                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';(value.Group =='Ab' || value.Group == 'Note' )
+            } else if (content[counter].length < 5 && (value.Group == "Note" || value.Group== "Ab")) {
+                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
+                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
+            } else if (content[counter].length < 3 && (value.Group == 'TOC' || value.Group == 'Src')) {
                 content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
                 content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
             }
