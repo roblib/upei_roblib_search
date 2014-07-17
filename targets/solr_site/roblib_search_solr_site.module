@@ -227,7 +227,7 @@ function roblib_search_solr_site_databases($query) {
 }
 
 function roblib_search_solr_site_guides($query) {
-  print roblib_search_solr_site_get_results($query, 'bundle:guide');
+  print roblib_search_solr_site_get_results($query, 'sm_vid_SearchKeywords:guides');
   exit();
 }
 

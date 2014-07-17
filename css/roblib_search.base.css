@@ -49,8 +49,13 @@
     border-left-color:darkorange;
     border-left-width: 10px;
 }
-.roblib-search-solr-bestbet-header {
-    border-left-color:orange;
+.roblib-search-solr-guides-header {
+    border-left-color:tomato;
+    border-left-width: 10px;
+}
+
+.roblib-search-eds-articles-header {
+    border-color:indianred;
     border-left-width: 10px;
 }
 

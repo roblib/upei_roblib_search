@@ -28,7 +28,7 @@ Drupal.behaviors.roblib_search_solr_site_results = {
         });
 
         jQuery('#' + 'roblib-search-content-solr-site-results').empty().append(items.join(''));
-        qtipify(divs, content, 'Teaser');
+        qtipify(divs, content, 'Summary');
 
       }
     });
