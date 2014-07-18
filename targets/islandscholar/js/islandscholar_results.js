@@ -21,6 +21,8 @@ Drupal.behaviors.roblib_search_islandscholar = {
                     content[counter] = '';
                     if(typeof val['mods.abstract'] !== 'undefined' ){
                         content[counter] = val['mods.abstract'][0];
+                    } else {
+                        content[counter] = 'No abstract available';
                     }
                     divs[counter++] = id;
                     items.push('<div class ="roblib-search-row" id="' + id + '">\n\
