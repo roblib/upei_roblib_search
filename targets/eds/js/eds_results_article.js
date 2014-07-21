@@ -26,7 +26,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
                         if (typeof val.Items.Ti !== 'undefined') {
                             jQuery.each(val.Items.Ti, function(key2, val2){
                                 items.push('<div class="roblib-title eds">');
-                                items.push('<a href="'+val.PLink+'">'+val2.Data+'</a></div>');
+                                items.push('<a href="'+val.PLink+'&scope=site">'+val2.Data+'</a></div>');
                             }) 
                         }
                         items.push('<div class="eds-sor">');
@@ -40,7 +40,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
                             })   
                         }
                         if (typeof val.PLink !== 'undefined'){
-                            items.push('<div class="eds-db eds-pdf-link"><a href="'+val.PLink+'">Full Text</a></div>');
+                            items.push('<div class="eds-db eds-pdf-link"><a href="'+val.PLink+'&scope=site">Full Text</a></div>');
                         }
                         //items.push('<div class="eds-db">'+val.DbLabel+'</div>');
                    

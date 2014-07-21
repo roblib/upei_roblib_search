@@ -25,7 +25,7 @@ Drupal.behaviors.roblib_search_eds = {
                         if (typeof val.Items.Ti !== 'undefined') {
                             jQuery.each(val.Items.Ti, function(key2, val2){
                                 items.push('<div class="roblib-title eds">');
-                                items.push('<a href="'+val.PLink+'">'+val2.Data+'</a></div>');
+                                items.push('<a href="'+val.PLink+'&scope=site">'+val2.Data+'</a></div>');
                             }) 
                         }
                         items.push('<div class="eds-sor">');
