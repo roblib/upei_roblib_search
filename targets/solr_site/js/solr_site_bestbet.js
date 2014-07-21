@@ -24,7 +24,7 @@ Drupal.behaviors.roblib_search_solr_site_bestbet = {
                     divs[counter++] = id;
                   items.push('<div class ="roblib-search-row" id="' + id + '">\n\
                                 <div class="roblib-title solr_site">\n\
-                                <a href="' + val.url + '">' + val.label + '</a></div></div>');
+                                <a href="' + val.url + '">' + val.content + '</a></div></div>');
 
                 });
               jQuery('#' + 'roblib-search-content-solr-site-bestbet').empty().append(items.join(''));
