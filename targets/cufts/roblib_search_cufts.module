@@ -5,30 +5,6 @@
  * Implementation of Roblib search for searching several targets.
  */
 
-/**
- * Implements hook_boot().
- * @global type $conf
- */
-function roblib_search_cufts_boot() {
-  /* below is an example from islandora_solr module for internationalization
-   *  global $conf;
-
-    // Allow i18n, by using multilingual variables.
-    if (module_exists('i18n')) {
-    $vars = array(
-    'islandora_solr_facets',
-    'islandora_solr_result_fields',
-    'islandora_solr_searchterms'
-    );
-
-    if (isset($conf['i18n_variables']) && is_array($conf['i18n_variables'])) {
-    $conf['i18n_variables'] = array_merge($vars, $conf['i18n_variables']);
-    }
-    else {
-    $conf['i18n_variables'] = $vars;
-    }
-    } */
-}
 
 /**
  * Implements hook_menu().
