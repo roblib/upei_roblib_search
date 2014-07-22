@@ -24,14 +24,19 @@ Drupal.behaviors.roblib_search_cufts = {
                     item_str += '<div class="roblib-title cufts">';
                     item_str += '<a href = "' + val.url + '">' + val.title + '</a>';
                     item_str += '</div>';
+                    item_str += '</div>';
+                    items.push(item_str);
                     jQuery.each(val.fulltext_coverages, function(key3, val3) {
                         if(typeof val3 !== 'undefined' && val3 != null ){
                             content[counter] += '<div class="cufts-coverage">' + val3 + "</div>";
                         }
                     });
+                    jQuery.each(val["links"], function(key4, val4) {
+                        if(typeof val4.print_coverage !== 'undefined' && val4.print_coverage != null ){
+                            content[counter] += '<div class="cufts-coverage">' + val4.print_coverage + "</div>";
+                        }
+                    });
                     counter++;
-                    item_str += '</div>';
-                    items.push(item_str);
                 });
                 jQuery('#' + 'roblib-search-content-cufts').empty().append(items.join(''));
                 qtipify(divs, content, 'Coverage');
