@@ -1,6 +1,8 @@
 Drupal.behaviors.roblib_search_solr_site_guides = {
   attach: function(context, settings) {
     $url = settings.roblib_search_solr_site_guides.search_url;
+    query = settings.roblib_search_solr_site_results.search_query;
+    baseUrl = settings.roblib_search_solr_site_results.base_url;
     jQuery.getJSON($url, function(data) {
       var items = [];
       var numberOfDocs = 0;
@@ -29,6 +31,10 @@ Drupal.behaviors.roblib_search_solr_site_guides = {
         jQuery('#' + 'roblib-search-content-solr-site-guides').empty().append(items.join(''));
         qtipify(divs, content, 'Description');
       }
+        if (numberOfDocs > 0)
+        {
+            jQuery('#' + 'roblib-search-solr-site-guides-more').empty().append('<a href="'+ baseUrl + '/search/site/' + query +'?f[0]sm_vid_SearchKeywords:guides">see all results</a>');
+        }
     });
   }
 
