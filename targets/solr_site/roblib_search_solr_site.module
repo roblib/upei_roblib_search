@@ -217,7 +217,9 @@ function roblib_search_solr_site_results($query) {
 }
 
 function roblib_search_solr_site_bestbet($query) {
-  print roblib_search_solr_site_get_results($query, 'bundle:bestbet');
+  $json = roblib_search_solr_site_get_results($query, 'bundle:bestbet');
+  $json =  roblib_search_solr_site_add_url($json);
+  print $json;
   exit();
 }
 
@@ -229,6 +231,29 @@ function roblib_search_solr_site_databases($query) {
 function roblib_search_solr_site_guides($query) {
   print roblib_search_solr_site_get_results($query, 'sm_vid_SearchKeywords:guides');
   exit();
+}
+
+
+/**
+ *
+ * Updates the json passed in with a url directly to the target of the link field.
+ * This information is not in solr as it comes from a custom field.
+ *
+ * @param string $json
+ *   The json string returned from the solr query.
+ *
+ * @return string
+ *   json we got from solr with an updated url directly to the target of the link field
+ */
+function roblib_search_solr_site_add_url($json) {
+  $responses = json_decode($json);
+  foreach ($responses->response->docs as &$doc) {
+    $nid = $doc->entity_id;
+    $node = node_load($nid);
+    $url = $node->field_link['und'][0]['url'];
+    $doc->url = $url;
+  }
+  return json_encode($responses);
 }
 
 /**

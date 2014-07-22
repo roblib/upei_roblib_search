@@ -1,7 +1,7 @@
 Drupal.behaviors.roblib_search_solr_site_bestbet = {
     attach: function(context, settings) {
-        $url = settings.roblib_search_solr_site_bestbet.search_url;
-        jQuery.getJSON($url, function(data) {
+        url = settings.roblib_search_solr_site_bestbet.search_url;
+        jQuery.getJSON(url, function(data) {
             var items = [];
             var numberOfDocs = 0;
             try {
