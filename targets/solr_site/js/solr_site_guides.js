@@ -33,7 +33,7 @@ Drupal.behaviors.roblib_search_solr_site_guides = {
       }
         if (numberOfDocs > 0)
         {
-            jQuery('#' + 'roblib-search-solr-site-guides-more').empty().append('<a href="'+ baseUrl + '/search/site/' + query +'?f[0]sm_vid_SearchKeywords:guides">see all results</a>');
+            jQuery('#' + 'roblib-search-solr-site-guides-more').empty().append('<a href="'+ baseUrl + '/search/site/' + query +'?f[0]=im_field_keywords%3A627">see all results</a>');
         }
     });
   }
