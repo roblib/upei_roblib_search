@@ -212,12 +212,12 @@ function roblib_search_solr_site_block_view($delta = '') {
 }
 
 function roblib_search_solr_site_results($query) {
-  print roblib_search_solr_site_get_results($query, '-bundle:bestbet OR -budle:guide OR -bundle:database');
+  print roblib_search_solr_site_get_results($query, '-bundle:bestbet OR -im_field_keywords:627 OR -bundle:database');
   exit();
 }
 
 function roblib_search_solr_site_bestbet($query) {
-  $json = roblib_search_solr_site_get_results($query, 'bundle:bestbet');
+  $json = roblib_search_solr_site_get_results("sort_label:$query", 'bundle:bestbet');
   $json =  roblib_search_solr_site_add_url($json);
   print $json;
   exit();
@@ -229,7 +229,9 @@ function roblib_search_solr_site_databases($query) {
 }
 
 function roblib_search_solr_site_guides($query) {
-  print roblib_search_solr_site_get_results($query, 'im_field_keywords:627');//sm_vid_SearchKeywords:guides');
+  // TODO make the field and value searched configurable instead of hardcoded.
+  // sm_vid_SearchKeywords:guides is another field we might use.
+  print roblib_search_solr_site_get_results($query, 'im_field_keywords:627');
   exit();
 }
 
