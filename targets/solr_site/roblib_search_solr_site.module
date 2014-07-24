@@ -162,6 +162,14 @@ function roblib_search_solr_site_block_info() {
   return $blocks;
 }
 
+/**
+ * Add a div around our block content so we can theme our panels.
+ *
+ * By adding our divs we can theme ours without affecting other drupal panels.
+ *
+ * @param $variables
+ * @param $hook
+ */
 function roblib_search_solr_site_preprocess_panels_pane(&$variables, $hook){
   switch ($variables['pane']->subtype) {
     case 'roblib_search_solr_site-roblib_search_solr_site_bestbet':
@@ -217,7 +225,11 @@ function roblib_search_solr_site_results($query) {
 }
 
 function roblib_search_solr_site_bestbet($query) {
-  $json = roblib_search_solr_site_get_results("sort_label:$query", 'bundle:bestbet');
+  // Bestbet is a very strict search with an exact match on node title only.
+  // We have to surround the search with quotes but we don't want double quotes.
+  // If they have quotes anywhere else in the string we shouldn't get a match anyway.
+  $query = str_replace('"', '', $query);
+  $json = roblib_search_solr_site_get_results("sort_label:\"$query\"", 'bundle:bestbet');
   $json =  roblib_search_solr_site_add_url($json);
   print $json;
   exit();
