@@ -29,6 +29,17 @@ function roblib_search_menu() {
 }
 
 
+/**
+ * A form for managing the modules configuration.
+ *
+ * @param array $form
+ *   A Drupal form array
+ * @param array $form_state
+ *   A Drupal formstate array
+ *
+ * @return array
+ *   A Drupal form
+ */
 function roblib_search_config_form($form, &$form_state) {
 
   $form['roblib_search_panel_page'] = array(
@@ -69,6 +80,9 @@ function roblib_search_permission() {
 }
 
 
+/**
+ * Implements hook_block_info().
+ */
 function roblib_search_block_info() {
 
   $blocks['roblib_search_form'] = array(
@@ -87,7 +101,6 @@ function roblib_search_block_info() {
  * Implements hook_theme().
  */
 function roblib_search_theme() {
-  // set path
   $path = drupal_get_path('module', 'roblib_search');
   $file = 'theme.inc';
 
@@ -101,16 +114,25 @@ function roblib_search_theme() {
   );
 }
 
+/**
+ * Hook the panels pane preprocessor so we can wrap it in a div for themeing.
+ *
+ * @param array $variables
+ *   Drupal variables array
+ * @param $hook
+ */
 function roblib_search_preprocess_panels_pane(&$variables, $hook){
   switch ($variables['pane']->subtype) {
     case 'roblib_search-roblib_search_other':
       $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-other-sources-header">';
       $variables['title_suffix'] = '</div>';
       break;
-
   }
 }
 
+/**
+ * Implements hook_init().
+ */
 function roblib_search_init() {
   // Make qtip available for all targets js.
   drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/jquery.qtip.min.js');
@@ -119,6 +141,9 @@ function roblib_search_init() {
   drupal_add_css(drupal_get_path('module', 'roblib_search') . '/css/jquery.qtip.min.css');
 }
 
+/**
+ * Implements hook_block_view().
+ */
 function roblib_search_block_view($delta = '') {
   switch ($delta) {
     case 'roblib_search_form':
@@ -137,8 +162,9 @@ function roblib_search_block_view($delta = '') {
  * Roblib search simple search form submit.
  *
  * @param array $form
+ *   Drupal form array
  * @param array $form_state
- *
+ *   Drupal formstate array
  */
 function roblib_search_simple_form_submit($form, &$form_state) {
   global $base_url;
@@ -151,6 +177,12 @@ function roblib_search_simple_form_submit($form, &$form_state) {
   drupal_goto($redirect_url, array('query' => array('roblib_query' => $search_string)));
 }
 
+/**
+ * Logs a search query to a database table.
+ *
+ * @param string $search_string
+ *   The query to log
+ */
 function roblib_search_log_query($search_string) {
   $eid = db_insert('roblib_search_log')
     ->fields(array(
@@ -162,11 +194,15 @@ function roblib_search_log_query($search_string) {
 }
 
 /**
- * Roblib search simple search form
+ * Roblib search simple search form.
  *
  * @param array $form
+ *   Drupal form array
  * @param array $form_state
+ *   Drupal formstate
+ *
  * @return array
+ *   A Drupal formapi array
  */
 function roblib_search_simple_form($form, &$form_state) {
   if (isset($_GET['roblib_query'])) {
@@ -188,6 +224,7 @@ function roblib_search_simple_form($form, &$form_state) {
     '#size' => '15',
     '#type' => 'textfield',
     '#title' => '',
+    '#required' => TRUE,
     '#default_value' => $query,
   );
   $form['simple']['submit'] = array(
@@ -199,10 +236,6 @@ function roblib_search_simple_form($form, &$form_state) {
 
 /**
  * Implements hook_help().
- *
- * @param type $path
- * @param type $arg
- * @return type
  */
 function roblib_search_help($path, $arg) {
   switch ($path) {

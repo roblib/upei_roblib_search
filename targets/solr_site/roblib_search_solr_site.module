@@ -57,6 +57,17 @@ function roblib_search_solr_site_menu() {
   return $items;
 }
 
+/**
+ * A form to manage the modules configuration.
+ *
+ * @param array $form
+ *   A Drupal form array
+ * @param array $form_state
+ *   A Drupal formstate array
+ *
+ * @return array
+ *   A Drupal form array
+ */
 function roblib_search_solr_site_config_form($form, &$form_state) {
   $form['roblib_search_solr_site_url'] = array(
     '#type' => 'textfield',
@@ -129,6 +140,9 @@ function roblib_search_solr_site_theme() {
   );
 }
 
+/**
+ * Implements hook_block_info().
+ */
 function roblib_search_solr_site_block_info() {
 
   $blocks['roblib_search_solr_site_bestbet'] = array(
@@ -167,10 +181,11 @@ function roblib_search_solr_site_block_info() {
  *
  * By adding our divs we can theme ours without affecting other drupal panels.
  *
- * @param $variables
- * @param $hook
+ * @param array $variables
+ *   Drupal variables array
+ * @param array $hook
  */
-function roblib_search_solr_site_preprocess_panels_pane(&$variables, $hook){
+function roblib_search_solr_site_preprocess_panels_pane(&$variables, $hook) {
   switch ($variables['pane']->subtype) {
     case 'roblib_search_solr_site-roblib_search_solr_site_bestbet':
       $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-solr-bestbet-header">';
@@ -194,6 +209,9 @@ function roblib_search_solr_site_preprocess_panels_pane(&$variables, $hook){
   }
 }
 
+/**
+ * Implements hook_block_view().
+ */
 function roblib_search_solr_site_block_view($delta = '') {
   switch ($delta) {
     case 'roblib_search_solr_site_bestbet':
@@ -219,27 +237,56 @@ function roblib_search_solr_site_block_view($delta = '') {
   return $block;
 }
 
+/**
+ * Send the query to solr but limit the results so it doesn't include certain content.
+ *
+ * Print json and exit so the javascript can consume the json.
+ *
+ * @param string $query
+ *   The solr search string.
+ */
 function roblib_search_solr_site_results($query) {
   print roblib_search_solr_site_get_results($query, '-bundle:bestbet OR -im_field_keywords:627 OR -bundle:database');
   exit();
 }
 
+/**
+ * Send the query to solr but limit the results so it only includes content of type bestbet.
+ *
+ * Print json and exit so the javascript can consume the json.
+ *
+ * @param string $query
+ *   The solr search string.
+ */
 function roblib_search_solr_site_bestbet($query) {
-  // Bestbet is a very strict search with an exact match on node title only.
-  // We have to surround the search with quotes but we don't want double quotes.
-  // If they have quotes anywhere else in the string we shouldn't get a match anyway.
-  $query = str_replace('"', '', $query);
+  $query = preg_replace('/\'\"/', '', $query);
   $json = roblib_search_solr_site_get_results("sort_label:\"$query\"", 'bundle:bestbet');
-  $json =  roblib_search_solr_site_add_url($json);
+  $json = roblib_search_solr_site_add_url($json);
   print $json;
   exit();
 }
 
+/**
+ * Send the query to solr but limit the results so it only includes content of type database.
+ *
+ * Print json and exit so the javascript can consume the json.
+ *
+ * @param string $query
+ *   The solr search string.
+ */
 function roblib_search_solr_site_databases($query) {
   print roblib_search_solr_site_get_results($query, 'bundle:database');
   exit();
 }
 
+/**
+ * Send the query to solr but limit the results so it only includes content of tagged with the guide keyword.
+ *
+ * Print json and exit so the javascript can consume the json.
+ *
+ * @param string $query
+ *   The solr search string.
+ */
 function roblib_search_solr_site_guides($query) {
   // TODO make the field and value searched configurable instead of hardcoded.
   // sm_vid_SearchKeywords:guides is another field we might use.
@@ -252,6 +299,7 @@ function roblib_search_solr_site_guides($query) {
  *
  * Updates the json passed in with a url directly to the target of the link field.
  * This information is not in solr as it comes from a custom field.
+ *
  *
  * @param string $json
  *   The json string returned from the solr query.
@@ -271,12 +319,17 @@ function roblib_search_solr_site_add_url($json) {
 }
 
 /**
+ * Sends a query to Solr.
  *
  * @param string $query
+ *   A string to search for
+ * @param string $type
+ *   A string to filter the query against field:value
+ *
  * @return string
- *   json
+ *   Solr results as json.
  */
-function roblib_search_solr_site_get_results($query = NULL, $type ) {
+function roblib_search_solr_site_get_results($query = NULL, $type) {
   $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
   $num_results = variable_get('roblib_search_solr_site_num_results', '5');
   $data = array(
