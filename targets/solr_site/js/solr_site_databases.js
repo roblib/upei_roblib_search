@@ -3,6 +3,7 @@ Drupal.behaviors.roblib_search_solr_site_databases = {
     $url = settings.roblib_search_solr_site_databases.search_url;
     query = settings.roblib_search_solr_site_results.search_query;
     baseUrl = settings.roblib_search_solr_site_results.base_url;
+    default_site_type = settings.roblib_search_solr_site_results.default_site_type + '/';
     jQuery.getJSON($url, function(data) {
       var items = [];
       var numberOfDocs = 0;
@@ -35,7 +36,7 @@ Drupal.behaviors.roblib_search_solr_site_databases = {
       }
         if (numberOfDocs > 0)
         {
-            jQuery('#' + 'roblib-search-solr-site-databases-more').empty().append('<a href="'+ baseUrl + '/search/site/' + query +'?f[0]=bundle%3Adatabase">see all results</a>');
+            jQuery('#' + 'roblib-search-solr-site-databases-more').empty().append('<a href="'+ baseUrl + '/search/' + default_site_type + query +'?f[0]=bundle%3Adatabase">see all results</a>');
         }
     });
   }

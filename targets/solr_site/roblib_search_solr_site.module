@@ -311,6 +311,10 @@ function roblib_search_solr_site_add_url($json) {
   $responses = json_decode($json);
   foreach ($responses->response->docs as &$doc) {
     $nid = $doc->entity_id;
+    // The link field is a complex field and we get the text in solr but not the actual url.
+    // Since best best will only every return one result it's not much overhead to load the node
+    // and get the value of the link field.  probably less overhead then installing additional
+    // modules to get the url in solr.
     $node = node_load($nid);
     $url = $node->field_link['und'][0]['url'];
     $doc->url = $url;
