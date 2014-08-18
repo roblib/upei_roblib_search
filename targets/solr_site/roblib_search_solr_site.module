@@ -246,7 +246,7 @@ function roblib_search_solr_site_block_view($delta = '') {
  *   The solr search string.
  */
 function roblib_search_solr_site_results($query) {
-  print roblib_search_solr_site_get_results($query, '-bundle:bestbet OR -im_field_keywords:627 OR -bundle:database');
+  print roblib_search_solr_site_get_results($query, '-bundle:course_reserve OR -bundle:bestbet OR -im_field_keywords:627 OR -bundle:database');
   exit();
 }
 
