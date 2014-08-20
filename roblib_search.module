@@ -63,6 +63,86 @@ function roblib_search_admin_paths() {
   return $paths;
 }
 
+function roblib_search_views_data(){
+  $data['roblib_search_log']['table']['group'] = t('Roblib Search log');
+  $data['roblib_search_log']['table']['base'] = array(
+    'field' => 'sid', // This is the identifier field for the view.
+    'title' => t('Roblib Search log'),
+    'help' => t('Contains the Roblib Bento box search query strings.'),
+    'weight' => -10,
+  );
+
+  // The individual fields.
+  $data['roblib_search_log']['query'] = array(
+    'title' => t('the query string field'),
+    'help' => t('a plain text field.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE, // This is use by the table display plugin.
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+  );
+  $data['roblib_search_log']['sid'] = array(
+    'title' => t('Numeric field'),
+    'help' => t('the unique identifier for each row'),
+    'field' => array(
+      'handler' => 'views_handler_field_numeric',
+      'click sortable' => TRUE,
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_numeric',
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+  );
+
+
+  $data['roblib_search_log']['ipaddress'] = array(
+    'title' => t('the ipaddress of the user who submitted the search'),
+    'help' => t('a plain text field.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE, // This is use by the table display plugin.
+    ),
+    'sort' => array(
+      'handler' => 'views_handler_sort',
+    ),
+    'filter' => array(
+      'handler' => 'views_handler_filter_string',
+    ),
+    'argument' => array(
+      'handler' => 'views_handler_argument_string',
+    ),
+  );
+
+  $data['roblib_search_log']['searched_date'] = array(
+    'title' => t('Timestamp field'),
+    'help' => t('a timestamp field.'),
+    'field' => array(
+      'handler' => 'views_handler_field',
+      'click sortable' => TRUE,
+    ),
+    'argument' => array('handler' => 'views_handler_argument_date'),
+    'sort' => array(
+      'handler' => 'views_handler_sort_date',
+    ),
+    'filter' => array(
+      'handler' => 'roblib_search_handler_filter_datetime',
+    ),
+  );
+
+  return $data;
+}
+
 /**
  * Implements hook_permission().
  */
@@ -247,6 +327,39 @@ function roblib_search_help($path, $arg) {
        modules can implement to gather and display results.
        </p>'
       );
+  }
+}
+
+class roblib_search_handler_filter_datetime extends views_handler_filter_date {
+  function op_between($field) {
+    if ($this->operator == 'between') {
+      $a = intval(strtotime($this->value['min'], 0));
+      $b = intval(strtotime($this->value['max'], 0));
+    }
+    else {
+      $a = intval(strtotime($this->value['max'], 0));
+      $b = intval(strtotime($this->value['min'], 0));
+    }
+
+    if ($this->value['type'] == 'offset') {
+      // changed from original
+      $a = (integer)time() + (integer)sprintf('%+d', $a); // keep sign
+      $b = (integer)time() + (integer)sprintf('%+d', $b); // keep sign
+      // changed from original ends
+    }
+    // %s is safe here because strtotime scrubbed the input and we might
+    // have a string if using offset.
+    $this->query->add_where_expression($this->options['group'], "$field >= '".date("Y-m-d H:i:s", $a)."'");
+    $this->query->add_where_expression($this->options['group'], "$field <= '".date("Y-m-d H:i:s", $b)."'");
+  }
+
+  function op_simple($field) {
+    $value = intval(strtotime($this->value['value'], 0));
+    if (!empty($this->value['type']) && $this->value['type'] == 'offset') {
+      $this->query->add_where_expression($this->options['group'], "$field $this->operator DATE_ADD(NOW(), INTERVAL $value SECOND)");
+    } else {
+      $this->query->add_where_expression($this->options['group'], "$field $this->operator $value");
+    }
   }
 }
 
