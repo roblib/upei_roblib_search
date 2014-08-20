@@ -5,6 +5,8 @@
  * loaded async
  */
 
+// TODO: combine these two functions and call this function from the preprocessor
+
 function roblib_search_eds_preprocess_roblib_search_eds(&$variables) {
   global $base_url;
   if (!isset($query)) {
@@ -19,8 +21,13 @@ function roblib_search_eds_preprocess_roblib_search_eds(&$variables) {
   $variables['spinner_path'] = $spinner_path;
   $search_url = $base_url . '/roblib_search/eds/ajax/' . urlencode($query);
   drupal_add_js(drupal_get_path('module', 'roblib_search_eds') . '/js/eds_results.js');
-  drupal_add_js(array('roblib_search_eds' => array('search_url' => $search_url)), array('type' => 'setting'));
-  drupal_add_js("http://supportforms.epnet.com/eit/scripts/ebscohostsearch.js", 'external');
+  drupal_add_js(array(
+    'roblib_search_eds' => array(
+      'search_url' => $search_url,
+      'eds_profile' =>
+        variable_get('roblib_search_eds_profile', 'edsapi')
+    )
+  ), array('type' => 'setting'));
 
 }
 
@@ -38,7 +45,13 @@ function roblib_search_eds_preprocess_roblib_search_eds_articles(&$variables) {
   $variables['spinner_path'] = $spinner_path;
   $search_url = $base_url . '/roblib_search/eds/articles/' . urlencode($query);
   drupal_add_js(drupal_get_path('module', 'roblib_search_eds') . '/js/eds_results_article.js');
-  drupal_add_js(array('roblib_search_eds_articles' => array('search_url' => $search_url)), array('type' => 'setting'));
+  drupal_add_js(array(
+    'roblib_search_eds_articles' => array(
+      'search_url' => $search_url,
+      'eds_profile' =>
+        variable_get('roblib_search_eds_profile', 'edsapi')
+    )
+  ), array('type' => 'setting'));
 
 }
 

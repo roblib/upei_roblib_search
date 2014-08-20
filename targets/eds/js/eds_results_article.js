@@ -1,6 +1,7 @@
 Drupal.behaviors.roblib_search_eds_articles = {
     attach: function(context, settings) { 
         $url = settings.roblib_search_eds_articles.search_url;
+        profile = settings.roblib_search_eds.eds_profile;
         jQuery.getJSON($url, function(data) {
             var items = [];
             var numberOfDocs = 0;
@@ -56,7 +57,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
                 queries.push(query.query);
             }) 
             var query_str = data.queries[0].query;
-            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
+            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile +'&mode=bool&lang=en&bquery=';
             jQuery('#roblib-search-eds-article-more').empty().append('<a href="'+href_str+query_str+'" id="eds-article-see-all-results">See all results</a>');
 
         });

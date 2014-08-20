@@ -1,6 +1,7 @@
 Drupal.behaviors.roblib_search_eds = {
     attach: function(context, settings) { 
         $url = settings.roblib_search_eds.search_url;
+        profile = settings.roblib_search_eds.eds_profile;
         jQuery.getJSON($url, function(data) {
             var items = [];
             var numberOfDocs = 0;
@@ -65,7 +66,7 @@ Drupal.behaviors.roblib_search_eds = {
             var query_str = data.queries[0].query;
             //var host = "http://eds-api.ebscohost.com";
             //var get = "/edsapi/rest/Search?query=history&searchmode=all&resultsperpage=20&pagenumber=1&sort=relevance&highlight=y&includefacets=y&facetfilter=1%2cSourceType%3aMagazines%2cSourceType%3aNews%2cSourceType%3aAcademic+Journals%2cSourceType%3aConference+Materials&view=detailed";
-            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=eds&mode=bool&lang=en&bquery=';
+            var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
             jQuery('#roblib-search-eds-more').empty().append('<a href="'+href_str+query_str+'" id="see_all_results">See all results</a>');
 
         });
