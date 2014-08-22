@@ -54,6 +54,11 @@
     border-left-width: 10px;
 }
 
+.roblib-search-solr-reserves-header {
+    border-left-color:#888000;
+    border-left-width: 10px;
+}
+
 .roblib-search-solr-bestbet-header {
     border-left-color:tan;
     border-left-width: 10px;

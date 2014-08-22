@@ -5,42 +5,15 @@
  */
 
 /**
- * @param $variables
- */
-function roblib_search_solr_site_preprocess_roblib_search_solr_site_bestbet(&$variables) {
-  roblib_search_solr_site_preprocessor($variables, 'bestbet');
-}
-
-/**
- * @param $variables
- */
-function roblib_search_solr_site_preprocess_roblib_search_solr_site_results(&$variables) {
-  roblib_search_solr_site_preprocessor($variables, 'results');
-}
-
-/**
- * @param $variables
- */
-function roblib_search_solr_site_preprocess_roblib_search_solr_site_databases(&$variables) {
-  roblib_search_solr_site_preprocessor($variables, 'databases');
-}
-
-/**
- * @param $variables
- */
-function roblib_search_solr_site_preprocess_roblib_search_solr_site_guides(&$variables) {
-  roblib_search_solr_site_preprocessor($variables, 'guides');
-}
-
-
-/**
  * @param array $variables
  * @param string $type
  *
  * @return string
  */
-function roblib_search_solr_site_preprocessor(&$variables, $type) {
+function roblib_search_solr_site_preprocess_roblib_search_solr_site(&$variables){
+//function roblib_search_solr_site_preprocessor(&$variables, $type) {
   global $base_url;
+  $type = $variables['type'];
   if (!isset($query)) {
     if (isset($_GET['roblib_query'])) {
       $query = $_GET['roblib_query'];
