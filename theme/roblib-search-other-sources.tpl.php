@@ -16,6 +16,6 @@
     <a href="http://www.google.com/cse?cx=015121753026627038989:9jvssbo3xgo&ie=UTF-8&q=<?php print ($query); ?>&sa=Search">Canadian Government Sites</a>
   </div>
   <div class="roblib-search-row" id="roblib-search-filmsondemand">
-    <a href="http://digital.films.com/PortalSearch.aspx?rd=lo&q=<?php print ($query); ?>">Films on Demand</a>
+    <a href="http://proxy.library.upei.ca/login?url=http://digital.films.com/portalplaylists.aspx?aid=14978&rd=lo&q=<?php print ($query); ?>">Films on Demand</a>
   </div>
 </div>
