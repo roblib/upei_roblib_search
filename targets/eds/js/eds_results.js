@@ -1,7 +1,7 @@
 Drupal.behaviors.roblib_search_eds = {
     attach: function(context, settings) { 
         $url = settings.roblib_search_eds.search_url;
-        profile = settings.roblib_search_eds.eds_profile;
+        profile = 'eds'; //settings.roblib_search_eds.eds_profile;
         jQuery.getJSON($url, function(data) {
             var items = [];
             var numberOfDocs = 0;
