@@ -233,6 +233,7 @@ class EBSCOAPI {
    * @access public
    */
   public function getSessionToken($authenToken, $invalid = 'n') {
+    $guest = variable_get('roblib_search_eds_guest','n');
     $token = '';
 
     // Check user's login status
@@ -251,7 +252,7 @@ class EBSCOAPI {
         if (empty($profile)) {
           $profile = $_COOKIE['Guest'];
         }
-        $sessionToken = $this->apiSessionToken($authenToken, $profile, 'y');
+        $sessionToken = $this->apiSessionToken($authenToken, $profile, $guest);
         $_SESSION['sessionToken'] = $sessionToken;
       }
       $token = $_SESSION['sessionToken']['sessionToken'];
@@ -260,7 +261,7 @@ class EBSCOAPI {
 
       $profileId = $this->config['profile'];
 
-      $sessionToken = $this->apiSessionToken($authenToken, $profileId, 'y');
+      $sessionToken = $this->apiSessionToken($authenToken, $profileId, $guest);
       $_SESSION['profile'] = $profileId;
       $_SESSION['sessionToken'] = $sessionToken;
       setcookie("Guest", $profileId, 0);

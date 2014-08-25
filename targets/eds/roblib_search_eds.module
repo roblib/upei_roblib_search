@@ -90,6 +90,14 @@ function roblib_search_eds_config_form($form, &$form_state) {
     '#required' => TRUE,
   );
 
+  $form['roblib_search_eds_guest'] = array(
+    '#type' => 'textfield',
+    '#title' => t('EDS Guest access'),
+    '#default_value' => variable_get('roblib_search_eds_guest', 'y'),
+    '#description' => t('EDS Guest access, y = guest access, n = not a guest'),
+    '#required' => TRUE,
+  );
+
   $form['roblib_search_eds_profile'] = array(
     '#type' => 'textfield',
     '#title' => t('EDS profile'),
