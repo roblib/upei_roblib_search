@@ -27,7 +27,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
                         if (typeof val.Items.Ti !== 'undefined') {
                             jQuery.each(val.Items.Ti, function(key2, val2){
                                 items.push('<div class="roblib-title eds">');
-                                items.push('<a href="'+val.PLink+'&scope=site">'+val2.Data+'</a></div>');
+                                items.push('<a href="http://proxy.library.upei.ca/login?url='+val.PLink+'&scope=site">'+val2.Data+'</a></div>');
                             }) 
                         }
                         items.push('<div class="eds-sor">');
@@ -58,7 +58,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
             }) 
             var query_str = data.queries[0].query;
             var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile +'&mode=bool&lang=en&bquery=';
-            jQuery('#roblib-search-eds-article-more').empty().append('<a href="'+href_str+query_str+'" id="eds-article-see-all-results">See all results</a>');
+            jQuery('#roblib-search-eds-article-more').empty().append('<a href="http://proxy.library.upei.ca/login?url='+href_str+query_str+'" id="eds-article-see-all-results">See all results</a>');
 
         });
     }  
