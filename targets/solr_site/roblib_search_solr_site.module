@@ -356,10 +356,31 @@ function roblib_search_solr_site_add_url($json) {
 function roblib_search_solr_site_get_results($query = NULL, $type) {
   $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
   $num_results = variable_get('roblib_search_solr_site_num_results', '5');
+  $defaults = array(
+    'content' => '1.0',
+    'ts_comments' => '0.5',
+    'tos_content_extra' => '0.1',
+    'label' => '5.0',
+    'tos_name' => '3.0',
+    'taxonomy_names' => '2.0',
+    'tags_h1' => '5.0',
+    'tags_h2_h3' => '3.0',
+    'tags_h4_h5_h6' => '2.0',
+    'tags_inline' => '1.0',
+    'tags_a' => '0',
+  );
+  $solr_qf = apachesolr_environment_variable_get(apachesolr_default_environment(), 'field_bias', $defaults);
+  $qf = "";
+  foreach ($solr_qf as $key => $value){
+    if($value != "0") {
+      $qf .= $key . '^' . $value . ' ';
+    }
+  }
   $data = array(
     'q' => $query,
     'fq' => $type,
     'wt' => 'json',
+    'qf' => $qf,
     'rows' => $num_results,
   );
   $url = url($solr_url . '/select', array('query' => $data));
