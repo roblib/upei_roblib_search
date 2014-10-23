@@ -40,7 +40,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
                                 items.push('<div class="eds-src"><span class="eds-label">'+source.Label+':</span> '+source.Data+'</div>');
                             })   
                         }
-                        if (typeof val.PLink !== 'undefined'){
+                        if (typeof val.PLink !== 'undefined' && typeof val.PDF !== 'undefined'  && val.PDF == 'pdflink'){
                             items.push('<div class="eds-db eds-pdf-link"><a href="'+val.PLink+'&scope=site">Full Text</a></div>');
                         }
                         //items.push('<div class="eds-db">'+val.DbLabel+'</div>');
