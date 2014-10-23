@@ -43,6 +43,9 @@ Drupal.behaviors.roblib_search_eds_articles = {
                         if (typeof val.PLink !== 'undefined' && typeof val.PDF !== 'undefined'  && val.PDF == 'pdflink'){
                             items.push('<div class="eds-db eds-pdf-link"><a href="'+val.PLink+'&scope=site">Full Text</a></div>');
                         }
+                        if (typeof val.PLink !== 'undefined' && typeof val.HTML !== 'undefined'  && val.HTML == '1'){
+                            items.push('<div class="eds-db eds-pdf-link"><a href="'+val.PLink+'&scope=site">HTML Full Text</a></div>');
+                        }
                         //items.push('<div class="eds-db">'+val.DbLabel+'</div>');
                    
                         items.push('</div>');
