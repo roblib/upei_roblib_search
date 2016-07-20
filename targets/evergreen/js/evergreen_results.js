@@ -7,9 +7,9 @@ Drupal.behaviors.roblib_search_evergreen = {
             try {
                 numberOfDocs = data.numberOfRecords;
             } catch (err) {
-                // do nothing leave docLength at 0
+                numberOfDocs = 0;
             }
-            if(numberOfDocs < 1){
+            if(numberOfDocs === undefined || numberOfDocs < 1){
                 jQuery('#' + 'roblib-search-content-evergreen').empty().append('No Results');
                 jQuery('.pane-roblib-search-evergreen-roblib-search-evergreen-results').hide();
             } else {

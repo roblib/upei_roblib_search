@@ -167,6 +167,7 @@ function roblib_search_evergreen_get_results($query) {
   $url = variable_get('roblib_search_evergreen_url', 'http://137.149.200.52');
   $url_suffix = variable_get('roblib_search_evergreen_search_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query=');
   $number_of_records = variable_get('roblib_search_evergreen_num_results', '5');
+  $query = trim($query);
   $query = str_replace(' ', '%20AND%20',$query); //hack until the library decides if we want phrase or individual words
   $query .= '%20AND%20%22prince%20edward%20island%22';
   $search_url = $url . $url_suffix . $query  . '&maximumRecords=' . $number_of_records;
