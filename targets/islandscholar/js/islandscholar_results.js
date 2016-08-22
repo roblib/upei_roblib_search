@@ -88,9 +88,8 @@ Drupal.behaviors.roblib_search_islandscholar = {
                 qtipify(divs, content, 'Abstract');
                 var number = data.response.numFound;
                 var query = encodeURIComponent(data.responseHeader.params.q);//.'milk';
-                var scholarUrl = "http://www.islandscholar.ca/islandora/solr/search/"
                 jQuery('#roblib-search-islandscholar-more').empty().append('<a id="islandscholar-see-more-result"' +
-                    ' href="http://www.islandscholar.ca/islandora/solr/search/' + query + '">see all ' + number + ' results</a>');
+                    ' href="http://www.islandscholar.ca/islandora/search/' + query + '?type=dismax">see all results</a>');
 
             }
         });
