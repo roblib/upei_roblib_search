@@ -47,6 +47,21 @@ function roblib_search_islandscholar_config_form($form, &$form_state) {
     '#description' => t('The number of results to display in the Bento box'),
     '#required' => TRUE,
   );
+  $form['roblib_search_islandscholar_fq'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Filter Query'),
+    '#default_value' => variable_get('roblib_search_islandscholar_fq', 'PID:ir* AND (RELS_EXT_hasModel_uri_ms:info\:fedora/ir\:thesisCModel OR RELS_EXT_hasModel_uri_ms:info\:fedora/ir\:citationCModel)'),
+    '#description' => t('A query used to restrict the results to namespace and content models'),
+    '#required' => TRUE,
+  );
+
+  $form['roblib_search_islandscholar_qf'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Query Field'),
+    '#default_value' => variable_get('roblib_search_islandscholar_qf', 'dc.title^2.5 dc.creator^5.0 dc.contributor^2.0 dc.description^2.0 dc.identifier^2.0 dc.type^2.0 catch_all_fields_mt^1.0'),
+    '#description' => t('The fields to query and a weight for each field.'),
+    '#required' => TRUE,
+  );
 
   return system_settings_form($form);
 }
@@ -90,7 +105,7 @@ function roblib_search_islandscholar_block_info() {
 
   $blocks['roblib_islandscholar_results'] = array(
     // info: The name of the block.
-    'info' => t('Islandscholar Solr Search Results block'),
+    'info' => t('Roblib Islandscholar Solr Search Results block'),
     // Block caching options (per role, per user, etc.)
     'cache' => DRUPAL_CACHE_PER_ROLE, // default
   );
@@ -141,9 +156,10 @@ function roblib_search_islandscholar_get_search_url($query){
   $data = array(
     'wt' => 'json',
     'q' => $query ,
-    'fq' => 'PID:ir* AND (rels.hasModel:info\:fedora/islandora\:thesisCModel OR rels.hasModel:info\:fedora/islandora\:citationCModel)',
-    'qf' => 'mods.title^3.0 mods.subTitle^2.5 mods.author^5.0 mods.department^2.0 mods.abstract^1.5 dc.title^2.5 mods.subject^1.5 dc.creator^5.0 dc.contributor^2.0 dc.description^2.0 mods.genre^1.0 mods.hostTitle^2.0 mods.issn^1.0 mods.date^2.0 pdf.text^2.0 dsm.PDF^2.0 collection_title^1.0',
+    'fq' => variable_get('roblib_search_islandscholar_fq','PID:ir* AND (RELS_EXT_hasModel_uri_ms:info\:fedora/ir\:thesisCModel OR RELS_EXT_hasModel_uri_ms:info\:fedora/ir\:citationCModel)'),
+    'qf' => variable_get('roblib_search_islandscholar_qf','dc.title^2.5 dc.creator^5.0 dc.contributor^2.0 dc.description^2.0 dc.identifier^2.0 dc.type^2.0 catch_all_fields_mt^1.0'),
     'rows' => $num_results,
+    'defType' => 'dismax',
   );
   $url = url($solr_url . '/select', array('query' => $data));
   return $url;

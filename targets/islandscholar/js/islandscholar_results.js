@@ -1,7 +1,7 @@
 Drupal.behaviors.roblib_search_islandscholar = {
-    attach: function(context, settings) {
+    attach: function (context, settings) {
         url = settings.roblib_search_islandscholar.search_url;
-        jQuery.getJSON(url, function(data) {
+        jQuery.getJSON(url, function (data) {
             var items = [];
             var numberOfDocs = 0;
             try {
@@ -16,87 +16,70 @@ Drupal.behaviors.roblib_search_islandscholar = {
                 var counter = 0;
                 var divs = new Array();
                 var content = new Array();
-                jQuery.each(data.response.docs, function(key, val) {
+                jQuery.each(data.response.docs, function (key, val) {
                     id = 'roblib-search-islandscholar-' + counter;
                     content[counter] = '';
-                    if(typeof val['mods.abstract'] !== 'undefined' ){
-                        content[counter] = val['mods.abstract'][0];
+                    if (typeof val['mods_abstract_s'] !== 'undefined') {
+                        content[counter] = val['mods_abstract_s'][0];
                     } else {
                         content[counter] = 'No abstract available';
                     }
                     divs[counter++] = id;
                     items.push('<div class ="roblib-search-row" id="' + id + '">\n\
                                 <div class="roblib-title islandscholar">\n\
-                                <a href="http://www.islandscholar.ca/fedora/repository/' + val.PID +'">' + val.Title_sorted + '</a></div>');
+                                <a href="http://www.islandscholar.ca/fedora/repository/' + val.PID + '">' + val['dc.title'] + '</a></div>');
                     try {
-                     items.push('<div class="islandscholar-authors">');
-                    jQuery.each(val["mods.author"], function(key2, val2){
-                        items.push('<span class="islandscholar-author">' + val2 + ';</span> ')
-                    })
-                    items.push('</div>')
-                    } catch (e){
-
-                    }
-                    try {
-                        items.push('<div class="islandscholar-source">');
-
-                        try{
-                            if (typeof val["mods.hostTitle"][0] !== 'undefined') {
-                                items.push('<span class="islandscholar-hostTitle">' + val["mods.hostTitle"][0] + '</span> ')
-                            }
-
-                        } catch (err){
-
-                        }
-                        try{
-                            jQuery.each(val.dateIssued, function(key2, val2){
-                                items.push('<span class="islandscholar-citation">' + val2 + '</span> ')
-                            })
-                        }  catch(err){
-
-                        }
-                        try{
-                            jQuery.each(val["mods.volume"], function(key2, val2){
-                                items.push('<span class="islandscholar-citation">Vol. </span><span class="islandscholar-citation">' + val2 + '</span> ')
-                            })
-                        } catch (err){
-
-                        }
-                        try{
-                            jQuery.each(val["mods.issue"], function(key2, val2){
-                                items.push('<span class="islandscholar-citation">Issue </span><span class="islandscholar-citation">' + val2 + ',</span> ')
-                            })
-                        } catch (err){
-
-                        }
-                        try{
-                            jQuery.each(val["mods.pageStart"], function(key2, val2){
-                                items.push('<span class="islandscholar-citation">p</span><span class="islandscholar-citation">' + val2 + '</span>')
-                            })
-                        } catch (err){
-
-                        }
-                        try{
-                            jQuery.each(val["mods.pageEnd"], function(key2, val2){
-                                items.push('<span class="islandscholar-citation">-</span><span class="islandscholar-citation">' + val2 + ',</span>')
-                            })
-                        } catch (err){
-
-                        }
-                        jQuery.each(val.genre, function(key2, val2){
-                            items.push('<div class="islandscholar-label">' + val2 + '</div> ')
+                        items.push('<div class="islandscholar-authors">');
+                        jQuery.each(val["mods_author_lastname_first_ms"], function (key2, val2) {
+                            items.push('<span class="islandscholar-author">' + val2 + ';</span> ')
                         })
-                        try{
-                            if(jQuery.inArray('OBJ',val.hasDatastreams) > 0){
-                                items.push('<div>full text</div>') ;
-                            }
-                        } catch (err){
-
-                        }
                         items.push('</div>')
-                    } catch (e){
+                    } catch (e) {
 
                     }
+
+                    items.push('<div class="islandscholar-source">');
+
+
+                    if (typeof val.mods_relatedItem_host_titleInfo_title_s !== 'undefined') {
+                        items.push('<span class="islandscholar-hostTitle">' + val.mods_relatedItem_host_titleInfo_title_s + '</span> ')
+                    }
+
+
+                    if (typeof val.mods_canonical_date_issued_s !== 'undefined') {
+                        items.push('<span class="islandscholar-citation">' + val.mods_canonical_date_issued_s + '</span> ')
+                    }
+
+
+                    if (typeof val.mods_part_detail_volume_number_s !== 'undefined') {
+                        items.push('<span class="islandscholar-citation">Vol. </span><span class="islandscholar-citation">' + val.mods_part_detail_volume_number_s + '</span> ')
+                    }
+
+
+                    if (typeof val.mods_part_detail_issue_number_s !== 'undefined') {
+                        items.push('<span class="islandscholar-citation">Issue </span><span class="islandscholar-citation">' + val.mods_part_detail_issue_number_s + ',</span> ')
+                    }
+
+
+                    if (typeof val.mods_part_extent_start_s !== 'undefined') {
+                        items.push('<span class="islandscholar-citation">p</span><span class="islandscholar-citation">' + val.mods_part_extent_start_s + '</span>')
+                    }
+
+
+                    if (typeof val.mods_part_extent_end_s !== 'undefined') {
+                        items.push('<span class="islandscholar-citation">-</span><span class="islandscholar-citation">' + val.mods_part_extent_end_s + ',</span>')
+                    }
+
+                    if (typeof val.mods_genre_s !== 'undefined') {
+                        items.push('<div class="islandscholar-label">' + val.mods_genre_s + '</div> ');
+                    }
+
+                    if (jQuery.inArray('PDF', val.fedora_datastreams_ms) > 0) {
+                        items.push('<div>full text</div>');
+                    }
+
+                    items.push('</div>');
+
                     items.push('</div>');
                 });
 
