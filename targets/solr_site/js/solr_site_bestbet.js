@@ -28,7 +28,7 @@ Drupal.behaviors.roblib_search_solr_site_bestbet = {
 
                 });
               jQuery('#' + 'roblib-search-content-solr-site-bestbet').empty().append(items.join(''));
-              qtipify(divs, content, 'Best Bet');
+              //qtipify(divs, content, 'Best Bet');
             }
         });
     }

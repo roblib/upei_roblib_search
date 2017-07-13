@@ -30,7 +30,7 @@ Drupal.behaviors.roblib_search_solr_site_guides = {
                           <a href="' + val.url + '">' + val.label + '</a></div></div>');
         });
         jQuery('#' + 'roblib-search-content-solr-site-guides').empty().append(items.join(''));
-        qtipify(divs, content, 'Description');
+        //qtipify(divs, content, 'Description');
       }
         if (numberOfDocs > 0)
         {

@@ -31,7 +31,7 @@ Drupal.behaviors.roblib_search_solr_site_databases = {
         });
 
         jQuery('#' + 'roblib-search-content-solr-site-databases').empty().append(items.join(''));
-        qtipify(divs, content, 'Description');
+        //qtipify(divs, content, 'Description');
 
       }
         if (numberOfDocs > 0)
