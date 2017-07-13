@@ -31,12 +31,10 @@ Drupal.behaviors.roblib_search_solr_site_results = {
         });
 
         jQuery('#' + 'roblib-search-content-solr-site-results').empty().append(items.join(''));
-        //qtipify(divs, content, 'Summary');
-
       }
         if (numberOfDocs > 0)
         {
-            jQuery('#' + 'roblib-search-solr-site-results-more').empty().append('<a href="'+ baseUrl + '/search/' + default_site_type + query +'?f[0]=(bundle:page+OR+quicktab_node+OR+article+OR+hours+OR+printing+OR+weekly_hours)">see all results</a>');
+            jQuery('#' + 'roblib-search-solr-site-results-more').empty().append('<a href="'+ baseUrl + '/search/' + default_site_type + query +'"' + '>see all results</a>');
         }
     });
   }
