@@ -36,6 +36,10 @@ Drupal.behaviors.roblib_search_solr_site_results = {
         {
             jQuery('#' + 'roblib-search-solr-site-results-more').empty().append('<a href="'+ baseUrl + '/search/' + default_site_type + query +'"' + '>see all results ('
               + total_found + ') </a>');
+          jQuery('.' + 'roblib-solr-more-results').empty().append('<a href="'+ baseUrl + '/search/' + default_site_type + query +'"' + '>see all results ('
+            + total_found + ') </a>');
+
+          roblib-solr-more-results
         }
     });
   }

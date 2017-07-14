@@ -19,3 +19,5 @@ if (!isset($type)){
 <div class ="roblib-search-content solr-site-<?php echo $type;?>" id="roblib-search-content-solr-site-<?php echo $type;?>">
   <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/>
 </div>
+
+<div class="roblib-solr-more-results roblib-solr-more-button button"></div>
