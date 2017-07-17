@@ -56,7 +56,6 @@ Drupal.behaviors.roblib_search_eds = {
                     }
                 });
                 jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
-                //qtipify(divs, content, 'Notes');
             }
 
             var queries = [];
@@ -67,7 +66,7 @@ Drupal.behaviors.roblib_search_eds = {
             //var host = "http://eds-api.ebscohost.com";
             //var get = "/edsapi/rest/Search?query=history&searchmode=all&resultsperpage=20&pagenumber=1&sort=relevance&highlight=y&includefacets=y&facetfilter=1%2cSourceType%3aMagazines%2cSourceType%3aNews%2cSourceType%3aAcademic+Journals%2cSourceType%3aConference+Materials&view=detailed";
             var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
-            jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url='+href_str+query_str+'" id="see_all_results">See all results</a>');
+            jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url='+href_str+query_str+'" id="see_all_results">See all results (' + data.recordCount + ')</a>');
 
         });
     }
