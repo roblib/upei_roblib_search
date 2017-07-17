@@ -28,10 +28,9 @@ Drupal.behaviors.roblib_search_eds = {
                                 items.push('<a href="http://proxy.library.upei.ca/login?url='+val.PLink+'&scope=site">'+val2.Data+'</a></div>');
                             })
                         }
-                        pubYear = val.RecordInfo.BibRelationships.IsPartOfRelationships["date"][0]["Y"];
-                        if(pubYear == 'undefined') {
-                          pubYear = "Unknown";
-                        }
+                        pubYear = val.RecordInfo.BibRelationships.IsPartOfRelationships["date"];
+                        !pubYear ? pubYear = " " :  pubYear = pubYear[0]["Y"];
+
                         if (typeof val.Items.TypPub !== 'undefined') {
                           jQuery.each(val.Items.TypPub, function(key6, typpub){
                           strs = typpub.Data.split('; ');
