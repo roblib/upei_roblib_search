@@ -19,7 +19,6 @@ Drupal.behaviors.roblib_search_eds_articles = {
                 var content = new Array();
                 jQuery.each(data.records, function(key, val) {
                     id = 'roblib-search-eds-article-' + counter;
-                    edsPopulatePopupDivs(content, val, counter);
                     divs[counter++] = id;
 
                     if (typeof val.Items !== 'undefined') {

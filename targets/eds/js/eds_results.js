@@ -19,7 +19,6 @@ Drupal.behaviors.roblib_search_eds = {
                 var content = new Array();
                 jQuery.each(data.records, function(key, val) {
                     id = 'roblib-search-eds-' + counter;
-                    edsPopulatePopupDivs(content, val, counter);
                     divs[counter++] = id;
                     if (typeof val.Items !== 'undefined') {
                          items.push('<div class ="roblib-search-row" id="' + id + '">');
@@ -29,11 +28,25 @@ Drupal.behaviors.roblib_search_eds = {
                                 items.push('<a href="http://proxy.library.upei.ca/login?url='+val.PLink+'&scope=site">'+val2.Data+'</a></div>');
                             })
                         }
-                        items.push('<div class="eds-sor">');
-                        jQuery.each(val.RecordInfo.BibRelationships.HasContributorRelationships, function(key3, authors){
-                            items.push(authors.NameFull+';'+' ');
+                        pubYear = val.RecordInfo.BibRelationships.IsPartOfRelationships["date"][0]["Y"];
+                        if(pubYear == 'undefined') {
+                          pubYear = "Unknown";
+                        }
+                        if (typeof val.Items.TypPub !== 'undefined') {
+                          jQuery.each(val.Items.TypPub, function(key6, typpub){
+                          strs = typpub.Data.split('; ');
+                          types = roblib_intersects(strs, ['<span class="highlight">Book</span>', '<span class="highlight">eBook</span>']);
+                          items.push('<div class="eds-type"><span class="eds-pubyear">'+pubYear+'</span> - '+ types.join(', ') + '</div>');
                         })
-                        items.push('</div>');
+                        }
+                      items.push('<div class="eds-sor">');
+                        roblib_authors = "";
+                      jQuery.each(val.RecordInfo.BibRelationships.HasContributorRelationships, function(key3, author){
+                        roblib_authors += author.NameFull;
+                      })
+                      roblib_authors = roblib_shorten(roblib_authors, 50, " ");
+                      items.push(roblib_authors);
+                      items.push('</div>');
                         if (typeof val.Items.Src !== 'undefined') {
                             jQuery.each(val.Items.Src, function(key4, source){
                                 items.push('<div class="eds-src">'+source.Data+'</div>');
@@ -42,11 +55,6 @@ Drupal.behaviors.roblib_search_eds = {
                         if (typeof val.Items.PubIrInfo !== 'undefined') {
                             jQuery.each(val.Items.PubIrInfo, function(key5, pubinfo){
                                 items.push('<div class="eds-pubinfo">'+pubinfo.Data+'</div>');
-                            })
-                        }
-                        if (typeof val.Items.TypPub !== 'undefined') {
-                            jQuery.each(val.Items.TypPub, function(key6, typpub){
-                                items.push('<div class="eds-type"><span class="eds-label">'+typpub.Label+'</span>: '+typpub.Data+'</div>');
                             })
                         }
 
@@ -72,27 +80,22 @@ Drupal.behaviors.roblib_search_eds = {
     }
 }
 
-function edsPopulatePopupDivs(content, val, counter){
-    content[counter] = '';
-    try{
-        jQuery.each(val.DetailedRecord, function(key, value){
-            if (content.length < 5 &&
-                (value.Group == 'PubInfo' || value.Group =="TypPub" || value.Group == "TypeDoc" || value.Group =="Su" || value.Group == "Au")) {
-                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
-                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';(value.Group =='Ab' || value.Group == 'Note' )
-            } else if (content[counter].length < 5 && (value.Group == "Note" || value.Group== "Ab")) {
-                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
-                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
-            } else if (content[counter].length < 3 && (value.Group == 'TOC' || value.Group == 'Src')) {
-                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
-                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
-            } else if (content[counter].length < 1 && value.Group == 'Ti') {
-                content[counter] += '<div class="eds-popup-content"><span class="eds-popup-label">' + value.Label  + ': </span>' ;
-                content[counter] += '<span class="eds-popup-value"> ' + value.Data +'</span></div>';
-            }
-        })
-    } catch (err) {
-        // do nothing as there is no data to work with
-    }
+function roblib_intersects(a, b) {
+  var d = {};
+  var results = [];
+  for (var i = 0; i < b.length; i++) {
+    d[b[i]] = true;
+  }
+  for (var j = 0; j < a.length; j++) {
+    if (d[a[j]])
+      results.push(a[j]);
+  }
+  return results;
 }
+
+function roblib_shorten(str, maxLen, separator) {
+  if (str.length <= maxLen) return str;
+  return str.substr(0, str.lastIndexOf(separator, maxLen)) + ' et al.';
+}
+
 

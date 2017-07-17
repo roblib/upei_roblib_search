@@ -214,8 +214,6 @@ function roblib_search_preprocess_panels_pane(&$variables, $hook){
  * Implements hook_init().
  */
 function roblib_search_init() {
-  // Make qtip available for all targets js.
-  drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/jquery.qtip.min.js');
   drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/imagesloaded.pkg.min.js');
   drupal_add_js(drupal_get_path('module', 'roblib_search') . '/js/roblib_search.js');
   drupal_add_css(drupal_get_path('module', 'roblib_search') . '/css/jquery.qtip.min.css');
