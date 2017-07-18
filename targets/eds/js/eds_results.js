@@ -28,18 +28,13 @@ Drupal.behaviors.roblib_search_eds = {
                 items.push('<a href="http://proxy.library.upei.ca/login?url=' + val.PLink + '&scope=site">' + val2.TitleFull + '</a></div>');
               })
             }
-           val.pubType == 'Book' ? pubType = 'Print Book' : pubType = val.pubType;
+            pubType = val.pubType;
 
             pubYear = val.RecordInfo.BibRelationships.IsPartOfRelationships["date"];
             !pubYear ? pubYear = " " : pubYear = pubYear[0]["Y"];
 
-            if (typeof val.Items.TypPub !== 'undefined') {
-              jQuery.each(val.Items.TypPub, function (key6, typpub) {
-                //strs = typpub.Data.split('; ');
-                //types = roblib_intersects(strs, ['<span class="highlight">Book</span>', '<span class="highlight">eBook</span>']);
-                items.push('<div class="eds-type"><span class="eds-pubyear">' + pubYear + '</span> - ' + pubType + '</div>');
-              })
-            }
+            items.push('<div class="eds-type"><span class="eds-pubyear">' + pubYear + '</span> - ' + pubType + '</div>');
+
             var roblib_authors =[];
             jQuery.each(val.RecordInfo.BibRelationships.HasContributorRelationships, function (key3, author) {
               roblib_authors.push(author.NameFull);
@@ -50,7 +45,7 @@ Drupal.behaviors.roblib_search_eds = {
             items.push(roblib_authors);
             items.push('</div>');
 
-            if (typeof val.Items.Src !== 'undefined') {
+            /*if (typeof val.Items.Src !== 'undefined') {
               jQuery.each(val.Items.Src, function (key4, source) {
                 items.push('<div class="eds-src">' + source.Data + '</div>');
               })
@@ -59,7 +54,7 @@ Drupal.behaviors.roblib_search_eds = {
               jQuery.each(val.Items.PubIrInfo, function (key5, pubinfo) {
                 items.push('<div class="eds-pubinfo">' + pubinfo.Data + '</div>');
               })
-            }
+            }*/
             var url;
             !val.Items.URL ? url = " " : url = val.Items.URL[0].Data;
             if(url) {
