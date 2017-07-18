@@ -28,7 +28,7 @@ Drupal.behaviors.roblib_search_eds = {
                 items.push('<a href="http://proxy.library.upei.ca/login?url=' + val.PLink + '&scope=site">' + val2.TitleFull + '</a></div>');
               })
             }
-            pubType = val.pubType;
+            val.pubType == 'Book' ? pubType = 'Print Book' : pubType = val.pubType;
 
             pubYear = val.RecordInfo.BibRelationships.IsPartOfRelationships["date"];
             !pubYear ? pubYear = " " : pubYear = pubYear[0]["Y"];
