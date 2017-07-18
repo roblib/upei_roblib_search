@@ -259,6 +259,7 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
   //$params = "query=AND,$query&view=detailed&includefacets=n&$limiters&resultsperpage=$number_per_page";
   $params = "query=AND,$query&view=detailed&includefacets=n&resultsperpage=$number_per_page";
   $output = $eds_api->apiSearch($params);
+  //roblib_search_eds_get_detailed_result($output, $query, $eds_api);
   return json_encode($output);
 }
 
