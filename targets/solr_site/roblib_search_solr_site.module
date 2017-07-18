@@ -253,7 +253,7 @@ function roblib_search_solr_site_block_view($delta = '') {
  *   The solr search string.
  */
 function roblib_search_solr_site_results($query) {
-  print roblib_search_solr_site_get_results($query, '');
+  print roblib_search_solr_site_get_results($query, '-bundle:bestbet');
   exit();
 }
 

@@ -12,9 +12,11 @@
 ?>
 <div class ="roblib-search-more" id="roblib-search-eds-article-more"></div>
 <div class ="roblib-search-content eds-article" id="roblib-search-content-eds-articles">
-  <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/> 
-  
+  <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/>
+
 </div>
+
+<div id="roblib-eds-articles-more-results" class="roblib-eds-more-button button"></div>
 <?php
 /**
  * Alternate way to create link back to ebscohost.

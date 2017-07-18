@@ -45,16 +45,6 @@ Drupal.behaviors.roblib_search_eds = {
             items.push(roblib_authors);
             items.push('</div>');
 
-            /*if (typeof val.Items.Src !== 'undefined') {
-              jQuery.each(val.Items.Src, function (key4, source) {
-                items.push('<div class="eds-src">' + source.Data + '</div>');
-              })
-            }
-            if (typeof val.Items.PubIrInfo !== 'undefined') {
-              jQuery.each(val.Items.PubIrInfo, function (key5, pubinfo) {
-                items.push('<div class="eds-pubinfo">' + pubinfo.Data + '</div>');
-              })
-            }*/
             var url;
             !val.Items.URL ? url = " " : url = val.Items.URL[0].Data;
             if(url) {
@@ -86,6 +76,7 @@ Drupal.behaviors.roblib_search_eds = {
       //var get = "/edsapi/rest/Search?query=history&searchmode=all&resultsperpage=20&pagenumber=1&sort=relevance&highlight=y&includefacets=y&facetfilter=1%2cSourceType%3aMagazines%2cSourceType%3aNews%2cSourceType%3aAcademic+Journals%2cSourceType%3aConference+Materials&view=detailed";
       var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
       jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="see_all_results">See all results (' + data.recordCount + ')</a>');
+      jQuery('#roblib-eds-books-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="see_all_results">See all results (' + data.recordCount + ')</a>');
 
     });
   }

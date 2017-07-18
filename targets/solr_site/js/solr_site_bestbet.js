@@ -1,6 +1,7 @@
 Drupal.behaviors.roblib_search_solr_site_bestbet = {
     attach: function(context, settings) {
         url = settings.roblib_search_solr_site_bestbet.search_url;
+        default_site_type = settings.roblib_search_solr_site_results.default_site_type
         jQuery.getJSON(url, function(data) {
             var items = [];
             var numberOfDocs = 0;
@@ -28,7 +29,6 @@ Drupal.behaviors.roblib_search_solr_site_bestbet = {
 
                 });
               jQuery('#' + 'roblib-search-content-solr-site-bestbet').empty().append(items.join(''));
-              //qtipify(divs, content, 'Best Bet');
             }
         });
     }
