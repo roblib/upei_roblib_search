@@ -12,9 +12,10 @@ function roblib_search_passthru_preprocess_roblib_search_passthru(&$variables) {
       $query = $_GET['roblib_query'];
     }
     else {
-      return '';
+      $query =  '';
     }
   }
+  $variables['query']  = urlencode($query);
   $spinner_path = $base_url . '/' . drupal_get_path('module', 'roblib_search') . '/img/' . 'spinner.gif';
   $variables['spinner_path'] = $spinner_path;
   $scholar_search_url = $base_url . '/roblib_search/passthru/scholar/ajax/' . urlencode($query);
