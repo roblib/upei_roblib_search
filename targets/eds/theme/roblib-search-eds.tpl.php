@@ -11,4 +11,5 @@
 
 </div>
 <div id="roblib-eds-books-more-results" class="roblib-eds-more-button button"></div>
+<div id="roblib-eds-books-toc" class="roblib-bento-toc moveme-please"></div>
 

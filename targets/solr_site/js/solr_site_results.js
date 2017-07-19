@@ -35,8 +35,11 @@ Drupal.behaviors.roblib_search_solr_site_results = {
       if (numberOfDocs > 0) {
         results_url = '<a href="' + baseUrl + '/search/' + default_site_type + query + '?f[0]=(-bundle:bestbet)"' + '>see all results ('
           + total_found + ') </a>';
+        move_me_div_url = '<a href="' + baseUrl + '/search/' + default_site_type + query + '?f[0]=(-bundle:bestbet)"' + '>Website & Guides ('
+          + total_found + ') </a>';
         jQuery('#' + 'roblib-search-solr-site-results-more').empty().append(results_url);
         jQuery('#' + 'roblib-solr-more-results-results').empty().append(results_url);
+        jQuery('#' + 'roblib-solr-search-toc-results').empty().append(move_me_div_url);
       }
     });
   }

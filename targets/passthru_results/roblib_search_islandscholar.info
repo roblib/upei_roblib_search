@@ -1,0 +1,8 @@
+name = Roblib Search IslandScholar
+dependencies[] = roblib_search
+configure = admin/roblib_search/islandscholar_search
+description = implements the Roblib Search IslandScholar results
+package = Roblib Search
+version = 7.x-dev
+core = 7.x
+stylesheets[all][] = css/roblib_search_islandscholar.css

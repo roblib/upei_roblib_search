@@ -17,6 +17,7 @@
 </div>
 
 <div id="roblib-eds-articles-more-results" class="roblib-eds-more-button button"></div>
+<div id="roblib-eds-articles-toc" class="roblib-bento-toc moveme-please"></div>
 <?php
 /**
  * Alternate way to create link back to ebscohost.
