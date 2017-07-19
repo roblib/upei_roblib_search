@@ -150,16 +150,16 @@ function roblib_search_evergreen_block_view($delta = '') {
 }
 
 function roblib_search_evergreen_ajax($query) {
-  $output = roblib_search_evergreen_get_results($query);
+  $output = roblib_search_passthru_evergreen_get_results($query);
   print $output;
   exit();
 }
 
 /**
- * 
+ *
  * @param string $query
  * @return string
- *   json 
+ *   json
  */
 function roblib_search_evergreen_get_results($query) {
   drupal_add_css(drupal_get_path('module', 'roblib_search_evergreen') . '/css/roblib_search_evergreen.theme.css');
@@ -186,7 +186,7 @@ function roblib_search_evergreen_get_results($query) {
 }
 
 /**
- * 
+ *
  * @param string $results
  *    results in marcxml
  * @return array $output
@@ -206,13 +206,13 @@ function roblib_search_evergreen_parse_results($results, $query) {
     $output['numberOfRecords'] = (string)$number_of_records[0];
     $catalog_base_search_url = variable_get('roblib_search_evergreen_catalog_base_search_url', 'http://islandpines.roblib.upei.ca/opac/en-CA/skin/roblib/xml/rresult.xml?rt=keyword&tp=keyword&t=');
     $catalog_base_search_url .=   $query;
-    $output['catalogBaseSearchUrl'] = $catalog_base_search_url; 
-    
+    $output['catalogBaseSearchUrl'] = $catalog_base_search_url;
+
     $records = $sxml->xpath('//marcxml:record');
     //$records = $sxml->xpath('//marcxml:record/marcxml:recordData/marcxml:record/marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]');
     $index = 0;
     foreach ($records as $record) {
-      $record->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');      
+      $record->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
       roblib_search_evergreen_update_array($output, $index, 'title', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="a"]'));
       roblib_search_evergreen_update_array($output, $index, 'subtitle', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="b"]'));
       roblib_search_evergreen_update_array($output, $index, 'sor', $record->xpath('marcxml:datafield[@tag="245"]/marcxml:subfield[@code="c"]'));
@@ -245,7 +245,7 @@ function roblib_search_evergreen_holdings(&$arr, $index, $xpath_result){
     $arr[$index]['holdings'][$holding_index]['availability'] = (string)$availability[0];
     $location = $xml->xpath('marcxml:subfield[@code="a"]');
     $arr[$index]['holdings'][$holding_index++]['location'] = (string)$location[0];
-  }  
+  }
 }
 
 function roblib_search_evergreen_electronic_holdings(&$arr, $index, $xpath_result){
@@ -258,7 +258,7 @@ function roblib_search_evergreen_electronic_holdings(&$arr, $index, $xpath_resul
      $url = (string)$url[0];
      $arr[$index]['electronic_holdings'][$holding_index]['url'] = $url;
      $arr[$index]['electronic_holdings'][$holding_index++]['label'] = $label;
-     
+
   }
 }
 

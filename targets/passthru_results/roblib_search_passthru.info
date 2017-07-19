@@ -1,0 +1,8 @@
+name = Roblib Search Passthru
+dependencies[] = roblib_search
+#configure = admin/roblib_search/passthru_search
+description = implements the Roblib Search Passthru results
+package = Roblib Search
+version = 7.x-dev
+core = 7.x
+stylesheets[all][] = css/roblib_search_passthru.css

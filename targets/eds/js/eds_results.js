@@ -77,7 +77,7 @@ Drupal.behaviors.roblib_search_eds = {
       var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
       jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-books-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results-button">See all results (' + data.recordCount + ')</a>');
-      jQuery('#roblib-eds-books-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results-toc">Books (' + data.recordCount + ')</a>');
+      jQuery('#roblib-eds-books-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">Books (' + data.recordCount + ')</a>');
 
     });
   }

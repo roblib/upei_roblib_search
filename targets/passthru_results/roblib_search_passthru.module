@@ -1,0 +1,207 @@
+<?php
+
+/**
+ * @file
+ * Implementation of Roblib search for searching several targets.
+ */
+
+
+/**
+ * Implements hook_menu().
+ */
+function roblib_search_passthru_menu() {
+  $items = [];
+
+  $items['roblib_search/passthru/scholar/ajax/%'] = [
+    'title' => 'Passthru ajax',
+    'page callback' => 'roblib_search_passthru_islandscholar_ajax',
+    'page arguments' => [4],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['search roblib'],
+  ];
+  $items['roblib_search/passthru/evergreen/ajax/%'] = [
+    'title' => 'evergreen ajax',
+    'page callback' => 'roblib_search_passthru_evergreen_ajax',
+    'page arguments' => [4],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['search roblib'],
+  ];
+
+  return $items;
+}
+
+function roblib_search_passthru_evergreen_ajax($query) {
+  $output = roblib_search_passthru_evergreen_get_results($query);
+  print $output;
+  exit();
+}
+
+/**
+ *
+ * @param string $query
+ *
+ * @return string
+ *   json
+ */
+function roblib_search_passthru_evergreen_get_results($query) {
+  $url = variable_get('roblib_search_evergreen_url', 'http://islandpines.roblib.upei.ca');
+  $url_suffix = variable_get('roblib_search_evergreen_search_suffix', '/opac/extras/sru?version=1.1&operation=searchRetrieve&query=');
+  $number_of_records = variable_get('roblib_search_evergreen_num_results', '5');
+  $query = trim($query);
+  $query = str_replace(' ', '%20AND%20', $query); //hack until the library decides if we want phrase or individual words
+  $query .= '%20AND%20%22prince%20edward%20island%22';
+  $search_url = $url . $url_suffix . $query . '&maximumRecords=' . $number_of_records;
+  $results = drupal_http_request($search_url);
+  if ($results->code == '200') {
+    $output = roblib_search_passthru_evergreen_parse_results($results, $query);
+  }
+  else {
+    watchdog('roblib_search_evergreen', 'Error retrieving results: %error', ['%error' => $results->status_message], WATCHDOG_ERROR);
+    $output = '';
+  }
+  return json_encode($output);
+}
+
+/**
+ *
+ * @param string $results
+ *    results in marcxml
+ *
+ * @return array $output
+ *    information we want from the xml stored in an array
+ */
+function roblib_search_passthru_evergreen_parse_results($results, $query) {
+  $xml = $results->data;
+  if (!isset($xml)) {
+    return 'no results found';
+  }
+  $sxml = simplexml_load_string(trim($results->data));
+  $output = [];
+  if ($sxml) {
+    $sxml->registerXPathNamespace('marcxml', 'http://www.loc.gov/MARC21/slim');
+    $sxml->registerXPathNamespace('srw', 'http://www.loc.gov/zing/srw/');
+    $number_of_records = $sxml->xpath('//srw:numberOfRecords');
+    $output['numberOfRecords'] = (string) $number_of_records[0];
+    $catalog_base_search_url = 'http://islandpines.roblib.upei.ca/eg/opac/results?qtype=keyword&l=4&d=2&ol=4&tp=&query=';
+    $catalog_base_search_url .= $query;
+    $output['catalogBaseSearchUrl'] = $catalog_base_search_url;
+  }
+  return $output;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function roblib_search_passthru_theme() {
+  // set path
+  $path = drupal_get_path('module', 'roblib_search_passthru');
+  $file = 'theme.inc';
+
+  return [
+    // results page
+    'roblib_search_passthru' => [
+      'path' => $path . '/theme',
+      'file' => $file,
+      'template' => 'roblib-search-passthru',
+      'variables' => ['results' => NULL],
+    ],
+  ];
+}
+
+function roblib_search_passthru_block_info() {
+
+  $blocks['roblib_passthru_results'] = [
+    // info: The name of the block.
+    'info' => t('Misc Results'),
+    // Block caching options (per role, per user, etc.)
+    'cache' => DRUPAL_CACHE_PER_ROLE,
+  ];
+
+
+  return $blocks;
+}
+
+function roblib_search_passthru_preprocess_panels_pane(&$variables, $hook) {
+  if ($variables['pane']->subtype == 'roblib_search_passthru-roblib_passthru_results') {
+    $variables['title_prefix'] = '<div class="roblib-search-header roblib-search-passthru-header">';
+    $variables['title_suffix'] = '</div>';
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function roblib_search_passthru_block_view($delta = '') {
+  $block = [];
+  switch ($delta) {
+    case 'roblib_passthru_results':
+      $block['subject'] = t('Misc Results');
+      $block['content'] = theme('roblib_search_passthru', ['results' => NULL]);
+      break;
+  }
+  return $block;
+}
+
+/**
+ * An endpoint for the passthru ajax call
+ *
+ * @param string $query
+ *
+ */
+function roblib_search_passthru_islandscholar_ajax($query) {
+  $output = roblib_search_passthru_get_results($query);
+  debug($output, 'pp_passthru_content', TRUE);
+  print $output;
+  exit();
+}
+
+/**
+ * @param $query
+ *
+ * @return string
+ */
+function roblib_search_passthru_get_search_url($query) {
+  $solr_url = variable_get('roblib_search_islandscholar_url', 'http://islandscholar.ca:8080/solr');
+  $num_results = variable_get('roblib_search_islandscholar_num_results', '5');
+  $data = [
+    'wt' => 'json',
+    'q' => $query,
+    'fq' => variable_get('roblib_search_islandscholar_fq', 'PID:ir* AND (RELS_EXT_hasModel_uri_ms:info\:fedora/ir\:thesisCModel OR RELS_EXT_hasModel_uri_ms:info\:fedora/ir\:citationCModel)'),
+    'qf' => variable_get('roblib_search_islandscholar_qf', 'dc.title^2.5 dc.creator^5.0 dc.contributor^2.0 dc.description^2.0 dc.identifier^2.0 dc.type^2.0 catch_all_fields_mt^1.0'),
+    'rows' => $num_results,
+    'defType' => 'dismax',
+  ];
+  $url = url($solr_url . '/select', ['query' => $data]);
+  return $url;
+}
+
+/**
+ *
+ * @param string $query
+ *
+ * @return string
+ *   json
+ */
+function roblib_search_passthru_get_results($query) {
+  $url = roblib_search_passthru_get_search_url($query);
+  $results = drupal_http_request($url);
+  if ($results->code != '200') {
+    return "";
+  }
+  return $results->data;
+}
+
+/**
+ * Implements hook_help().
+ */
+function roblib_search_passthru_help($path, $arg) {
+  switch ($path) {
+    case 'admin/help#roblib_search_passthru':
+      return t(
+        '<p>
+provides a Passthru target for the Roblib search module
+</p>'
+      );
+  }
+}
+
