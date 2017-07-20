@@ -20,6 +20,7 @@ function roblib_search_passthru_preprocess_roblib_search_passthru(&$variables) {
   $variables['spinner_path'] = $spinner_path;
   $scholar_search_url = $base_url . '/roblib_search/passthru/scholar/ajax/' . urlencode($query);
   $evergreen_search_url = $base_url . '/roblib_search/passthru/evergreen/ajax/' . urlencode($query);
+  $eds_search_url = $base_url . '/roblib_search/passthru/eds/ajax/' . urlencode($query);
 
   drupal_add_js(drupal_get_path('module', 'roblib_search_passthru') . '/js/passthru_results.js');
   drupal_add_js(
@@ -27,6 +28,7 @@ function roblib_search_passthru_preprocess_roblib_search_passthru(&$variables) {
       'roblib_search_passthru' => [
         'scholar_search_url' => $scholar_search_url,
         'evergreen_search_url' => $evergreen_search_url,
+        'eds_search_url' => $eds_search_url,
       ],
     ],
     ['type' => 'setting']);

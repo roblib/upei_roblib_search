@@ -26,12 +26,25 @@ function roblib_search_passthru_menu() {
     'type' => MENU_CALLBACK,
     'access arguments' => ['search roblib'],
   ];
+  $items['roblib_search/passthru/eds/ajax/%'] = [
+    'title' => 'eds ajax',
+    'page callback' => 'roblib_search_passthru_eds_ajax',
+    'page arguments' => [4],
+    'type' => MENU_CALLBACK,
+    'access arguments' => ['search roblib'],
+  ];
 
   return $items;
 }
 
 function roblib_search_passthru_evergreen_ajax($query) {
   $output = roblib_search_passthru_evergreen_get_results($query);
+  print $output;
+  exit();
+}
+
+function roblib_search_passthru_eds_ajax($query) {
+  $output = roblib_search_eds_get_results($query);
   print $output;
   exit();
 }
@@ -150,7 +163,6 @@ function roblib_search_passthru_block_view($delta = '') {
  */
 function roblib_search_passthru_islandscholar_ajax($query) {
   $output = roblib_search_passthru_get_results($query);
-  debug($output, 'pp_passthru_content', TRUE);
   print $output;
   exit();
 }
