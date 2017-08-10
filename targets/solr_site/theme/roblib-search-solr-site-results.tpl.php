@@ -20,5 +20,5 @@ if (!isset($type)){
   <img src="<?php print (empty($spinner_path) ? ' ' : $spinner_path); ?>"/>
 </div>
 
-<div id="roblib-solr-more-results-<?php print($type)?>"  class="roblib-solr-more-button button"></div>
+<div id="roblib-solr-more-results-<?php print($type)?>"  class="roblib-solr-more-button "></div>
 <div id="roblib-solr-search-toc-<?php print($type)?>" class="roblib-bento-toc moveme-please"></div>
