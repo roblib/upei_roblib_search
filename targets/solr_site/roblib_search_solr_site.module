@@ -360,13 +360,22 @@ function roblib_search_solr_site_get_results($query = NULL, $type) {
 
   $qf = "";
   foreach ($solr_qf as $key => $value){
+    if($value != '0') {
       $qf .= $key . '^' . $value . ' ';
+    }
+  }
+  $bq = "";
+  foreach ($solr_qf as $key => $value){
+    if($value != '0') {
+      $bq .= $key . '^' . $value . ' ';
+    }
   }
   $data = array(
     'q' => $query,
     'fq' => $type,
     'wt' => 'json',
     'qf' => $qf,
+    'bq' => $bq,
     'rows' => $num_results,
   );
   $url = url($solr_url . '/select', array('query' => $data));
