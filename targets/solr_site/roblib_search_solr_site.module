@@ -357,11 +357,10 @@ function roblib_search_solr_site_get_results($query = NULL, $type) {
   $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
   $num_results = variable_get('roblib_search_solr_site_num_results', '5');
   $solr_qf = apachesolr_environment_variable_get(apachesolr_default_environment(), 'field_bias');
+
   $qf = "";
   foreach ($solr_qf as $key => $value){
-    if($value != "0") {
       $qf .= $key . '^' . $value . ' ';
-    }
   }
   $data = array(
     'q' => $query,
