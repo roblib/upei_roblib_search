@@ -372,11 +372,12 @@ function roblib_search_solr_site_get_results($query = NULL, $type) {
   }
   $data = array(
     'q' => $query,
-    'fq' => $type,
+    'fq' => $type,// . 'AND (hash:23lhtc+OR+access__all:0)',
     'wt' => 'json',
     'qf' => $qf,
     'bq' => $bq,
     'rows' => $num_results,
+    'deftype' => 'edismax',
   );
   $url = url($solr_url . '/select', array('query' => $data));
 
