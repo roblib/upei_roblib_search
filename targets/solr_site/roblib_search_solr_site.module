@@ -345,7 +345,7 @@ function roblib_search_solr_site_add_url($json) {
 /**
  * Sends a query to Solr.
  *
- * @param string $query
+ * @param string $query_string
  *   A string to search for
  * @param string $type
  *   A string to filter the query against field:value
@@ -353,39 +353,16 @@ function roblib_search_solr_site_add_url($json) {
  * @return string
  *   Solr results as json.
  */
-function roblib_search_solr_site_get_results($query = NULL, $type) {
-  $solr_url = variable_get('roblib_search_solr_site_url', 'http://localhost:8983/solr');
+function roblib_search_solr_site_get_results($query_string = NULL, $type) {
   $num_results = variable_get('roblib_search_solr_site_num_results', '5');
-  $solr_qf = apachesolr_environment_variable_get(apachesolr_default_environment(), 'field_bias');
-
-  $qf = "";
-  foreach ($solr_qf as $key => $value){
-    if($value != '0') {
-      $qf .= $key . '^' . $value . ' ';
-    }
-  }
-  $bq = "";
-  foreach ($solr_qf as $key => $value){
-    if($value != '0') {
-      $bq .= $key . '^' . $value . ' ';
-    }
-  }
-  $data = array(
-    'q' => $query,
-    'fq' => $type,// . 'AND (hash:23lhtc+OR+access__all:0)',
-    'wt' => 'json',
-    'qf' => $qf,
-    'bq' => $bq,
-    'rows' => $num_results,
-    'deftype' => 'edismax',
-  );
-  $url = url($solr_url . '/select', array('query' => $data));
-
-  $results = drupal_http_request($url);
-  if ($results->code != '200') {
-    return "";
-  }
-  return $results->data;
+  $query = apachesolr_drupal_query("apachesolr");
+  $query->addParam('q', $query_string ); // keyword to be searched
+  $query->addParam('rows', $num_results);
+  $query->addParam('fq', $type);
+  apachesolr_search_add_boost_params($query);
+  $response = $query->search();
+  $json_results = drupal_json_encode($response);
+  return $json_results;
 }
 
 
