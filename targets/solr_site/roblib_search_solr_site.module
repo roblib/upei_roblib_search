@@ -359,6 +359,7 @@ function roblib_search_solr_site_get_results($query_string = NULL, $type) {
   $query->addParam('q', $query_string ); // keyword to be searched
   $query->addParam('rows', $num_results);
   $query->addParam('fq', $type);
+  $query->addParam('mm', '1');
   apachesolr_search_add_boost_params($query);
   $response = $query->search();
   $json_results = drupal_json_encode($response);
