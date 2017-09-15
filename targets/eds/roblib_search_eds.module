@@ -39,9 +39,10 @@ function roblib_search_eds_menu() {
     'access arguments' => array('search roblib eds'),
   );
 
-  $items['roblib_search/eds/info'] = array(
+  $items['roblib_search/eds/info/%'] = array(
     'title' => 'eds info',
     'page callback' => 'roblib_search_eds_info',
+    'page arguments' => array(3),
     'type' => MENU_CALLBACK,
     'access arguments' => array('search roblib eds'),
   );
@@ -49,8 +50,8 @@ function roblib_search_eds_menu() {
   return $items;
 }
 
-function roblib_search_eds_info() {
-  $config = roblib_search_eds_build_config_arr();
+function roblib_search_eds_info($type = 'Articles') {
+  $config = roblib_search_eds_build_config_arr($type);
   $eds_api = new EBSCOAPI($config);
   $output = $eds_api->getInfo();
   print json_encode($output);
@@ -100,9 +101,17 @@ function roblib_search_eds_config_form($form, &$form_state) {
 
   $form['roblib_search_eds_profile'] = array(
     '#type' => 'textfield',
-    '#title' => t('EDS profile'),
+    '#title' => t('EDS Article profile'),
     '#default_value' => variable_get('roblib_search_eds_profile', 'edsapi'),
     '#description' => t('EDS profile, for example edsapi'),
+    '#required' => TRUE,
+  );
+
+  $form['roblib_search_eds_book_profile'] = array(
+    '#type' => 'textfield',
+    '#title' => t('EDS Book profile'),
+    '#default_value' => variable_get('roblib_search_eds_book_profile', 'apilite'),
+    '#description' => t('EDS Book profile, for example apilite'),
     '#required' => TRUE,
   );
 
@@ -235,7 +244,7 @@ function roblib_search_eds_articles($query) {
  * @return string
  *   json string
  */
-function roblib_search_eds_get_results($query = NULL, $type = NULL) {
+function roblib_search_eds_get_results($query = NULL, $type = 'Articles') {
   drupal_add_css(drupal_get_path('module', 'roblib_search_eds') . '/css/roblib_search_eds.theme.css');
 
   // Url parameters.
@@ -251,7 +260,7 @@ function roblib_search_eds_get_results($query = NULL, $type = NULL) {
   if ($type != NULL) {
     $limiters = roblib_search_eds_get_query_limiters($type);
   }
-  $config = roblib_search_eds_build_config_arr();
+  $config = roblib_search_eds_build_config_arr($type);
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
   $query = urlencode($query);
@@ -315,10 +324,12 @@ function roblib_search_eds_get_query_limiters($type) {
   return urlencode($limiters);
 }
 
-function roblib_search_eds_build_config_arr() {
+function roblib_search_eds_build_config_arr($type) {
   $config = array();
   $config['user'] = variable_get('roblib_search_eds_user', 'edsusername');
   $config['pass'] = variable_get('roblib_search_eds_pass', 'edspassword');
+  $config['profile'] = ($type === 'Books') ? variable_get('roblib_search_eds_book_profile', 'apilite') :
+    variable_get('roblib_search_eds_profile', 'edsapi');
   $config['profile'] = variable_get('roblib_search_eds_profile', 'edsapi');
   $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
   $config['rest_url'] = variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest');
