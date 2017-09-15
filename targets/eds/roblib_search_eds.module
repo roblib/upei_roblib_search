@@ -53,8 +53,10 @@ function roblib_search_eds_menu() {
 function roblib_search_eds_info($type = 'Articles') {
   $config = roblib_search_eds_build_config_arr($type);
   $eds_api = new EBSCOAPI($config);
-  $output = $eds_api->getInfo();
+  $output['type'] = $type;
+  $output['profile'] = $eds_api->getInfo();
   print json_encode($output);
+
   exit();
 }
 
