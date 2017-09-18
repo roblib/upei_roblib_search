@@ -1,7 +1,7 @@
 Drupal.behaviors.roblib_search_eds_articles = {
   attach: function (context, settings) {
     $url = settings.roblib_search_eds_articles.search_url;
-    profile = 'eds'; //settings.roblib_search_eds.eds_profile;
+    articles_profile = settings.roblib_search_eds_articles.eds_profile;
     jQuery.getJSON($url, function (data) {
       var items = [];
       var numberOfDocs = 0;
@@ -71,7 +71,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
         queries.push(query.query);
       })
       var query_str = data.queries[0].query;
-      var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
+      var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + articles_profile + '&mode=bool&lang=en&bquery=';
       jQuery('#roblib-search-eds-article-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-articles-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results-button">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-articles-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results-toc">Articles (' + data.recordCount + ')</a>');

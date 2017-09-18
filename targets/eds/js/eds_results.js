@@ -1,7 +1,7 @@
 Drupal.behaviors.roblib_search_eds = {
   attach: function (context, settings) {
     $url = settings.roblib_search_eds.search_url;
-    profile = 'eds'; //settings.roblib_search_eds.eds_profile;
+    profile = settings.roblib_search_eds.eds_profile;
     jQuery.getJSON($url, function (data) {
       var items = [];
       var numberOfDocs = 0;
@@ -56,8 +56,6 @@ Drupal.behaviors.roblib_search_eds = {
               if (anNumber[0] && anNumber[0] == 'upei') {
                 catalogUrl = '<a href="http://islandpines.roblib.upei.ca/eg/opac/record/' + anNumber[1] +
                   '">View in UPEI Catalogue</a>';
-              }
-              if (catalogUrl) {
                 items.push('<div class="eds-catalog-link">' + catalogUrl + '</div>');
               }
             }

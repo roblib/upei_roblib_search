@@ -25,7 +25,7 @@ function roblib_search_eds_preprocess_roblib_search_eds(&$variables) {
     'roblib_search_eds' => array(
       'search_url' => $search_url,
       'eds_profile' =>
-        variable_get('roblib_search_eds_profile', 'edsapi')
+        variable_get('roblib_search_eds_book_profile', 'apilite')
     )
   ), array('type' => 'setting'));
 
