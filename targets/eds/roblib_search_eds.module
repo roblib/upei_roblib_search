@@ -4,9 +4,6 @@
  * @file
  * Implementation of Roblib search for searching several targets.
  */
-require_once dirname(__FILE__) . '/includes/rest/EBSCOConnector.php';
-require_once dirname(__FILE__) . '/includes/rest/EBSCOResponse.php';
-require_once dirname(__FILE__) . '/includes/rest/EBSCOConnector.php';
 
 
 /**
@@ -248,7 +245,9 @@ function roblib_search_eds_articles($query) {
  */
 function roblib_search_eds_get_results($query = NULL, $type = 'Articles') {
   drupal_add_css(drupal_get_path('module', 'roblib_search_eds') . '/css/roblib_search_eds.theme.css');
-
+  module_load_include('php', 'ebsco', 'lib/EBSCOAPI');
+  module_load_include('php', 'ebsco', 'lib/EBSCOAPIConnector');
+  module_load_include('php', 'ebsco', 'lib/EBSCOAPIResponse');
   // Url parameters.
   if (!isset($query)) {
     if (isset($_GET['roblib_query'])) {
@@ -260,20 +259,17 @@ function roblib_search_eds_get_results($query = NULL, $type = 'Articles') {
   }
   $limiters = '';
   if ($type != NULL) {
-    $limiters = roblib_search_eds_get_query_limiters($type);
+    $limiters = urldecode(roblib_search_eds_get_query_limiters($type));
   }
+  $filters = array();
   $config = roblib_search_eds_build_config_arr($type);
   $eds_api = new EBSCOAPI($config);
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
-  $query = urlencode($query);
   $query .= $limiters;
-  //$params = "query=AND,$query&view=detailed&includefacets=n&$limiters&resultsperpage=$number_per_page";
-  $params = "query=AND,$query&view=detailed&includefacets=n&resultsperpage=$number_per_page";
-  $output = $eds_api->apiSearch($params);
-  //roblib_search_eds_get_detailed_result($output, $query, $eds_api);
+  $search = array('lookfor' => $query, 'type' => 'ALLFields', 'index' => 'AllFields', 'q' => 'ebsco/results', 'op' => 'Search');
+  $output = $eds_api->apiSearch($search, $filters, 1, $number_per_page);
   return json_encode($output);
 }
-
 
 /**
  * For each result query ebsco again to get the detailed record.

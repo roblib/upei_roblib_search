@@ -6,7 +6,7 @@ Drupal.behaviors.roblib_search_eds = {
       var items = [];
       var numberOfDocs = 0;
       try {
-        numberOfDocs = data.records.length;
+        numberOfDocs = data.numFound;
       } catch (err) {
         // do nothing leave docLength at 0
       }
@@ -17,18 +17,16 @@ Drupal.behaviors.roblib_search_eds = {
         var counter = 0;
         var divs = new Array();
         var content = new Array();
-        jQuery.each(data.records, function (key, val) {
+        jQuery.each(data.documents, function (key, val) {
           id = 'roblib-search-eds-' + counter;
           divs[counter++] = id;
           if (typeof val.Items !== 'undefined') {
             items.push('<div class ="roblib-search-row" id="' + id + '">');
-            if (typeof val.Items.Ti !== 'undefined') {
-              jQuery.each(val.RecordInfo.BibEntity.Titles, function (key2, val2) {
-                items.push('<div class="roblib-title eds">');
-                items.push('<a href="http://proxy.library.upei.ca/login?url=' + val.PLink + '&scope=site">' + val2.TitleFull + '</a></div>');
-              })
+            if (typeof val.Items.Title !== 'undefined') {
+              items.push('<div class="roblib-title eds">');
+              items.push('<a href="http://proxy.library.upei.ca/login?url=' + val.PLink + '&scope=site">' + val.Items.Title.Data + '</a></div>');
             }
-            val.pubType == 'Book' ? pubType = 'Print Book' : pubType = val.pubType;
+            val.PubType == 'Book' ? pubType = 'Print Book' : pubType = val.PubType;
 
             pubYear = val.RecordInfo.BibRelationships.IsPartOfRelationships["date"];
             !pubYear ? pubYear = " " : pubYear = pubYear[0]["Y"];
@@ -46,7 +44,7 @@ Drupal.behaviors.roblib_search_eds = {
             items.push('</div>');
 
             var url;
-            !val.Items.URL ? url = " " : url = val.Items.URL[0].Data;
+            !val.Items.URL ? url = " " : url = val.Items.URL.Data;
             if(url) {
               items.push('<div class="eds-url">' + url + '</div>');
             }
@@ -72,7 +70,7 @@ Drupal.behaviors.roblib_search_eds = {
       var query_str = data.queries[0].query;
       //var host = "http://eds-api.ebscohost.com";
       //var get = "/edsapi/rest/Search?query=history&searchmode=all&resultsperpage=20&pagenumber=1&sort=relevance&highlight=y&includefacets=y&facetfilter=1%2cSourceType%3aMagazines%2cSourceType%3aNews%2cSourceType%3aAcademic+Journals%2cSourceType%3aConference+Materials&view=detailed";
-      var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=ehost-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
+      var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profid=' + profile + '&mode=bool&lang=en&bquery=';
       jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-books-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results-button">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-books-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">Books (' + data.recordCount + ')</a>');

@@ -1,7 +1,7 @@
 name = Roblib Search Passthru
 dependencies[] = roblib_search
 #configure = admin/roblib_search/passthru_search
-description = implements the Roblib Search Passthru results
+description = implements the Roblib Search Passthru results, used just to get result count from evergreen etc.
 package = Roblib Search
 version = 7.x-dev
 core = 7.x

@@ -1,11 +1,10 @@
 name = Roblib Search EDS
 dependencies[] = roblib_search
+dependencies[] = ebsco
 configure = admin/roblib_search/eds_search
 description = implements the Roblib Search modules _roblib_search hook
 package = Roblib Search
 version = 7.x-dev
 core = 7.x
 stylesheets[all][] = css/roblib_search_eds.css
-files[] = includes/rest/EBSCOAPI.php
-files[] = includes/rest/EBSCOConnector.php
-files[] = includes/rest/EBSCOResponse.php
+
