@@ -47,10 +47,8 @@ Drupal.behaviors.roblib_search_eds_articles = {
             items.push('</div>');
 
 
-            if (typeof val.Items.Src !== 'undefined') {
-              jQuery.each(val.Items.Src, function (key4, source) {
-                items.push('<div class="eds-src"><span class="eds-label">In:</span> ' + source.Data + '</div>');
-              })
+            if (typeof val.Items.TitleSource !== 'undefined') {
+                items.push('<div class="eds-src"><span class="eds-label">In:</span> ' + val.Items.TitleSource.Data + '</div>');
             }
             if (typeof val.PLink !== 'undefined' && typeof val.PDF !== 'undefined' && val.PDF == 'pdflink') {
               items.push('<div class="eds-db eds-pdf-link"><a href="' + val.PLink + '&scope=site">PDF Full Text</a></div>');
