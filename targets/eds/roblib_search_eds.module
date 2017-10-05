@@ -327,6 +327,8 @@ function roblib_search_eds_build_config_arr($type) {
   $config = array();
   $config['user'] = variable_get('roblib_search_eds_user', 'edsusername');
   $config['password'] = variable_get('roblib_search_eds_pass', 'edspassword');
+  //get the local ips allowed from ebsco
+  $config['local_ip_address'] = variable_get('ebsco_local_ips');
   $config['profile'] = ($type === 'Books') ? variable_get('roblib_search_eds_book_profile', 'apilite') :
     variable_get('roblib_search_eds_profile', 'edsapi');
   $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
