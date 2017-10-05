@@ -17,6 +17,13 @@ Drupal.behaviors.roblib_search_eds = {
         var counter = 0;
         var divs = new Array();
         var content = new Array();
+        var queries = [];
+        jQuery.each(data.queries, function (key7, query) {
+          queries.push(query.query);
+        })
+        var query_str = data.queries[0].query;
+        var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profid=lite&mode=bool&lang=en&bquery=';
+
         jQuery.each(data.documents, function (key, val) {
           id = 'roblib-search-eds-' + counter;
           divs[counter++] = id;
@@ -58,19 +65,13 @@ Drupal.behaviors.roblib_search_eds = {
               }
             }
             items.push('</div>');
+          } else {
+            items.push('<div class="roblib-eds-unauthorized">You must login to view this result, <a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-unauthorized-result">click here to login</a></div>'  );
           }
         });
         jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
       }
 
-      var queries = [];
-      jQuery.each(data.queries, function (key7, query) {
-        queries.push(query.query);
-      })
-      var query_str = data.queries[0].query;
-      //var host = "http://eds-api.ebscohost.com";
-      //var get = "/edsapi/rest/Search?query=history&searchmode=all&resultsperpage=20&pagenumber=1&sort=relevance&highlight=y&includefacets=y&facetfilter=1%2cSourceType%3aMagazines%2cSourceType%3aNews%2cSourceType%3aAcademic+Journals%2cSourceType%3aConference+Materials&view=detailed";
-      var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profid=lite&mode=bool&lang=en&bquery=';
       jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-books-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results-button">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-books-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">Books (' + data.recordCount + ')</a>');
@@ -78,6 +79,7 @@ Drupal.behaviors.roblib_search_eds = {
     });
   }
 }
+
 
 function roblib_intersects(a, b) {
   var d = {};

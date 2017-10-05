@@ -17,7 +17,12 @@ Drupal.behaviors.roblib_search_eds_articles = {
         var counter = 0;
         var divs = new Array();
         var content = new Array();
-        docs = data.documents;
+        var queries = [];
+        jQuery.each(data.queries, function (key7, query) {
+          queries.push(query.query);
+        })
+        var query_str = data.queries[0].query;
+        var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profile=eds&mode=bool&lang=en&bquery=';
         jQuery.each(data.documents, function (key, val) {
           id = 'roblib-search-eds-article-' + counter;
           divs[counter++] = id;
@@ -58,17 +63,13 @@ Drupal.behaviors.roblib_search_eds_articles = {
             }
 
             items.push('</div>');
+          } else {
+            items.push('<div class="roblib-eds-unauthorized">You must login to view this result, <a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-unauthorized-result">click here to login</a></div>'  );
           }
         });
         jQuery('#' + 'roblib-search-content-eds-articles').empty().append(items.join(''));
       }
 
-      var queries = [];
-      jQuery.each(data.queries, function (key7, query) {
-        queries.push(query.query);
-      })
-      var query_str = data.queries[0].query;
-      var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profile=eds&mode=bool&lang=en&bquery=';
       jQuery('#roblib-search-eds-article-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-articles-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results-button">See all results (' + data.recordCount + ')</a>');
       jQuery('#roblib-eds-articles-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results-toc">Articles (' + data.recordCount + ')</a>');

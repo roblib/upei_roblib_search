@@ -151,7 +151,7 @@ function roblib_search_eds_permission() {
   return array(
     'search roblib eds' => array(
       'title' => t('Search the eds target'),
-      'description' => t('Search oblib eds target. This permission exposes the search blocks and allows you to see search results.'),
+      'description' => t('Search Roblib eds target. This permission exposes the search blocks and allows you to see search results.'),
     ),
     'administer roblib search eds' => array(
       'title' => t('Administer Roblib Search EDS'),
