@@ -66,7 +66,7 @@ Drupal.behaviors.roblib_search_eds = {
             }
             items.push('</div>');
           } else {
-            items.push('<div class="roblib-eds-unauthorized">You must login to view this result, <a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-unauthorized-result">click here to login</a></div>'  );
+            items.push('<div class ="roblib-search-row roblib-eds-unauthorized" id="\' + id + \'">You must login to view this result, <a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-unauthorized-result">click here to login</a></div>'  );
           }
         });
         jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
