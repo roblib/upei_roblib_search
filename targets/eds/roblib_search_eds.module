@@ -261,7 +261,9 @@ function roblib_search_eds_get_results($query = NULL, $type = 'Articles') {
   if ($type != NULL) {
     $limiters = urldecode(roblib_search_eds_get_query_limiters($type));
   }
-  $filters = array();
+  // hardcoding "available in library collection" limiter as we can't pass it the
+  // same way we passed other limiters
+  $filters = ($type === 'Books') ? array("addlimiter(FT1:y)") : array();
   $config = roblib_search_eds_build_config_arr($type);
 
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
