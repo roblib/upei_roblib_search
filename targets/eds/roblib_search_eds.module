@@ -270,6 +270,7 @@ function roblib_search_eds_get_results($query = NULL, $type = 'Articles') {
   $query .= $limiters;
   $search = array('lookfor' => $query, 'type' => 'ALLFields', 'index' => 'AllFields', 'q' => 'ebsco/results', 'op' => 'Search');
   $eds_api = new EBSCOAPI($config);
+  $eds_api->isGuest(boolval(variable_get('roblib_search_eds_guest','y')));
   $output = $eds_api->apiSearch($search, $filters, 1, $number_per_page);
   return json_encode($output);
 }
@@ -335,6 +336,7 @@ function roblib_search_eds_build_config_arr($type) {
     variable_get('roblib_search_eds_profile', 'edsapi');
   $config['auth_url'] = variable_get('roblib_search_eds_auth_url', 'https://eds-api.ebscohost.com/Authservice/rest');
   $config['rest_url'] = variable_get('roblib_search_eds_rest_url', 'http://eds-api.ebscohost.com/edsapi/rest');
+  $config['guest'] = variable_get('roblib_search_eds_guest','y');
   return $config;
 }
 
