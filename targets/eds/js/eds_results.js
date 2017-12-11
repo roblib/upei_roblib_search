@@ -71,10 +71,15 @@ Drupal.behaviors.roblib_search_eds = {
         });
         jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
       }
-
-      jQuery('#roblib-search-eds-more').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">See all results (' + data.recordCount + ')</a>');
-      jQuery('#roblib-eds-books-more-results').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results-button">See all results (' + data.recordCount + ')</a>');
-      jQuery('#roblib-eds-books-toc').empty().append('<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see_all_results">Books (' + data.recordCount + ')</a>');
+      var non_upei_link = '';
+      var upei_link = '<a href="' + href_str + query_str + '" id="eds-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
+      if(!data.is_local_ip) {
+        non_upei_link = '<a href="' + href_str + query_str + '" id="eds-non-upei-see_all_results">[Non-UPEI]</a>';
+        upei_link = '<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see-all-results">SEE ALL (' + data.recordCount + ')</a> ' + non_upei_link;
+      }
+      jQuery('#roblib-search-eds-more').empty().append(upei_link);
+      jQuery('#roblib-eds-books-more-results').empty().append(upei_link);
+      jQuery('#roblib-eds-books-toc').empty().append('<a href="' + href_str + query_str + '" id="eds-see-all-results-toc">Articles (' + data.recordCount + ')</a>');
 
     });
   }
