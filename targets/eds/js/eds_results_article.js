@@ -2,6 +2,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
   attach: function (context, settings) {
     $url = settings.roblib_search_eds_articles.search_url;
     articles_profile = settings.roblib_search_eds_articles.eds_profile;
+    proxy_url = "http://proxy.library.upei.ca/login?url=";
     jQuery.getJSON($url, function (data) {
       var items = [];
       var numberOfDocs = 0;
@@ -31,7 +32,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
             items.push('<div class ="roblib-search-row" id="' + id + '">');
             if (typeof val.Items.Title !== 'undefined') {
                 items.push('<div class="roblib-title eds">');
-                items.push('<a href="http://proxy.library.upei.ca/login?url=' + val.PLink + '&scope=site">' + val.Items.Title.Data + '</a></div>');
+                items.push('<a href="' + proxy_url + val.PLink + '&scope=site">' + val.Items.Title.Data + '</a></div>');
             }
             pubType = val.PubType;
 
@@ -56,10 +57,10 @@ Drupal.behaviors.roblib_search_eds_articles = {
                 items.push('<div class="eds-src"><span class="eds-label">In:</span> ' + val.Items.TitleSource.Data + '</div>');
             }
             if (typeof val.PLink !== 'undefined' && typeof val.PDF !== 'undefined' && val.PDF == 'pdflink') {
-              items.push('<div class="eds-db eds-pdf-link"><a href="' + val.PLink + '&scope=site">PDF Full Text</a></div>');
+              items.push('<div class="eds-db eds-pdf-link"><a href="' + proxy_url + val.PLink + '&scope=site">PDF Full Text</a></div>');
             }
             if (typeof val.PLink !== 'undefined' && typeof val.HTML !== 'undefined' && val.HTML == '1') {
-              items.push('<div class="eds-db eds-pdf-link"><a href="' + val.PLink + '&scope=site">HTML Full Text</a></div>');
+              items.push('<div class="eds-db eds-pdf-link"><a href="' + proxy_url + val.PLink + '&scope=site">HTML Full Text</a></div>');
             }
 
             items.push('</div>');
@@ -72,7 +73,7 @@ Drupal.behaviors.roblib_search_eds_articles = {
       var upei_link = '<a href="' + href_str + query_str + '" id="eds-article-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
       if(!data.is_local_ip) {
         non_upei_link = '<a href="' + href_str + query_str + '" id="eds-article-non-upei-see_all_results">[Non-UPEI]</a>';
-        upei_link = '<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-article-see-all-results">SEE ALL (' + data.recordCount + ')</a> ' + non_upei_link;
+        upei_link = '<a href="' + proxy_url + href_str + query_str + '" id="eds-article-see-all-results">SEE ALL (' + data.recordCount + ')</a> ' + non_upei_link;
       }
       jQuery('#roblib-search-eds-article-more').empty().append(upei_link);
       jQuery('#roblib-eds-articles-more-results').empty().append(upei_link);
