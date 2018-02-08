@@ -70,14 +70,14 @@ Drupal.behaviors.roblib_search_eds_articles = {
         jQuery('#' + 'roblib-search-content-eds-articles').empty().append(items.join(''));
       }
       var non_upei_link = '';
-      var upei_link = '<a href="' + href_str + query_str + '" id="eds-article-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
+      var upei_link = '<a href="' + proxy_url + href_str + query_str + '" id="eds-article-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
       if(!data.is_local_ip) {
         non_upei_link = '<a href="' + href_str + query_str + '" id="eds-article-non-upei-see_all_results">[Non-UPEI]</a>';
-        upei_link = '<a href="' + proxy_url + href_str + query_str + '" id="eds-article-see-all-results">SEE ALL (' + data.recordCount + ')</a> ' + non_upei_link;
+        upei_link = upei_link + non_upei_link;
       }
       jQuery('#roblib-search-eds-article-more').empty().append(upei_link);
       jQuery('#roblib-eds-articles-more-results').empty().append(upei_link);
-      jQuery('#roblib-eds-articles-toc').empty().append('<a href="' + href_str + query_str + '" id="eds-article-see-all-results-toc">Articles (' + data.recordCount + ')</a>');
+      jQuery('#roblib-eds-articles-toc').empty().append('<a href="' + proxy_url + href_str + query_str + '" id="eds-article-see-all-results-toc">Articles (' + data.recordCount + ')</a>');
 
     });
   }

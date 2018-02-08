@@ -2,6 +2,7 @@ Drupal.behaviors.roblib_search_eds = {
   attach: function (context, settings) {
     $url = settings.roblib_search_eds.search_url;
     profile = settings.roblib_search_eds.eds_profile;
+    proxy_url = "http://proxy.library.upei.ca/login?url=";
     jQuery.getJSON($url, function (data) {
       var items = [];
       var numberOfDocs = 0;
@@ -31,7 +32,7 @@ Drupal.behaviors.roblib_search_eds = {
             items.push('<div class ="roblib-search-row" id="' + id + '">');
             if (typeof val.Items.Title !== 'undefined') {
               items.push('<div class="roblib-title eds">');
-              items.push('<a href="http://proxy.library.upei.ca/login?url=' + val.PLink + '&scope=site">' + val.Items.Title.Data + '</a></div>');
+              items.push('<a href="' + proxy_url + val.PLink + '&scope=site">' + val.Items.Title.Data + '</a></div>');
             }
             val.PubType == 'Book' ? pubType = 'Print Book' : pubType = val.PubType;
 
@@ -72,14 +73,14 @@ Drupal.behaviors.roblib_search_eds = {
         jQuery('#' + 'roblib-search-content-eds').empty().append(items.join(''));
       }
       var non_upei_link = '';
-      var upei_link = '<a href="' + href_str + query_str + '" id="eds-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
+      var upei_link = '<a href="' + proxy_url + href_str + query_str + '" id="eds-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
       if(!data.is_local_ip) {
         non_upei_link = '<a href="' + href_str + query_str + '" id="eds-non-upei-see_all_results">[Non-UPEI]</a>';
-        upei_link = '<a href="http://proxy.library.upei.ca/login?url=' + href_str + query_str + '" id="eds-see-all-results">SEE ALL (' + data.recordCount + ')</a> ' + non_upei_link;
+        upei_link = proxy_url + non_upei_link;
       }
       jQuery('#roblib-search-eds-more').empty().append(upei_link);
       jQuery('#roblib-eds-books-more-results').empty().append(upei_link);
-      jQuery('#roblib-eds-books-toc').empty().append('<a href="' + href_str + query_str + '" id="eds-see-all-results-toc">Articles (' + data.recordCount + ')</a>');
+      jQuery('#roblib-eds-books-toc').empty().append('<a href="' + proxy_url + href_str + query_str + '" id="eds-see-all-results-toc">Articles (' + data.recordCount + ')</a>');
 
     });
   }
