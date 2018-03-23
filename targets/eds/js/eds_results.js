@@ -23,7 +23,7 @@ Drupal.behaviors.roblib_search_eds = {
           queries.push(query.query);
         })
         var query_str = data.queries[0].query;
-        var href_str = 'http://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profid=lite&mode=bool&lang=en&bquery=';
+        var href_str = 'https://search.ebscohost.com/login.aspx?direct=true&site=eds-live&scope=site&type=1&custid=uprince&groupid=main&profid=lite&mode=bool&lang=en&bquery=';
 
         jQuery.each(data.documents, function (key, val) {
           id = 'roblib-search-eds-' + counter;
