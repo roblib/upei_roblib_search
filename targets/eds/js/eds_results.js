@@ -80,7 +80,7 @@ Drupal.behaviors.roblib_search_eds = {
       }
       jQuery('#roblib-search-eds-more').empty().append(upei_link);
       jQuery('#roblib-eds-books-more-results').empty().append(upei_link);
-      jQuery('#roblib-eds-books-toc').empty().append('<a href="' + proxy_url + href_str + query_str + '" id="eds-see-all-results-toc">Articles (' + data.recordCount + ')</a>');
+      jQuery('#roblib-eds-books-toc').empty().append('<a href="' + proxy_url + href_str + query_str + '" id="eds-see-all-results-toc">Books (' + data.recordCount + ')</a>');
 
     });
   }
