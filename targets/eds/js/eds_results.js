@@ -75,7 +75,7 @@ Drupal.behaviors.roblib_search_eds = {
       var non_upei_link = '';
       var upei_link = '<a href="' + proxy_url + href_str + query_str + '" id="eds-see-all-results">SEE ALL (' + data.recordCount + ')</a> ';
       if(!data.is_local_ip) {
-        non_upei_link = '<a href="' + href_str + query_str + '" id="eds-non-upei-see_all_results">[Non-UPEI]</a>';
+        non_upei_link = '<a href="' + href_str + query_str + '&authtype=ip,guest" id="eds-non-upei-see_all_results">[Non-UPEI]</a>';
         upei_link = upei_link + non_upei_link;
       }
       jQuery('#roblib-search-eds-more').empty().append(upei_link);
