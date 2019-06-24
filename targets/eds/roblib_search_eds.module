@@ -267,7 +267,7 @@ function roblib_search_eds_get_results($query = NULL, $type = 'Articles') {
   $config = roblib_search_eds_build_config_arr($type);
 
   $number_per_page = variable_get('roblib_search_eds_num_results', '5');
-  $query .= $limiters;
+  $query = '(' . $query . ') ' . $limiters;
   $search = array('lookfor' => $query, 'type' => 'ALLFields', 'index' => 'AllFields', 'q' => 'ebsco/results', 'op' => 'Search');
   $eds_api = new EBSCOAPI($config);
   $is_local_ip = $eds_api->connector()->isGuestIPAddress($_SERVER["REMOTE_ADDR"]);
