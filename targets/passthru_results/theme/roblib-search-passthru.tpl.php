@@ -10,8 +10,6 @@
 </div>
 <div class="roblib-search-row"
      id="roblib-search-passthru-eds-more"></div>
-<div class="roblib-search-row"
-     id="roblib-search-passthru-islandscholar-more"></div>
 <div class="roblib-search-row" id="roblib-search-passthru-evergreen-more"></div>
 <div class="roblib-search-row" id="roblib-search-google-scholar">
   <a href="http://scholar.google.ca/scholar?q=<?php print ($query); ?>">Google
