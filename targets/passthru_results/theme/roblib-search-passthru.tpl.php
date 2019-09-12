@@ -24,8 +24,7 @@
 </div>
 <div class="roblib-search-row" id="roblib-search-filmsondemand">
   <a
-    href="http://proxy.library.upei.ca/login?url=http://digital.films.com/portalplaylists.aspx?aid=14978&rd=lo&q=<?php print ($query); ?>">Films
-    on Demand</a>
+    href="https://video-alexanderstreet-com.proxy.library.upei.ca/channel/academic-video-online?q=<?php print ($query); ?>">Academic Video Online</a>
 </div>
 
 
