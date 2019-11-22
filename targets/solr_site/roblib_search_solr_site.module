@@ -356,7 +356,8 @@ function roblib_search_solr_site_add_url($json) {
 function roblib_search_solr_site_get_results($query_string = NULL, $type) {
   $num_results = variable_get('roblib_search_solr_site_num_results', '5');
   $query = apachesolr_drupal_query("apachesolr");
-  $query->addParam('q', $query_string ); // keyword to be searched
+  $encoded_query = htmlentities($query_string, ENT_QUOTES);
+  $query->addParam('q', $encoded_query); // keyword to be searched
   $query->addParam('rows', $num_results);
   $query->addParam('fq', $type);
   $query->addParam('mm', '1');
