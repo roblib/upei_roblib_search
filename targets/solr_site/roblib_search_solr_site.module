@@ -267,7 +267,7 @@ function roblib_search_solr_site_results($query) {
  */
 function roblib_search_solr_site_bestbet($query) {
   $query = str_replace('"', '', $query);
-  $json = roblib_search_solr_site_get_results("sort_label:\"$query\"", 'bundle:bestbet');
+  $json = roblib_search_solr_site_get_results("sort_label:$query", 'bundle:bestbet');
   $json = roblib_search_solr_site_add_url($json);
   print $json;
   exit();
